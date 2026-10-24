@@ -785,14 +785,35 @@ class SupabaseService {
       createdAt: DateTime.now(),
     );
 
+    final volunteerNotif = NotificationModel(
+      id: 'notif-vol-${DateTime.now().millisecondsSinceEpoch}',
+      recipientRole: 'volunteer',
+      title: '🚴 New Food Donation Ready for Delivery!',
+      message:
+          '${finalCreated.donorName} posted ${finalCreated.quantityLabel} of ${finalCreated.foodType}. Earn ₹20-₹30 courier fee!',
+      type: 'donation_created',
+      entityId: finalCreated.id,
+      metadata: {
+        'donation_id': finalCreated.id,
+        'title': finalCreated.title,
+        'quantity_servings': finalCreated.quantityServings,
+        'pickup_address': finalCreated.pickupAddress,
+        'donor_name': finalCreated.donorName,
+        'delivery_fee': 25.0,
+      },
+      createdAt: DateTime.now(),
+    );
+
     _localNotifications.insert(0, ngoNotif);
     _localNotifications.insert(0, adminNotif);
     _localNotifications.insert(0, donorNotif);
+    _localNotifications.insert(0, volunteerNotif);
     _localNotifications.insert(0, globalNotif);
 
     _notificationStreamController.add(ngoNotif);
     _notificationStreamController.add(adminNotif);
     _notificationStreamController.add(donorNotif);
+    _notificationStreamController.add(volunteerNotif);
     _notificationStreamController.add(globalNotif);
 
     // Broadcast instant peer-to-peer WebSocket events across all network clients
@@ -811,6 +832,10 @@ class SupabaseService {
       _realtimeChannel?.sendBroadcastMessage(
         event: 'realtime_alert',
         payload: adminNotif.toJson(),
+      );
+      _realtimeChannel?.sendBroadcastMessage(
+        event: 'realtime_alert',
+        payload: volunteerNotif.toJson(),
       );
       _realtimeChannel?.sendBroadcastMessage(
         event: 'realtime_alert',

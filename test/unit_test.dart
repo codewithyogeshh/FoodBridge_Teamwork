@@ -547,5 +547,75 @@ void main() {
         repository.dispose();
       },
     );
+
+    test(
+      'Donor posts surplus donation: instantly visible in volunteer available deliveries and dispatches volunteer notification',
+      () async {
+        final repository = AppRepository();
+        repository.setRole(UserRole.donor);
+
+        // Donor posts a fresh donation
+        final freshDonation = await repository.createDonation(
+          DonationModel(
+            id: 'test-donor-post-001',
+            donorName: 'Grand Orchid Banquet',
+            donorPhone: '+91 98860 12345',
+            title: '50 Fresh Meals Pack',
+            foodType: 'Cooked Meals',
+            quantityLabel: '50 Packets',
+            quantityServings: 50,
+            preparedAt: DateTime.now().subtract(const Duration(minutes: 15)),
+            safeUntil: DateTime.now().add(const Duration(hours: 4)),
+            storageRequirements: 'Insulated hot bags',
+            allergens: const ['None'],
+            pickupAddress: 'MG Road, Bengaluru',
+            pickupLatitude: 12.9750,
+            pickupLongitude: 77.6000,
+            pickupOtp: '8899',
+            urgencyLevel: UrgencyLevel.high,
+            aiUrgencyScore: 90,
+            status: DonationStatus.available,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        );
+
+        // Switch to volunteer
+        repository.setRole(UserRole.volunteer);
+
+        // 1. Check real-time volunteer notification exists
+        final hasVolNotif = repository.notifications.any(
+          (n) =>
+              n.recipientRole == 'volunteer' &&
+              n.title.contains('New Food Donation Ready for Delivery'),
+        );
+        expect(hasVolNotif, isTrue);
+
+        // 2. Check fresh donation appears in available volunteer deliveries immediately!
+        final available = repository.availableVolunteerDeliveries;
+        expect(available.any((d) => d.id == freshDonation.id), isTrue);
+
+        // 3. Volunteer can accept it directly
+        final accepted = await repository.acceptVolunteerDelivery(
+          donationId: freshDonation.id,
+          volunteerId: 'vol-user-2',
+          volunteerName: 'Pooja Patil',
+        );
+        expect(accepted, isTrue);
+
+        // 4. Verify it auto-assigned to an NGO shelter and is in active deliveries
+        expect(
+          repository.myActiveDeliveries.any((d) => d.id == freshDonation.id),
+          isTrue,
+        );
+        final activeDonation = repository.myActiveDeliveries.firstWhere(
+          (d) => d.id == freshDonation.id,
+        );
+        expect(activeDonation.reservedNgoName, isNotNull);
+        expect(activeDonation.deliveryFee, greaterThanOrEqualTo(20.0));
+
+        repository.dispose();
+      },
+    );
   });
 }

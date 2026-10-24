@@ -463,12 +463,29 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                           color: AppTheme.richCharcoal,
                         ),
                       ),
-                      Text(
-                        '${d.foodType} • ${d.quantityLabel}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.charcoalMuted,
-                        ),
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Text(
+                            '${d.foodType} • ${d.quantityLabel}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppTheme.charcoalMuted,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          AppBadge(
+                            label: d.status == DonationStatus.reserved
+                                ? 'NGO RESERVED'
+                                : 'FRESH POSTING',
+                            color: d.status == DonationStatus.reserved
+                                ? const Color(0xFFEA580C)
+                                : AppTheme.forestGreen,
+                            bgColor: d.status == DonationStatus.reserved
+                                ? const Color(0xFFFFF7ED)
+                                : const Color(0xFFECFDF5),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -573,11 +590,17 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                           ),
                           Expanded(
                             child: Text(
-                              d.reservedNgoName ?? 'Verified NGO Kitchen',
+                              d.reservedNgoName ??
+                                  'Nearest Verified Shelter (Auto-matched)',
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: AppTheme.charcoalMuted,
+                                color: d.reservedNgoName != null
+                                    ? AppTheme.charcoalMuted
+                                    : const Color(0xFF047857),
+                                fontWeight: d.reservedNgoName != null
+                                    ? FontWeight.normal
+                                    : FontWeight.w600,
                               ),
                             ),
                           ),

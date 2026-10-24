@@ -403,6 +403,25 @@ class AppRepository extends ChangeNotifier {
       } else {
         _donations.insert(0, created);
       }
+
+      // Add instant local volunteer notification
+      final volNotif = NotificationModel(
+        id: 'notif-vol-live-${DateTime.now().millisecondsSinceEpoch}',
+        recipientRole: 'volunteer',
+        title: '🚴 New Food Donation Ready for Delivery!',
+        message:
+            '${created.donorName} posted ${created.quantityLabel} of ${created.foodType}. Earn ₹20-₹30 courier fee!',
+        type: 'donation_created',
+        entityId: created.id,
+        metadata: {
+          'donation_id': created.id,
+          'title': created.title,
+          'delivery_fee': 25.0,
+        },
+        createdAt: DateTime.now(),
+      );
+      notificationService.addLocalNotification(volNotif);
+
       return created;
     } finally {
       _isLoading = false;
@@ -467,8 +486,9 @@ class AppRepository extends ChangeNotifier {
     return _donations
         .where(
           (d) =>
-              d.requiresVolunteerDelivery &&
-              d.status == DonationStatus.reserved &&
+              (d.status == DonationStatus.available ||
+                  (d.requiresVolunteerDelivery &&
+                      d.status == DonationStatus.reserved)) &&
               (d.assignedVolunteerId == null || d.assignedVolunteerId!.isEmpty),
         )
         .toList();
@@ -507,9 +527,33 @@ class AppRepository extends ChangeNotifier {
     try {
       final idx = _donations.indexWhere((d) => d.id == donationId);
       if (idx != -1) {
-        _donations[idx] = _donations[idx].copyWith(
+        final currentDonation = _donations[idx];
+        String? targetNgoId = currentDonation.reservedNgoId;
+        String? targetNgoName = currentDonation.reservedNgoName;
+
+        // If freshly posted by donor (not yet reserved by a specific NGO),
+        // auto-match to the nearest verified NGO kitchen
+        if (targetNgoId == null || targetNgoId.isEmpty) {
+          final matchedNgo = _ngos.isNotEmpty ? _ngos.first : null;
+          targetNgoId =
+              matchedNgo?.id ?? 'a3333333-3333-3333-3333-333333333333';
+          targetNgoName =
+              matchedNgo?.organizationName ??
+              'Seva Orphanage & Children Shelter';
+        }
+
+        final fee = currentDonation.deliveryFee > 0
+            ? currentDonation.deliveryFee
+            : 25.0;
+
+        _donations[idx] = currentDonation.copyWith(
           assignedVolunteerId: volunteerId,
           assignedVolunteerName: volunteerName,
+          status: DonationStatus.reserved,
+          requiresVolunteerDelivery: true,
+          reservedNgoId: targetNgoId,
+          reservedNgoName: targetNgoName,
+          deliveryFee: fee,
         );
 
         final notif = NotificationModel(

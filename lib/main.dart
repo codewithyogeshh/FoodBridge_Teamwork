@@ -254,20 +254,23 @@ class _AppRootFlowState extends State<AppRootFlow> {
         );
 
       case AppFlowStep.authenticatedMain:
-        return MainNavigationShell(
+        return RealtimeNotificationOverlay(
           repository: widget.repository,
-          lastRegisteredNgo: _lastRegisteredNgo,
-          onChangeRole: (newRole) {
-            widget.repository.setRole(newRole);
-          },
-          onResetOnboarding: () {
-            setState(() => _currentStep = AppFlowStep.roleSelection);
-          },
-          onLogout: () {
-            setState(() {
-              _currentStep = AppFlowStep.roleSelection;
-            });
-          },
+          child: MainNavigationShell(
+            repository: widget.repository,
+            lastRegisteredNgo: _lastRegisteredNgo,
+            onChangeRole: (newRole) {
+              widget.repository.setRole(newRole);
+            },
+            onResetOnboarding: () {
+              setState(() => _currentStep = AppFlowStep.roleSelection);
+            },
+            onLogout: () {
+              setState(() {
+                _currentStep = AppFlowStep.roleSelection;
+              });
+            },
+          ),
         );
     }
   }
