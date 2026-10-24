@@ -8,7 +8,7 @@ class AppConstants {
   // Application Info
   static const String appName = 'FoodBridge 2.0';
   static const String appTagline = 'Zero-Waste AI Food Rescue Network';
-  static const String appVersion = 'v2.4.0-hackathon';
+  static const String appVersion = 'v2.5.0-hackathon';
 
   // Food Categories
   static const List<String> foodCategories = [
