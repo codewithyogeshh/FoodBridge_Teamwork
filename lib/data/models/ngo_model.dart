@@ -96,9 +96,9 @@ class NGOModel {
   /// Calculate affordable nominal volunteer delivery fee (₹20 to ₹30) based on distance
   double calculateVolunteerDeliveryFee(double distanceKm) {
     if (hasOwnVolunteers) return 0.0;
-    // Base ₹20 for <= 2.5 km, + ₹3/km up to ₹30
-    final fee = 20.0 + ((distanceKm - 2.5).clamp(0.0, 10.0) * 3.0);
-    return fee.clamp(20.0, 30.0).roundToDouble();
+    // Base ₹20 for <= 2.5 km, + ₹3/km — scales with distance (no cap)
+    final fee = 20.0 + ((distanceKm - 2.5).clamp(0.0, double.infinity) * 3.0);
+    return fee.roundToDouble();
   }
 
   factory NGOModel.fromJson(Map<String, dynamic> json) {

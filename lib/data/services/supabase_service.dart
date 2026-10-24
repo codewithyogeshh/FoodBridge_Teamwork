@@ -864,6 +864,8 @@ class SupabaseService {
             cleanNotif(ngoNotif),
             cleanNotif(adminNotif),
             cleanNotif(donorNotif),
+            cleanNotif(volunteerNotif),
+            cleanNotif(globalNotif),
           ])
           .timeout(const Duration(seconds: 4));
     } catch (e) {

@@ -437,15 +437,18 @@ void main() {
         // If NGO has own fleet, fee is 0
         expect(ngoWithFleet.calculateVolunteerDeliveryFee(3.0), equals(0.0));
 
-        // If NGO lacks fleet, fee is between ₹20 and ₹30
+        // If NGO lacks fleet, fee is distance-based: ₹20 base for <= 2.5 km, + ₹3/km
         final shortDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(1.5);
         expect(shortDistFee, equals(20.0));
 
         final midDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(4.0);
-        expect(midDistFee, inInclusiveRange(20.0, 30.0));
+        // 20 + (4.0 - 2.5) * 3 = 24.5 -> rounds to 25
+        expect(midDistFee, equals(25.0));
 
         final longDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(15.0);
-        expect(longDistFee, equals(30.0));
+        // 20 + (15.0 - 2.5) * 3 = 57.5 -> rounds to 58 (no cap)
+        expect(longDistFee, equals(58.0));
+        expect(longDistFee, greaterThan(30.0));
       },
     );
 

@@ -404,24 +404,8 @@ class AppRepository extends ChangeNotifier {
         _donations.insert(0, created);
       }
 
-      // Add instant local volunteer notification
-      final volNotif = NotificationModel(
-        id: 'notif-vol-live-${DateTime.now().millisecondsSinceEpoch}',
-        recipientRole: 'volunteer',
-        title: '🚴 New Food Donation Ready for Delivery!',
-        message:
-            '${created.donorName} posted ${created.quantityLabel} of ${created.foodType}. Earn ₹20-₹30 courier fee!',
-        type: 'donation_created',
-        entityId: created.id,
-        metadata: {
-          'donation_id': created.id,
-          'title': created.title,
-          'delivery_fee': 25.0,
-        },
-        createdAt: DateTime.now(),
-      );
-      notificationService.addLocalNotification(volNotif);
-
+      // SupabaseService.createDonation() already broadcasts & persists role-specific
+      // notifications (including the volunteer courier alert) via Realtime.
       return created;
     } finally {
       _isLoading = false;
