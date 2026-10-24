@@ -50,7 +50,11 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
           filtered = allNotifs.where((n) => !n.isRead).toList();
         } else if (_selectedFilter == 'donations') {
           filtered = allNotifs
-              .where((n) => n.type == 'donation_created' || n.type == 'donation_reserved')
+              .where(
+                (n) =>
+                    n.type == 'donation_created' ||
+                    n.type == 'donation_reserved',
+              )
               .toList();
         }
 
@@ -92,8 +96,11 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                         color: AppTheme.forestGreen.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.notifications_active_rounded,
-                          color: AppTheme.forestGreen, size: 22),
+                      child: const Icon(
+                        Icons.notifications_active_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -146,7 +153,9 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           visualDensity: VisualDensity.compact,
                         ),
                         child: const Text(
@@ -193,8 +202,11 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.mark_email_read_outlined,
-                                size: 48, color: Colors.grey.shade400),
+                            Icon(
+                              Icons.mark_email_read_outlined,
+                              size: 48,
+                              color: Colors.grey.shade400,
+                            ),
                             const SizedBox(height: 12),
                             const Text(
                               'No notifications found',
@@ -209,14 +221,18 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                               'When donors post surplus food, live alerts appear here instantly.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 12, color: AppTheme.charcoalMuted),
+                                fontSize: 12,
+                                color: AppTheme.charcoalMuted,
+                              ),
                             ),
                           ],
                         ),
                       )
                     : ListView.separated(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         itemCount: filtered.length,
                         separatorBuilder: (_, _) => const SizedBox(height: 8),
                         itemBuilder: (context, index) {
@@ -241,9 +257,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppTheme.forestGreen
-              : const Color(0xFFF1F5F2),
+          color: isSelected ? AppTheme.forestGreen : const Color(0xFFF1F5F2),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? AppTheme.forestGreen : Colors.transparent,
@@ -377,9 +391,13 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                       if (notif.isUrgent) ...[
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 2),
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppTheme.statusCritical.withValues(alpha: 0.1),
+                            color: AppTheme.statusCritical.withValues(
+                              alpha: 0.1,
+                            ),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Text(
@@ -413,8 +431,11 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                                 color: AppTheme.forestGreen,
                               ),
                             ),
-                            Icon(Icons.chevron_right_rounded,
-                                size: 14, color: AppTheme.forestGreen),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 14,
+                              color: AppTheme.forestGreen,
+                            ),
                           ],
                         ),
                     ],

@@ -57,12 +57,14 @@ class FoodBridgeApp extends StatelessWidget {
             final donationId = notif.metadata['donation_id'] ?? notif.entityId;
             if (donationId != null && donationId.toString().isNotEmpty) {
               final donations = repository.donations;
-              final found = donations.where((d) => d.id == donationId.toString()).toList();
+              final found = donations
+                  .where((d) => d.id == donationId.toString())
+                  .toList();
               final donation = found.isNotEmpty
                   ? found.first
                   : (repository.availableDonations.isNotEmpty
-                      ? repository.availableDonations.first
-                      : (donations.isNotEmpty ? donations.first : null));
+                        ? repository.availableDonations.first
+                        : (donations.isNotEmpty ? donations.first : null));
               if (donation != null) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -171,9 +173,7 @@ class _AppRootFlowState extends State<AppRootFlow> {
         );
 
       case AppFlowStep.roleSelection:
-        return RoleSelectionScreen(
-          onRoleSelected: _onRoleSelected,
-        );
+        return RoleSelectionScreen(onRoleSelected: _onRoleSelected);
 
       case AppFlowStep.donorAuth:
         return DonorOtpScreen(
@@ -512,8 +512,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.eco_rounded,
-                        color: AppTheme.forestGreen, size: 26),
+                    child: const Icon(
+                      Icons.eco_rounded,
+                      color: AppTheme.forestGreen,
+                      size: 26,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   const Text(
@@ -548,8 +551,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.storefront_rounded,
-                  color: AppTheme.forestGreen),
+              leading: const Icon(
+                Icons.storefront_rounded,
+                color: AppTheme.forestGreen,
+              ),
               title: const Text('Food Donor (Grand Orchid Banquet)'),
               selected: currentRole == UserRole.donor,
               selectedTileColor: AppTheme.emeraldLight,
@@ -560,8 +565,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.card_giftcard_rounded,
-                  color: Color(0xFF0284C7)),
+              leading: const Icon(
+                Icons.card_giftcard_rounded,
+                color: Color(0xFF0284C7),
+              ),
               title: const Text('Community Giver (Clothes, Books, 80G Funds)'),
               selected: currentRole == UserRole.community,
               selectedTileColor: AppTheme.emeraldLight,
@@ -572,8 +579,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.soup_kitchen_rounded,
-                  color: AppTheme.forestGreen),
+              leading: const Icon(
+                Icons.soup_kitchen_rounded,
+                color: AppTheme.forestGreen,
+              ),
               title: const Text('NGO Rescuer (Hope Care Foundation)'),
               selected: currentRole == UserRole.ngo,
               selectedTileColor: AppTheme.emeraldLight,
@@ -584,8 +593,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.security_rounded,
-                  color: AppTheme.forestGreen),
+              leading: const Icon(
+                Icons.security_rounded,
+                color: AppTheme.forestGreen,
+              ),
               title: const Text('Platform Administrator'),
               selected: currentRole == UserRole.admin,
               selectedTileColor: AppTheme.emeraldLight,
@@ -597,8 +608,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.replay_rounded,
-                  color: AppTheme.charcoalMuted),
+              leading: const Icon(
+                Icons.replay_rounded,
+                color: AppTheme.charcoalMuted,
+              ),
               title: const Text('Restart Welcome & Onboarding'),
               onTap: () {
                 Navigator.pop(context);
@@ -606,8 +619,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.logout_rounded,
-                  color: AppTheme.statusCritical),
+              leading: const Icon(
+                Icons.logout_rounded,
+                color: AppTheme.statusCritical,
+              ),
               title: const Text(
                 'Log Out of FoodBridge',
                 style: TextStyle(

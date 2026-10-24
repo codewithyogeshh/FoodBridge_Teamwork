@@ -49,11 +49,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       'tag': 'HYPER-LOCAL NEIGHBORHOOD • ANYONE CAN GIVE',
       'tagColor': Color(0xFFD97706),
       'tagBg': Color(0xFFFEF3C7),
-      'perks': [
-        'Direct Drop-off',
-        'Instant 80G Receipt',
-        'Anonymous Mode',
-      ],
+      'perks': ['Direct Drop-off', 'Instant 80G Receipt', 'Anonymous Mode'],
     },
     {
       'role': UserRole.ngo,
@@ -65,11 +61,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       'tag': 'LICENSED RESCUER • PRIORITY ALLOCATION',
       'tagColor': Color(0xFF0D9488),
       'tagBg': Color(0xFFF0FDFA),
-      'perks': [
-        'Live Radar Map',
-        'Atomic Claim Locks',
-        'FSSAI Verified',
-      ],
+      'perks': ['Live Radar Map', 'Atomic Claim Locks', 'FSSAI Verified'],
     },
     {
       'role': UserRole.admin,
@@ -81,11 +73,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       'tag': 'RESTRICTED SSO • OPERATIONS & GOVERNANCE',
       'tagColor': Color(0xFF4F46E5),
       'tagBg': Color(0xFFEEF2FF),
-      'perks': [
-        'Credential Vault',
-        'Live Dispatch Log',
-        'Statutory Reports',
-      ],
+      'perks': ['Credential Vault', 'Live Dispatch Log', 'Statutory Reports'],
     },
   ];
 
@@ -178,8 +166,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                                         _selectedRole == role;
                                     final Color tagColor =
                                         item['tagColor'] as Color;
-                                    final Color tagBg =
-                                        item['tagBg'] as Color;
+                                    final Color tagBg = item['tagBg'] as Color;
                                     final List<String> perks =
                                         item['perks'] as List<String>;
 
@@ -224,17 +211,16 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
 
   /// Clean High-Trust Header
   Widget _buildTopHeader(
-      BuildContext context, LocalizationService loc, OfflineSyncService offline) {
+    BuildContext context,
+    LocalizationService loc,
+    OfflineSyncService offline,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xFFE5E7EB),
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
       ),
       child: Row(
         children: [
@@ -274,7 +260,10 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               ),
               const SizedBox(width: 5),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 5,
+                  vertical: 1.5,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(5),
@@ -320,7 +309,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                   ),
                 ),
                 const SizedBox(width: 5),
-                const Icon(Icons.lock_rounded, size: 11, color: Color(0xFF059669)),
+                const Icon(
+                  Icons.lock_rounded,
+                  size: 11,
+                  color: Color(0xFF059669),
+                ),
                 const SizedBox(width: 4),
                 const Text(
                   '256-Bit',
@@ -341,9 +334,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               offline.toggleConnectivity();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(offline.isOnline
-                      ? 'Online Mode! Real-time Supabase sync active.'
-                      : 'Offline Field Mode! Data safely queued locally.'),
+                  content: Text(
+                    offline.isOnline
+                        ? 'Online Mode! Real-time Supabase sync active.'
+                        : 'Offline Field Mode! Data safely queued locally.',
+                  ),
                   backgroundColor: offline.isOnline
                       ? const Color(0xFF059669)
                       : const Color(0xFFD97706),
@@ -402,14 +397,14 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               decoration: BoxDecoration(
                 color: const Color(0xFFF3F4F6),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: const Color(0xFFE5E7EB),
-                ),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
               ),
               child: Row(
                 children: [
-                  Text(loc.currentLanguage.flag,
-                      style: const TextStyle(fontSize: 11)),
+                  Text(
+                    loc.currentLanguage.flag,
+                    style: const TextStyle(fontSize: 11),
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     loc.currentLanguage.name.substring(0, 2).toUpperCase(),
@@ -419,8 +414,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                       color: Color(0xFF111827),
                     ),
                   ),
-                  const Icon(Icons.arrow_drop_down,
-                      size: 13, color: Color(0xFF6B7280)),
+                  const Icon(
+                    Icons.arrow_drop_down,
+                    size: 13,
+                    color: Color(0xFF6B7280),
+                  ),
                 ],
               ),
             ),
@@ -515,7 +513,9 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
           color: isSelected ? const Color(0xFFF0FDF4) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? const Color(0xFF059669) : const Color(0xFFE5E7EB),
+            color: isSelected
+                ? const Color(0xFF059669)
+                : const Color(0xFFE5E7EB),
             width: isSelected ? 2.0 : 1.0,
           ),
           boxShadow: isSelected
@@ -543,14 +543,14 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               children: [
                 // Tag
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: tagBg,
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: tagColor.withValues(alpha: 0.3),
-                    ),
+                    border: Border.all(color: tagColor.withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     item['tag'] as String,
@@ -668,8 +668,10 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               runSpacing: 6,
               children: perks.map((p) {
                 return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3.5,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? const Color(0xFFDCFCE7)
@@ -720,9 +722,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE5E7EB),
-        ),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
       child: Row(
         children: [
@@ -732,7 +732,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               color: Color(0xFFFEF3C7),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.gavel_rounded, size: 16, color: Color(0xFFD97706)),
+            child: Icon(
+              Icons.gavel_rounded,
+              size: 16,
+              color: Color(0xFFD97706),
+            ),
           ),
           SizedBox(width: 10),
           Expanded(
@@ -755,20 +759,16 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
     final String ctaLabel = _selectedRole == UserRole.community
         ? 'Continue as Community Giver'
         : _selectedRole == UserRole.donor
-            ? 'Continue as Food Donor'
-            : _selectedRole == UserRole.ngo
-                ? 'Continue as Verified NGO'
-                : 'Continue as Platform Admin';
+        ? 'Continue as Food Donor'
+        : _selectedRole == UserRole.ngo
+        ? 'Continue as Verified NGO'
+        : 'Continue as Platform Admin';
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: const Border(
-          top: BorderSide(
-            color: Color(0xFFE5E7EB),
-          ),
-        ),
+        border: const Border(top: BorderSide(color: Color(0xFFE5E7EB))),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -853,10 +853,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
             const Text(
               'By selecting, you agree to FoodBridge Safety Protocols & Good Samaritan Act Protections.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 10,
-                color: Color(0xFF9CA3AF),
-              ),
+              style: TextStyle(fontSize: 10, color: Color(0xFF9CA3AF)),
             ),
           ],
         ),
@@ -899,7 +896,9 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                 lang.name,
                 style: TextStyle(
                   fontWeight: isSel ? FontWeight.w800 : FontWeight.w500,
-                  color: isSel ? const Color(0xFF059669) : const Color(0xFF111827),
+                  color: isSel
+                      ? const Color(0xFF059669)
+                      : const Color(0xFF111827),
                 ),
               ),
               subtitle: Text(
@@ -907,8 +906,10 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                 style: const TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
               ),
               trailing: isSel
-                  ? const Icon(Icons.check_circle_rounded,
-                      color: Color(0xFF059669))
+                  ? const Icon(
+                      Icons.check_circle_rounded,
+                      color: Color(0xFF059669),
+                    )
                   : null,
               onTap: () {
                 loc.setLanguage(lang);

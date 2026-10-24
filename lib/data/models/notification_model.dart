@@ -8,7 +8,8 @@ class NotificationModel {
   final String? recipientId;
   final String title;
   final String message;
-  final String type; // 'donation_created', 'donation_reserved', 'pickup_verified', 'delivered', 'emergency_alert', 'system'
+  final String
+  type; // 'donation_created', 'donation_reserved', 'pickup_verified', 'delivered', 'emergency_alert', 'system'
   final String? entityType;
   final String? entityId;
   final Map<String, dynamic> metadata;
@@ -27,8 +28,8 @@ class NotificationModel {
     Map<String, dynamic>? metadata,
     this.isRead = false,
     DateTime? createdAt,
-  })  : metadata = metadata ?? const {},
-        createdAt = createdAt ?? DateTime.now();
+  }) : metadata = metadata ?? const {},
+       createdAt = createdAt ?? DateTime.now();
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
@@ -42,7 +43,9 @@ class NotificationModel {
       entityId: json['entity_id']?.toString(),
       metadata: json['metadata'] is Map<String, dynamic>
           ? json['metadata'] as Map<String, dynamic>
-          : (json['metadata'] is Map ? Map<String, dynamic>.from(json['metadata'] as Map) : {}),
+          : (json['metadata'] is Map
+                ? Map<String, dynamic>.from(json['metadata'] as Map)
+                : {}),
       isRead: json['is_read'] == true,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now()

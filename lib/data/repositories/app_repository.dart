@@ -37,7 +37,8 @@ class AppRepository extends ChangeNotifier {
       id: 'cd-101',
       category: CommunityDonationCategory.clothes,
       title: 'Warm Winter Blankets & Jackets (18 pcs)',
-      description: 'Clean wool sweaters, thermal wear and blankets for children & seniors.',
+      description:
+          'Clean wool sweaters, thermal wear and blankets for children & seniors.',
       quantityOrAmount: '18 Items',
       donorName: 'Dr. Ananya Roy',
       donorPhone: '+91 98450 11223',
@@ -52,7 +53,8 @@ class AppRepository extends ChangeNotifier {
       id: 'cd-102',
       category: CommunityDonationCategory.books,
       title: 'NCERT Grade 6-10 Textbooks & Stationery Sets',
-      description: 'Science, Math & English books along with 30 unruled notebooks and pen kits.',
+      description:
+          'Science, Math & English books along with 30 unruled notebooks and pen kits.',
       quantityOrAmount: '24 Books + 30 Notebooks',
       donorName: 'Anonymous Well-Wisher',
       donorPhone: '+91 99000 88776',
@@ -67,7 +69,8 @@ class AppRepository extends ChangeNotifier {
       id: 'cd-103',
       category: CommunityDonationCategory.monetary,
       title: 'Hot Meals Relief Sponsorship (100 Meals)',
-      description: 'Sponsored fresh hot lunch packets for migratory workers and shelter ward.',
+      description:
+          'Sponsored fresh hot lunch packets for migratory workers and shelter ward.',
       quantityOrAmount: '₹2,500',
       donorName: 'Vikramaditya Sengupta',
       donorPhone: '+91 98110 99887',
@@ -83,7 +86,8 @@ class AppRepository extends ChangeNotifier {
       id: 'cd-104',
       category: CommunityDonationCategory.essentials,
       title: 'Sealed Dry Rations (Rice, Lentils, Cooking Oil)',
-      description: 'Two 20kg bags of Sona Masoori Rice and 10kg Toor Dal in manufacturer sealed bags.',
+      description:
+          'Two 20kg bags of Sona Masoori Rice and 10kg Toor Dal in manufacturer sealed bags.',
       quantityOrAmount: '50 kg Grains',
       donorName: 'Citizens Care Collective',
       donorPhone: '+91 97410 33445',
@@ -101,8 +105,8 @@ class AppRepository extends ChangeNotifier {
   AppRepository({
     SupabaseService? supabaseService,
     AIAllocationService? aiService,
-  })  : _supabaseService = supabaseService ?? SupabaseService(),
-        _aiService = aiService ?? AIAllocationService() {
+  }) : _supabaseService = supabaseService ?? SupabaseService(),
+       _aiService = aiService ?? AIAllocationService() {
     _initRealtimeListeners();
     refreshAllData();
   }
@@ -129,7 +133,9 @@ class AppRepository extends ChangeNotifier {
 
     // 3. Reactive Realtime NGO Stream
     _ngoSubscription = _supabaseService.ngoStream.listen((ngo) {
-      final idx = _ngos.indexWhere((n) => n.id == ngo.id || n.phone == ngo.phone);
+      final idx = _ngos.indexWhere(
+        (n) => n.id == ngo.id || n.phone == ngo.phone,
+      );
       if (idx != -1) {
         _ngos[idx] = ngo;
       } else {
@@ -146,9 +152,13 @@ class AppRepository extends ChangeNotifier {
   List<NGOModel> get ngos => List.unmodifiable(_ngos);
   List<NotificationModel> get notifications {
     final roleStr = _currentRole.name.toLowerCase();
-    return List.unmodifiable(_notifications.where(
-        (n) => n.recipientRole == roleStr || n.recipientRole == 'all'));
+    return List.unmodifiable(
+      _notifications.where(
+        (n) => n.recipientRole == roleStr || n.recipientRole == 'all',
+      ),
+    );
   }
+
   List<CommunityDonationModel> get communityDonations =>
       List.unmodifiable(_communityDonations);
   bool get isLoading => _isLoading;
@@ -160,7 +170,11 @@ class AppRepository extends ChangeNotifier {
   int get unreadNotificationCount {
     final roleStr = _currentRole.name.toLowerCase();
     return _notifications
-        .where((n) => !n.isRead && (n.recipientRole == roleStr || n.recipientRole == 'all'))
+        .where(
+          (n) =>
+              !n.isRead &&
+              (n.recipientRole == roleStr || n.recipientRole == 'all'),
+        )
         .length;
   }
 
@@ -171,16 +185,20 @@ class AppRepository extends ChangeNotifier {
       _donations.where((d) => d.status == DonationStatus.reserved).toList();
 
   List<DonationModel> get completedDonations => _donations
-      .where((d) =>
-          d.status == DonationStatus.delivered ||
-          d.status == DonationStatus.pickupVerified)
+      .where(
+        (d) =>
+            d.status == DonationStatus.delivered ||
+            d.status == DonationStatus.pickupVerified,
+      )
       .toList();
 
-  List<NGOModel> get verifiedNGOs =>
-      _ngos.where((n) => n.verificationStatus == NGOVerificationStatus.verified).toList();
+  List<NGOModel> get verifiedNGOs => _ngos
+      .where((n) => n.verificationStatus == NGOVerificationStatus.verified)
+      .toList();
 
-  List<NGOModel> get pendingNGOs =>
-      _ngos.where((n) => n.verificationStatus == NGOVerificationStatus.pending).toList();
+  List<NGOModel> get pendingNGOs => _ngos
+      .where((n) => n.verificationStatus == NGOVerificationStatus.pending)
+      .toList();
 
   // Metrics
   int get totalMealsRescued {
@@ -194,8 +212,10 @@ class AppRepository extends ChangeNotifier {
     return count + 12840;
   }
 
-  double get totalCo2OffsetKg => totalMealsRescued * AppConstants.co2SavedPerMealKg;
-  double get totalWaterConservedL => totalMealsRescued * AppConstants.waterSavedPerMealL;
+  double get totalCo2OffsetKg =>
+      totalMealsRescued * AppConstants.co2SavedPerMealKg;
+  double get totalWaterConservedL =>
+      totalMealsRescued * AppConstants.waterSavedPerMealL;
 
   void setRole(UserRole role, [UserProfileModel? customProfile]) {
     _currentRole = role;
@@ -289,7 +309,8 @@ class AppRepository extends ChangeNotifier {
   }
 
   Future<CommunityDonationModel> createCommunityDonation(
-      CommunityDonationModel donation) async {
+    CommunityDonationModel donation,
+  ) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -310,8 +331,9 @@ class AppRepository extends ChangeNotifier {
       final fetchedDonations = await _supabaseService.getDonations();
       final fetchedNGOs = await _supabaseService.getNGOs();
       final fetchedNotifs = await _supabaseService.getNotifications(
-          role: _currentRole.name.toLowerCase());
-      
+        role: _currentRole.name.toLowerCase(),
+      );
+
       // Synchronize donations list directly with Supabase
       if (fetchedDonations.isNotEmpty) {
         _donations.clear();
@@ -386,8 +408,9 @@ class AppRepository extends ChangeNotifier {
       if (res['success'] == true) {
         final idx = _donations.indexWhere((d) => d.id == donationId);
         if (idx != -1) {
-          _donations[idx] =
-              _donations[idx].copyWith(status: DonationStatus.reserved);
+          _donations[idx] = _donations[idx].copyWith(
+            status: DonationStatus.reserved,
+          );
         }
       }
       return res;
@@ -414,8 +437,9 @@ class AppRepository extends ChangeNotifier {
       if (res['success'] == true) {
         final idx = _donations.indexWhere((d) => d.id == donationId);
         if (idx != -1) {
-          _donations[idx] =
-              _donations[idx].copyWith(status: DonationStatus.pickupVerified);
+          _donations[idx] = _donations[idx].copyWith(
+            status: DonationStatus.pickupVerified,
+          );
         }
       }
       return res;
@@ -441,8 +465,9 @@ class AppRepository extends ChangeNotifier {
       if (success) {
         final idx = _donations.indexWhere((d) => d.id == donationId);
         if (idx != -1) {
-          _donations[idx] =
-              _donations[idx].copyWith(status: DonationStatus.delivered);
+          _donations[idx] = _donations[idx].copyWith(
+            status: DonationStatus.delivered,
+          );
         }
       }
       return success;
@@ -466,12 +491,16 @@ class AppRepository extends ChangeNotifier {
   }
 
   Future<bool> updateNGOVerification(
-      String ngoId, NGOVerificationStatus status) async {
+    String ngoId,
+    NGOVerificationStatus status,
+  ) async {
     _isLoading = true;
     notifyListeners();
     try {
-      final success =
-          await _supabaseService.updateNGOVerificationStatus(ngoId, status);
+      final success = await _supabaseService.updateNGOVerificationStatus(
+        ngoId,
+        status,
+      );
       if (success) {
         final idx = _ngos.indexWhere((n) => n.id == ngoId);
         if (idx != -1) {
@@ -494,13 +523,15 @@ class AppRepository extends ChangeNotifier {
 
   /// Looks up an existing registered NGO by phone number or registration number
   NGOModel? findNGOByPhoneOrReg(String query) {
-    final cleanQuery =
-        query.replaceAll(RegExp(r'[\s\-\+\(\)]'), '').toLowerCase();
+    final cleanQuery = query
+        .replaceAll(RegExp(r'[\s\-\+\(\)]'), '')
+        .toLowerCase();
     if (cleanQuery.isEmpty) return null;
 
     for (final ngo in _ngos) {
-      final cleanPhone =
-          ngo.phone.replaceAll(RegExp(r'[\s\-\+\(\)]'), '').toLowerCase();
+      final cleanPhone = ngo.phone
+          .replaceAll(RegExp(r'[\s\-\+\(\)]'), '')
+          .toLowerCase();
       final cleanReg = ngo.registrationNumber
           .replaceAll(RegExp(r'[\s\-\+\(\)]'), '')
           .toLowerCase();

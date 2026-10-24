@@ -30,10 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _scaleAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animController,
-        curve: Curves.easeOutBack,
-      ),
+      CurvedAnimation(parent: _animController, curve: Curves.easeOutBack),
     );
 
     _animController.forward();
@@ -118,7 +115,9 @@ class _SplashScreenState extends State<SplashScreen>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF10B981).withValues(alpha: 0.4),
+                            color: const Color(
+                              0xFF10B981,
+                            ).withValues(alpha: 0.4),
                             blurRadius: 32,
                             offset: const Offset(0, 8),
                           ),
@@ -148,14 +147,18 @@ class _SplashScreenState extends State<SplashScreen>
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
-                            color:
-                                const Color(0xFFF59E0B).withValues(alpha: 0.2),
+                            color: const Color(
+                              0xFFF59E0B,
+                            ).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: const Color(0xFFF59E0B)
-                                  .withValues(alpha: 0.5),
+                              color: const Color(
+                                0xFFF59E0B,
+                              ).withValues(alpha: 0.5),
                             ),
                           ),
                           child: const Text(
@@ -186,7 +189,8 @@ class _SplashScreenState extends State<SplashScreen>
                       child: CircularProgressIndicator(
                         strokeWidth: 2.5,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                            Color(0xFF4EDEA3)),
+                          Color(0xFF4EDEA3),
+                        ),
                       ),
                     ),
                   ],

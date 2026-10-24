@@ -22,9 +22,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Live Donation Tracking'),
-      ),
+      appBar: AppBar(title: const Text('Live Donation Tracking')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -57,7 +55,8 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                   color: AppTheme.emeraldDark,
                 ),
               ),
-              if (donation.imageUrl != null && donation.imageUrl!.isNotEmpty) ...[
+              if (donation.imageUrl != null &&
+                  donation.imageUrl!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(14),
@@ -75,7 +74,10 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                         bottom: 8,
                         left: 8,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.7),
                             borderRadius: BorderRadius.circular(20),
@@ -83,7 +85,11 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.photo_camera_rounded, color: Colors.white, size: 12),
+                              Icon(
+                                Icons.photo_camera_rounded,
+                                color: Colors.white,
+                                size: 12,
+                              ),
                               SizedBox(width: 4),
                               Text(
                                 'Uploaded Batch Photo',
@@ -125,8 +131,11 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.directions_car_rounded,
-                              size: 20, color: AppTheme.forestGreen),
+                          Icon(
+                            Icons.directions_car_rounded,
+                            size: 20,
+                            color: AppTheme.forestGreen,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'Assigned Rescuer',
@@ -162,18 +171,25 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.warmIvoryDark,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.timer_outlined,
-                                    size: 14, color: AppTheme.forestGreen),
+                                const Icon(
+                                  Icons.timer_outlined,
+                                  size: 14,
+                                  color: AppTheme.forestGreen,
+                                ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  isPickedUp ? 'In Transit to Kitchen' : 'ETA: 14 mins',
+                                  isPickedUp
+                                      ? 'In Transit to Kitchen'
+                                      : 'ETA: 14 mins',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -188,13 +204,17 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                             style: IconButton.styleFrom(
                               backgroundColor: AppTheme.forestGreen,
                             ),
-                            icon: const Icon(Icons.phone_rounded,
-                                size: 18, color: Colors.white),
+                            icon: const Icon(
+                              Icons.phone_rounded,
+                              size: 18,
+                              color: Colors.white,
+                            ),
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Connecting call to Arjun Verma (+91 98450 67890)...'),
+                                    'Connecting call to Arjun Verma (+91 98450 67890)...',
+                                  ),
                                 ),
                               );
                             },
@@ -219,8 +239,11 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                         color: AppTheme.forestGreen,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.qr_code_rounded,
-                          color: Colors.white, size: 24),
+                      child: const Icon(
+                        Icons.qr_code_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -269,9 +292,8 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PickupVerificationScreen(
-                        donation: donation,
-                      ),
+                      builder: (context) =>
+                          PickupVerificationScreen(donation: donation),
                     ),
                   );
                 },

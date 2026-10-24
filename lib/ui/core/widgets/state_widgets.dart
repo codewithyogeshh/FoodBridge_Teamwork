@@ -58,11 +58,7 @@ class EmptyStateWidget extends StatelessWidget {
             ),
             if (buttonLabel != null && onAction != null) ...[
               const SizedBox(height: 24),
-              AppButton(
-                label: buttonLabel!,
-                onPressed: onAction,
-                width: 180,
-              ),
+              AppButton(label: buttonLabel!, onPressed: onAction, width: 180),
             ],
           ],
         ),

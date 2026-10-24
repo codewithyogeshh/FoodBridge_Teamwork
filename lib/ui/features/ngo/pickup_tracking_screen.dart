@@ -22,9 +22,7 @@ class PickupTrackingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Active Pickup Tracking'),
-      ),
+      appBar: AppBar(title: const Text('Active Pickup Tracking')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -69,8 +67,11 @@ class PickupTrackingScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.alt_route_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.alt_route_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Route & Bay Access Directive',
@@ -89,11 +90,13 @@ class PickupTrackingScreen extends StatelessWidget {
                     ),
                     _buildRouteInstruction(
                       icon: Icons.straight_rounded,
-                      instruction: 'Continue straight past Mayo Hall intersection (1.1 km)',
+                      instruction:
+                          'Continue straight past Mayo Hall intersection (1.1 km)',
                     ),
                     _buildRouteInstruction(
                       icon: Icons.door_sliding_rounded,
-                      instruction: donation.pickupInstructions ??
+                      instruction:
+                          donation.pickupInstructions ??
                           'Enter via Service Gate 3 at rear. Thermal insulated food pans provided for transfer.',
                       isHighlight: true,
                     ),
@@ -112,8 +115,11 @@ class PickupTrackingScreen extends StatelessWidget {
                         color: AppTheme.warmIvoryDark,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.person_rounded,
-                          size: 20, color: AppTheme.forestGreen),
+                      child: const Icon(
+                        Icons.person_rounded,
+                        size: 20,
+                        color: AppTheme.forestGreen,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -142,13 +148,17 @@ class PickupTrackingScreen extends StatelessWidget {
                       style: IconButton.styleFrom(
                         backgroundColor: AppTheme.forestGreen,
                       ),
-                      icon: const Icon(Icons.phone_rounded,
-                          size: 18, color: Colors.white),
+                      icon: const Icon(
+                        Icons.phone_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Dialing donor kitchen at ${donation.donorPhone}...'),
+                              'Dialing donor kitchen at ${donation.donorPhone}...',
+                            ),
                           ),
                         );
                       },

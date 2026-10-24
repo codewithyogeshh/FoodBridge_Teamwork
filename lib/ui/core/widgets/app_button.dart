@@ -54,10 +54,7 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.outline:
         bg = Colors.transparent;
         fg = AppTheme.forestGreen;
-        border = const BorderSide(
-          color: AppTheme.forestGreen,
-          width: 1.5,
-        );
+        border = const BorderSide(color: AppTheme.forestGreen, width: 1.5);
         break;
       case AppButtonVariant.text:
         bg = Colors.transparent;

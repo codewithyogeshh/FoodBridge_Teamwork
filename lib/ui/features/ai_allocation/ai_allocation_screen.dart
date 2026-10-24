@@ -93,7 +93,9 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.restrainedLime,
                                 borderRadius: BorderRadius.circular(6),
@@ -181,8 +183,9 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                         onChanged: (newId) {
                           if (newId != null) {
                             setState(() {
-                              _selectedDonation = allDonations
-                                  .firstWhere((d) => d.id == newId);
+                              _selectedDonation = allDonations.firstWhere(
+                                (d) => d.id == newId,
+                              );
                             });
                             _runAIAnalysis();
                           }
@@ -200,7 +203,8 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                           children: [
                             const CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppTheme.forestGreen),
+                                AppTheme.forestGreen,
+                              ),
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -220,10 +224,11 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                     AppCard(
                       backgroundColor:
                           _analysis.computedUrgency == UrgencyLevel.critical
-                              ? AppTheme.statusCriticalBg.withValues(alpha: 0.3)
-                              : AppTheme.emeraldLight.withValues(alpha: 0.3),
+                          ? AppTheme.statusCriticalBg.withValues(alpha: 0.3)
+                          : AppTheme.emeraldLight.withValues(alpha: 0.3),
                       border: BorderSide(
-                        color: _analysis.computedUrgency == UrgencyLevel.critical
+                        color:
+                            _analysis.computedUrgency == UrgencyLevel.critical
                             ? AppTheme.statusCritical
                             : AppTheme.emerald,
                         width: 1.5,
@@ -240,7 +245,8 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w800,
-                                  color: _analysis.computedUrgency ==
+                                  color:
+                                      _analysis.computedUrgency ==
                                           UrgencyLevel.critical
                                       ? AppTheme.statusCritical
                                       : AppTheme.forestGreen,
@@ -326,11 +332,14 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                               Row(
                                 children: [
                                   NGOVerifiedBadge(
-                                      isVerified: match.ngo.isVerified),
+                                    isVerified: match.ngo.isVerified,
+                                  ),
                                   const Spacer(),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 3),
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: AppTheme.limeLight,
                                       borderRadius: BorderRadius.circular(8),
@@ -358,8 +367,11 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(Icons.near_me_rounded,
-                                      size: 13, color: AppTheme.charcoalMuted),
+                                  const Icon(
+                                    Icons.near_me_rounded,
+                                    size: 13,
+                                    color: AppTheme.charcoalMuted,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     '${match.distanceKm} km (~${match.estimatedTravelMinutes} mins travel)',
@@ -370,8 +382,11 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                                     ),
                                   ),
                                   const SizedBox(width: 12),
-                                  const Icon(Icons.soup_kitchen_rounded,
-                                      size: 13, color: AppTheme.charcoalMuted),
+                                  const Icon(
+                                    Icons.soup_kitchen_rounded,
+                                    size: 13,
+                                    color: AppTheme.charcoalMuted,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Cap: ${match.ngo.capacityMealsPerDay} meals/day',
@@ -393,29 +408,32 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              ...match.matchReasons.map((r) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 2),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Icon(
-                                            Icons.check_circle_outline_rounded,
-                                            size: 13,
-                                            color: AppTheme.emerald),
-                                        const SizedBox(width: 6),
-                                        Expanded(
-                                          child: Text(
-                                            r,
-                                            style: const TextStyle(
-                                              fontSize: 11.5,
-                                              color: AppTheme.charcoalMuted,
-                                            ),
+                              ...match.matchReasons.map(
+                                (r) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 2),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle_outline_rounded,
+                                        size: 13,
+                                        color: AppTheme.emerald,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Text(
+                                          r,
+                                          style: const TextStyle(
+                                            fontSize: 11.5,
+                                            color: AppTheme.charcoalMuted,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  )),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -430,8 +448,11 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                         children: [
                           const Row(
                             children: [
-                              Icon(Icons.psychology_alt_rounded,
-                                  color: AppTheme.forestGreen, size: 20),
+                              Icon(
+                                Icons.psychology_alt_rounded,
+                                color: AppTheme.forestGreen,
+                                size: 20,
+                              ),
                               SizedBox(width: 8),
                               Text(
                                 'Recommendation Summary',
@@ -468,8 +489,11 @@ class _AIAllocationScreenState extends State<AIAllocationScreen>
                       child: const Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.gavel_rounded,
-                              size: 18, color: Color(0xFFB45309)),
+                          Icon(
+                            Icons.gavel_rounded,
+                            size: 18,
+                            color: Color(0xFFB45309),
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(

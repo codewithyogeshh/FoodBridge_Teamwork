@@ -16,14 +16,14 @@ class DonorImpactDashboardScreen extends StatelessWidget {
       builder: (context, _) {
         final meals = repository.totalMealsRescued;
         final co2 = (repository.totalCo2OffsetKg).toStringAsFixed(1);
-        final water = (repository.totalWaterConservedL / 1000).toStringAsFixed(1);
+        final water = (repository.totalWaterConservedL / 1000).toStringAsFixed(
+          1,
+        );
         final donations = repository.donations;
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('Impact & Environmental Ledger'),
-          ),
+          appBar: AppBar(title: const Text('Impact & Environmental Ledger')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -46,7 +46,9 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.emerald,
                                 borderRadius: BorderRadius.circular(12),
@@ -143,7 +145,9 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.emeraldLight,
                                 borderRadius: BorderRadius.circular(8),
@@ -172,7 +176,12 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                               _buildBar('Jul', 0.55, '610'),
                               _buildBar('Aug', 0.80, '940'),
                               _buildBar('Sep', 0.72, '890'),
-                              _buildBar('Oct', 0.95, '1,280', isHighlight: true),
+                              _buildBar(
+                                'Oct',
+                                0.95,
+                                '1,280',
+                                isHighlight: true,
+                              ),
                             ],
                           ),
                         ),
@@ -307,8 +316,12 @@ class DonorImpactDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBar(String month, double pct, String value,
-      {bool isHighlight = false}) {
+  Widget _buildBar(
+    String month,
+    double pct,
+    String value, {
+    bool isHighlight = false,
+  }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [

@@ -37,7 +37,8 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
   }
 
   void _onRepoChanged() {
-    final updated = widget.repository.findNGOByPhoneOrReg(_ngo.phone) ??
+    final updated =
+        widget.repository.findNGOByPhoneOrReg(_ngo.phone) ??
         widget.repository.findNGOByPhoneOrReg(_ngo.registrationNumber);
     if (updated != null && mounted) {
       setState(() {
@@ -54,17 +55,22 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
 
   void _simulateApproval() async {
     setState(() => _isApproving = true);
-    await widget.repository
-        .updateNGOVerification(_ngo.id, NGOVerificationStatus.verified);
+    await widget.repository.updateNGOVerification(
+      _ngo.id,
+      NGOVerificationStatus.verified,
+    );
     if (mounted) {
       setState(() {
         _ngo = _ngo.copyWith(
-            verificationStatus: NGOVerificationStatus.verified);
+          verificationStatus: NGOVerificationStatus.verified,
+        );
         _isApproving = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('NGO Verification Approved! Access granted to live food rescue feed.'),
+          content: Text(
+            'NGO Verification Approved! Access granted to live food rescue feed.',
+          ),
           backgroundColor: AppTheme.forestGreen,
         ),
       );
@@ -99,7 +105,9 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                     ? AppTheme.emeraldLight.withValues(alpha: 0.3)
                     : const Color(0xFFFEF3C7).withValues(alpha: 0.3),
                 border: BorderSide(
-                  color: isVerified ? AppTheme.emerald : const Color(0xFFD97706),
+                  color: isVerified
+                      ? AppTheme.emerald
+                      : const Color(0xFFD97706),
                   width: 1.5,
                 ),
                 child: Row(
@@ -168,19 +176,22 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
               ),
               _buildTimelineStep(
                 title: 'FSSAI Food Safety Compliance Audit',
-                desc: 'Food handler hygiene certification verified by FoodBridge compliance team.',
+                desc:
+                    'Food handler hygiene certification verified by FoodBridge compliance team.',
                 isDone: isVerified,
                 isCurrent: !isVerified,
               ),
               _buildTimelineStep(
                 title: 'Kitchen Daily Meal Capacity Check',
-                desc: 'Verified facility capacity: ${_ngo.capacityMealsPerDay} meals/day.',
+                desc:
+                    'Verified facility capacity: ${_ngo.capacityMealsPerDay} meals/day.',
                 isDone: isVerified,
                 isCurrent: false,
               ),
               _buildTimelineStep(
                 title: 'Live Rescue Network Authorization',
-                desc: 'Authorized to lock atomic reservations and execute secure OTP handoffs.',
+                desc:
+                    'Authorized to lock atomic reservations and execute secure OTP handoffs.',
                 isDone: isVerified,
                 isCurrent: false,
                 isLast: true,
@@ -193,7 +204,10 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFFFEF2F2),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: AppTheme.statusCritical, width: 1.5),
+                    border: Border.all(
+                      color: AppTheme.statusCritical,
+                      width: 1.5,
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -202,11 +216,16 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppTheme.statusCritical.withValues(alpha: 0.15),
+                              color: AppTheme.statusCritical.withValues(
+                                alpha: 0.15,
+                              ),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.lock_rounded,
-                                color: AppTheme.statusCritical, size: 24),
+                            child: const Icon(
+                              Icons.lock_rounded,
+                              color: AppTheme.statusCritical,
+                              size: 24,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           const Expanded(
@@ -262,7 +281,8 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                              'Congratulations! Your organization is verified by Admin. Access unlocked.'),
+                            'Congratulations! Your organization is verified by Admin. Access unlocked.',
+                          ),
                           backgroundColor: AppTheme.forestGreen,
                         ),
                       );
@@ -270,7 +290,8 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                              'Still pending administrator audit. Please wait or approve in Admin Desk.'),
+                            'Still pending administrator audit. Please wait or approve in Admin Desk.',
+                          ),
                           backgroundColor: Color(0xFFD97706),
                         ),
                       );
@@ -289,10 +310,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 Center(
                   child: Text(
                     'Standard verification turnaround is within 4 business hours.',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   ),
                 ),
               ] else ...[
@@ -305,8 +323,11 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.check_circle_rounded,
-                          color: AppTheme.forestGreen, size: 28),
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 28,
+                      ),
                       SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -368,14 +389,20 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 shape: BoxShape.circle,
                 color: isDone
                     ? AppTheme.forestGreen
-                    : (isCurrent ? const Color(0xFFD97706) : Colors.grey.shade300),
+                    : (isCurrent
+                          ? const Color(0xFFD97706)
+                          : Colors.grey.shade300),
               ),
               child: Center(
                 child: isDone
                     ? const Icon(Icons.check, size: 14, color: Colors.white)
                     : (isCurrent
-                        ? const Icon(Icons.more_horiz, size: 14, color: Colors.white)
-                        : null),
+                          ? const Icon(
+                              Icons.more_horiz,
+                              size: 14,
+                              color: Colors.white,
+                            )
+                          : null),
               ),
             ),
             if (!isLast)

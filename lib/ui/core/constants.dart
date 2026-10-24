@@ -41,15 +41,11 @@ class AppConstants {
 
   // Impact Calculations (per meal saved)
   static const double co2SavedPerMealKg = 2.5; // 2.5 kg CO2e per meal
-  static const double waterSavedPerMealL = 720.0; // 720 liters water footprint conserved
+  static const double waterSavedPerMealL =
+      720.0; // 720 liters water footprint conserved
 }
 
-enum UserRole {
-  donor,
-  community,
-  ngo,
-  admin,
-}
+enum UserRole { donor, community, ngo, admin }
 
 enum DonationStatus {
   available,

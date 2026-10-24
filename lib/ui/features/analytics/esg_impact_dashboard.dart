@@ -33,7 +33,12 @@ class ESGImpactDashboardScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.download_rounded),
             tooltip: 'Export ESG Annual Report',
-            onPressed: () => _showExportDialog(context, co2eSavedKg, waterSavedLiters, totalFoodKg),
+            onPressed: () => _showExportDialog(
+              context,
+              co2eSavedKg,
+              waterSavedLiters,
+              totalFoodKg,
+            ),
           ),
         ],
       ),
@@ -69,28 +74,39 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF98E223).withValues(alpha: 0.2),
+                            color: const Color(
+                              0xFF98E223,
+                            ).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Row(
                             children: [
-                              Icon(Icons.eco_rounded,
-                                  color: Color(0xFF98E223), size: 14),
+                              Icon(
+                                Icons.eco_rounded,
+                                color: Color(0xFF98E223),
+                                size: 14,
+                              ),
                               SizedBox(width: 4),
                               Text(
                                 'GRI & GHG PROTOCOL CERTIFIED',
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                    color: Color(0xFF98E223)),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF98E223),
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        const Icon(Icons.park_rounded,
-                            color: Colors.white38, size: 28),
+                        const Icon(
+                          Icons.park_rounded,
+                          color: Colors.white38,
+                          size: 28,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -112,7 +128,10 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                     Text(
                       'Equivalent to taking ${(co2eSavedKg / 400).toStringAsFixed(1)} gasoline cars off roads for 1 month, or planting ${(co2eSavedKg / 22).round()} urban trees.',
                       style: const TextStyle(
-                          fontSize: 11, color: Colors.white70, height: 1.4),
+                        fontSize: 11,
+                        color: Colors.white70,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
@@ -123,9 +142,10 @@ class ESGImpactDashboardScreen extends StatelessWidget {
               const Text(
                 'Environmental Sustainability Breakdown',
                 style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: AppTheme.richCharcoal),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.richCharcoal,
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -135,7 +155,8 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                       icon: Icons.water_drop_rounded,
                       iconColor: const Color(0xFF0284C7),
                       title: 'Water Saved',
-                      value: '${(waterSavedLiters / 1000).toStringAsFixed(0)} kL',
+                      value:
+                          '${(waterSavedLiters / 1000).toStringAsFixed(0)} kL',
                       subtitle: 'Agricultural lifecycle',
                     ),
                   ),
@@ -190,8 +211,11 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                             color: const Color(0xFFFEF3C7),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.corporate_fare_rounded,
-                              color: Color(0xFFD97706), size: 20),
+                          child: const Icon(
+                            Icons.corporate_fare_rounded,
+                            color: Color(0xFFD97706),
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         const Expanded(
@@ -201,15 +225,17 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                               Text(
                                 'Section 135 CSR Compliance (Companies Act)',
                                 style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppTheme.richCharcoal),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.richCharcoal,
+                                ),
                               ),
                               Text(
                                 'Auditable corporate social responsibility expenditure',
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    color: AppTheme.charcoalMuted),
+                                  fontSize: 10,
+                                  color: AppTheme.charcoalMuted,
+                                ),
                               ),
                             ],
                           ),
@@ -220,16 +246,21 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                     const Text(
                       'All food rescue activities on FoodBridge 2.0 generate tamper-proof digital logs verifiable by independent CSR auditors. Schedule VII Item (i) Eradicating Hunger, Poverty and Malnutrition compliance certified.',
                       style: TextStyle(
-                          fontSize: 11,
-                          color: AppTheme.charcoalMuted,
-                          height: 1.4),
+                        fontSize: 11,
+                        color: AppTheme.charcoalMuted,
+                        height: 1.4,
+                      ),
                     ),
                     const SizedBox(height: 14),
                     AppButton(
                       label: 'Export Statutory CSR & ESG Report',
                       icon: Icons.picture_as_pdf_rounded,
                       onPressed: () => _showExportDialog(
-                          context, co2eSavedKg, waterSavedLiters, totalFoodKg),
+                        context,
+                        co2eSavedKg,
+                        waterSavedLiters,
+                        totalFoodKg,
+                      ),
                     ),
                   ],
                 ),
@@ -274,26 +305,39 @@ class ESGImpactDashboardScreen extends StatelessWidget {
             child: Icon(icon, color: iconColor, size: 20),
           ),
           const SizedBox(height: 10),
-          Text(title,
-              style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.charcoalMuted)),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.charcoalMuted,
+            ),
+          ),
           const SizedBox(height: 2),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  color: AppTheme.richCharcoal)),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              color: AppTheme.richCharcoal,
+            ),
+          ),
           const SizedBox(height: 2),
-          Text(subtitle,
-              style: const TextStyle(fontSize: 10, color: AppTheme.forestGreen)),
+          Text(
+            subtitle,
+            style: const TextStyle(fontSize: 10, color: AppTheme.forestGreen),
+          ),
         ],
       ),
     );
   }
 
-  void _showExportDialog(BuildContext context, double co2e, int water, double foodKg) {
+  void _showExportDialog(
+    BuildContext context,
+    double co2e,
+    int water,
+    double foodKg,
+  ) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -325,8 +369,14 @@ class ESGImpactDashboardScreen extends StatelessWidget {
                 children: [
                   _row('Audited Entity', 'Grand Orchid Banquet & Caterers'),
                   _row('Total CO2e Abated', '${co2e.toStringAsFixed(1)} kg'),
-                  _row('Freshwater Saved', '${(water / 1000).toStringAsFixed(0)} kL'),
-                  _row('Direct Landfill Diversion', '${foodKg.toStringAsFixed(0)} kg'),
+                  _row(
+                    'Freshwater Saved',
+                    '${(water / 1000).toStringAsFixed(0)} kL',
+                  ),
+                  _row(
+                    'Direct Landfill Diversion',
+                    '${foodKg.toStringAsFixed(0)} kg',
+                  ),
                   _row('GRI Standard Index', 'GRI 306-4 Waste Diverted'),
                 ],
               ),
@@ -350,7 +400,8 @@ class ESGImpactDashboardScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text(
-                      'ESG_Audit_Report_2026.pdf downloaded! Ready for corporate CSR filing.'),
+                    'ESG_Audit_Report_2026.pdf downloaded! Ready for corporate CSR filing.',
+                  ),
                   backgroundColor: AppTheme.forestGreen,
                 ),
               );
@@ -367,13 +418,18 @@ class ESGImpactDashboardScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: const TextStyle(fontSize: 11, color: AppTheme.charcoalMuted)),
-          Text(value,
-              style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.richCharcoal)),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 11, color: AppTheme.charcoalMuted),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: AppTheme.richCharcoal,
+            ),
+          ),
         ],
       ),
     );

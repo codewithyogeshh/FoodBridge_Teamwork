@@ -94,7 +94,7 @@ class _MapPreviewWidgetState extends State<MapPreviewWidget>
                               color: Colors.black26,
                               blurRadius: 4,
                               offset: Offset(0, 2),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -113,7 +113,10 @@ class _MapPreviewWidgetState extends State<MapPreviewWidget>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: AppTheme.forestGreenDark,
                         borderRadius: BorderRadius.circular(8),
@@ -143,7 +146,10 @@ class _MapPreviewWidgetState extends State<MapPreviewWidget>
               bottom: 12,
               right: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.95),
                   borderRadius: BorderRadius.circular(12),
@@ -220,7 +226,11 @@ class _MapPreviewWidgetState extends State<MapPreviewWidget>
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.gps_fixed_rounded, size: 12, color: AppTheme.emerald),
+                    Icon(
+                      Icons.gps_fixed_rounded,
+                      size: 12,
+                      color: AppTheme.emerald,
+                    ),
                     SizedBox(width: 5),
                     Text(
                       'Live GPS Ground Grid',

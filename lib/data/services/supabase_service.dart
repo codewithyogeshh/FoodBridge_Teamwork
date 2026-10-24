@@ -35,11 +35,12 @@ class SupabaseService {
     http.Client? client,
     bool enableRealtime = true,
     supa.SupabaseClient? supabaseClient,
-  })  : _client = client ?? http.Client(),
-        _baseUrl = AppConstants.supabaseUrl,
-        _anonKey = AppConstants.supabaseAnonKey {
+  }) : _client = client ?? http.Client(),
+       _baseUrl = AppConstants.supabaseUrl,
+       _anonKey = AppConstants.supabaseAnonKey {
     try {
-      _supabaseClient = supabaseClient ??
+      _supabaseClient =
+          supabaseClient ??
           supa.SupabaseClient(
             _baseUrl,
             _anonKey,
@@ -56,18 +57,16 @@ class SupabaseService {
   Stream<NotificationModel> get notificationStream =>
       _notificationStreamController.stream;
 
-  Stream<DonationModel> get donationStream =>
-      _donationStreamController.stream;
+  Stream<DonationModel> get donationStream => _donationStreamController.stream;
 
-  Stream<NGOModel> get ngoStream =>
-      _ngoStreamController.stream;
+  Stream<NGOModel> get ngoStream => _ngoStreamController.stream;
 
   Map<String, String> get _headers => {
-        'apikey': _anonKey,
-        'Authorization': 'Bearer $_anonKey',
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
-      };
+    'apikey': _anonKey,
+    'Authorization': 'Bearer $_anonKey',
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation',
+  };
 
   void _setupRealtimeChannel() {
     try {
@@ -173,7 +172,9 @@ class SupabaseService {
         if (status == supa.RealtimeSubscribeStatus.subscribed) {
           debugPrint('🟢 Supabase Realtime connected and active!');
         } else if (error != null) {
-          debugPrint('🟡 Supabase Realtime subscription status: $status ($error)');
+          debugPrint(
+            '🟡 Supabase Realtime subscription status: $status ($error)',
+          );
         }
       });
     } catch (e) {
@@ -191,7 +192,9 @@ class SupabaseService {
   }
 
   void _updateLocalNGOFromRealtime(NGOModel ngo) {
-    final idx = _localNGOs.indexWhere((n) => n.id == ngo.id || n.phone == ngo.phone);
+    final idx = _localNGOs.indexWhere(
+      (n) => n.id == ngo.id || n.phone == ngo.phone,
+    );
     if (idx != -1) {
       _localNGOs[idx] = ngo;
     } else {
@@ -210,14 +213,16 @@ class SupabaseService {
         'avatar_url': profile.avatarUrl,
       };
 
-      final response = await _client.post(
-        Uri.parse('$_baseUrl/rest/v1/profiles?on_conflict=phone'),
-        headers: {
-          ..._headers,
-          'Prefer': 'resolution=merge-duplicates,return=representation',
-        },
-        body: jsonEncode(payload),
-      ).timeout(const Duration(seconds: 4));
+      final response = await _client
+          .post(
+            Uri.parse('$_baseUrl/rest/v1/profiles?on_conflict=phone'),
+            headers: {
+              ..._headers,
+              'Prefer': 'resolution=merge-duplicates,return=representation',
+            },
+            body: jsonEncode(payload),
+          )
+          .timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final List<dynamic> data = jsonDecode(response.body);
@@ -234,10 +239,14 @@ class SupabaseService {
   /// Fetch user profile by registered phone number
   Future<UserProfileModel?> getProfileByPhone(String phone) async {
     try {
-      final response = await _client.get(
-        Uri.parse('$_baseUrl/rest/v1/profiles?phone=eq.${Uri.encodeComponent(phone)}&limit=1'),
-        headers: _headers,
-      ).timeout(const Duration(seconds: 4));
+      final response = await _client
+          .get(
+            Uri.parse(
+              '$_baseUrl/rest/v1/profiles?phone=eq.${Uri.encodeComponent(phone)}&limit=1',
+            ),
+            headers: _headers,
+          )
+          .timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
@@ -325,17 +334,21 @@ class SupabaseService {
         quantityServings: 80,
         preparedAt: DateTime.now().subtract(const Duration(hours: 1)),
         safeUntil: DateTime.now().add(const Duration(hours: 4)),
-        storageRequirements: 'Keep warm above 60°C or immediate thermal insulated transport',
+        storageRequirements:
+            'Keep warm above 60°C or immediate thermal insulated transport',
         allergens: const ['Dairy', 'Nuts'],
         pickupAddress: 'Royal Banquet Hall, Residency Rd, Bengaluru',
         pickupLatitude: 12.9698,
         pickupLongitude: 77.6012,
-        pickupInstructions: 'Enter via Service Gate 3 at rear. Thermal insulated food pans provided.',
+        pickupInstructions:
+            'Enter via Service Gate 3 at rear. Thermal insulated food pans provided.',
         pickupOtp: '7412',
-        imageUrl: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
+        imageUrl:
+            'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
         urgencyLevel: UrgencyLevel.critical,
         aiUrgencyScore: 94,
-        aiRecommendationSummary: 'Cooked meal with high temperature sensitivity. Recommended for Hope Care Foundation (1.8 km).',
+        aiRecommendationSummary:
+            'Cooked meal with high temperature sensitivity. Recommended for Hope Care Foundation (1.8 km).',
         status: DonationStatus.available,
         createdAt: DateTime.now().subtract(const Duration(hours: 1)),
         updatedAt: DateTime.now().subtract(const Duration(hours: 1)),
@@ -350,17 +363,21 @@ class SupabaseService {
         quantityServings: 45,
         preparedAt: DateTime.now().subtract(const Duration(hours: 2)),
         safeUntil: DateTime.now().add(const Duration(hours: 16)),
-        storageRequirements: 'Ambient dry storage, keep in food-safe wax paper bags',
+        storageRequirements:
+            'Ambient dry storage, keep in food-safe wax paper bags',
         allergens: const ['Gluten', 'Eggs'],
         pickupAddress: '14 Lavelle Road, Shanthala Nagar, Bengaluru',
         pickupLatitude: 12.9712,
         pickupLongitude: 77.5990,
-        pickupInstructions: 'Pick up directly from front cashier counter. Speak to Manager Kevin.',
+        pickupInstructions:
+            'Pick up directly from front cashier counter. Speak to Manager Kevin.',
         pickupOtp: '5192',
-        imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop',
+        imageUrl:
+            'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop',
         urgencyLevel: UrgencyLevel.high,
         aiUrgencyScore: 82,
-        aiRecommendationSummary: 'Baked goods with 16h window. High nutritional value, ideal for Seva Shelter afternoon snack.',
+        aiRecommendationSummary:
+            'Baked goods with 16h window. High nutritional value, ideal for Seva Shelter afternoon snack.',
         status: DonationStatus.available,
         createdAt: DateTime.now().subtract(const Duration(hours: 2)),
         updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
@@ -373,7 +390,8 @@ class SupabaseService {
         id: 'notif-seed-01',
         recipientRole: 'all',
         title: '⚡ Zero-Waste Real-Time Network Active',
-        message: 'Supabase Realtime WebSockets & Database Triggers are connected. Instant push alerts enabled.',
+        message:
+            'Supabase Realtime WebSockets & Database Triggers are connected. Instant push alerts enabled.',
         type: 'system',
         createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
       ),
@@ -381,7 +399,8 @@ class SupabaseService {
         id: 'notif-seed-02',
         recipientRole: 'ngo',
         title: '🚨 New Surplus Food Alert: Surplus Wedding Feast',
-        message: 'Grand Orchid Banquet posted 75 Portions of Cooked Meals near Residency Rd. Safe until 3 hours.',
+        message:
+            'Grand Orchid Banquet posted 75 Portions of Cooked Meals near Residency Rd. Safe until 3 hours.',
         type: 'donation_created',
         entityId: 'd1111111-1111-1111-1111-111111111111',
         metadata: {
@@ -395,7 +414,8 @@ class SupabaseService {
         id: 'notif-seed-03',
         recipientRole: 'admin',
         title: '📦 New Donation Registered: Surplus Wedding Feast',
-        message: 'Donor Grand Orchid Banquet (+91 98860 12345) submitted 75 portions. Urgency: CRITICAL.',
+        message:
+            'Donor Grand Orchid Banquet (+91 98860 12345) submitted 75 portions. Urgency: CRITICAL.',
         type: 'donation_created',
         entityId: 'd1111111-1111-1111-1111-111111111111',
         metadata: {
@@ -412,7 +432,8 @@ class SupabaseService {
   Future<List<NotificationModel>> getNotifications({String? role}) async {
     _initLocalSeed();
     try {
-      String endpoint = '$_baseUrl/rest/v1/notifications?select=*&order=created_at.desc';
+      String endpoint =
+          '$_baseUrl/rest/v1/notifications?select=*&order=created_at.desc';
       if (role != null && role.isNotEmpty) {
         endpoint += '&or=(recipient_role.eq.$role,recipient_role.eq.all)';
       }
@@ -423,7 +444,9 @@ class SupabaseService {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        final results = data.map((item) => NotificationModel.fromJson(item)).toList();
+        final results = data
+            .map((item) => NotificationModel.fromJson(item))
+            .toList();
         if (results.isNotEmpty) {
           // Merge with local cache
           for (final n in results) {
@@ -433,7 +456,9 @@ class SupabaseService {
           }
           if (role != null && role.isNotEmpty) {
             return _localNotifications
-                .where((n) => n.recipientRole == role || n.recipientRole == 'all')
+                .where(
+                  (n) => n.recipientRole == role || n.recipientRole == 'all',
+                )
                 .toList();
           }
           return List.from(_localNotifications);
@@ -467,7 +492,9 @@ class SupabaseService {
 
     final idx = _localNotifications.indexWhere((n) => n.id == id);
     if (idx != -1) {
-      _localNotifications[idx] = _localNotifications[idx].copyWith(isRead: true);
+      _localNotifications[idx] = _localNotifications[idx].copyWith(
+        isRead: true,
+      );
     }
     return true;
   }
@@ -477,7 +504,9 @@ class SupabaseService {
     try {
       await _client
           .patch(
-            Uri.parse('$_baseUrl/rest/v1/notifications?recipient_role=eq.$role'),
+            Uri.parse(
+              '$_baseUrl/rest/v1/notifications?recipient_role=eq.$role',
+            ),
             headers: _headers,
             body: jsonEncode({'is_read': true}),
           )
@@ -514,7 +543,9 @@ class SupabaseService {
 
       if (response is List && response.isNotEmpty) {
         final results = response
-            .map((item) => DonationModel.fromJson(Map<String, dynamic>.from(item)))
+            .map(
+              (item) => DonationModel.fromJson(Map<String, dynamic>.from(item)),
+            )
             .toList();
         _localDonations.clear();
         _localDonations.addAll(results);
@@ -522,7 +553,8 @@ class SupabaseService {
     } catch (e) {
       debugPrint('Supabase getDonations SDK notice (using REST fallback): $e');
       try {
-        String endpoint = '$_baseUrl/rest/v1/donations?select=*&order=created_at.desc';
+        String endpoint =
+            '$_baseUrl/rest/v1/donations?select=*&order=created_at.desc';
         if (statusFilter != null && statusFilter.isNotEmpty) {
           endpoint += '&status=eq.${statusFilter.toUpperCase()}';
         }
@@ -533,7 +565,9 @@ class SupabaseService {
 
         if (response.statusCode == 200) {
           final List<dynamic> data = jsonDecode(response.body);
-          final results = data.map((item) => DonationModel.fromJson(item)).toList();
+          final results = data
+              .map((item) => DonationModel.fromJson(item))
+              .toList();
           if (results.isNotEmpty) {
             _localDonations.clear();
             _localDonations.addAll(results);
@@ -559,8 +593,9 @@ class SupabaseService {
 
     try {
       final payload = donation.toJson();
-      final isUuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-          .hasMatch(donation.id);
+      final isUuid = RegExp(
+        r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+      ).hasMatch(donation.id);
       if (isUuid) {
         payload['id'] = donation.id;
       }
@@ -572,13 +607,16 @@ class SupabaseService {
           .single()
           .timeout(const Duration(seconds: 15));
       finalCreated = DonationModel.fromJson(Map<String, dynamic>.from(res));
-      debugPrint('🟢 Successfully inserted donation in Supabase: ${finalCreated.id}');
+      debugPrint(
+        '🟢 Successfully inserted donation in Supabase: ${finalCreated.id}',
+      );
     } catch (e) {
       debugPrint('Supabase createDonation SDK notice (trying REST): $e');
       try {
         final payload = donation.toJson();
-        final isUuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            .hasMatch(donation.id);
+        final isUuid = RegExp(
+          r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+        ).hasMatch(donation.id);
         if (isUuid) {
           payload['id'] = donation.id;
         }
@@ -595,7 +633,9 @@ class SupabaseService {
           final List<dynamic> data = jsonDecode(response.body);
           if (data.isNotEmpty) {
             finalCreated = DonationModel.fromJson(data.first);
-            debugPrint('🟢 REST fallback inserted donation: ${finalCreated.id}');
+            debugPrint(
+              '🟢 REST fallback inserted donation: ${finalCreated.id}',
+            );
           }
         }
       } catch (err) {
@@ -698,13 +738,15 @@ class SupabaseService {
     final index = _localDonations.indexWhere((d) => d.id == donationId);
     if (index != -1) {
       if (_localDonations[index].status == DonationStatus.available) {
-        _localDonations[index] =
-            _localDonations[index].copyWith(status: DonationStatus.reserved);
+        _localDonations[index] = _localDonations[index].copyWith(
+          status: DonationStatus.reserved,
+        );
         _broadcastReservationAlert(donationId, ngoName);
         return {
           'success': true,
           'message': 'Reserved successfully (Local atomic state locked)',
-          'reservation_id': 'local-res-${DateTime.now().millisecondsSinceEpoch}',
+          'reservation_id':
+              'local-res-${DateTime.now().millisecondsSinceEpoch}',
         };
       } else {
         return {
@@ -774,8 +816,9 @@ class SupabaseService {
     if (index != -1) {
       final d = _localDonations[index];
       if (d.pickupOtp.trim() == enteredOtp.trim()) {
-        _localDonations[index] =
-            d.copyWith(status: DonationStatus.pickupVerified);
+        _localDonations[index] = d.copyWith(
+          status: DonationStatus.pickupVerified,
+        );
         _broadcastPickupVerifiedAlert(donationId);
         return {'success': true, 'message': 'Pickup verified successfully'};
       } else {
@@ -793,7 +836,8 @@ class SupabaseService {
       id: 'notif-pick-${DateTime.now().millisecondsSinceEpoch}',
       recipientRole: 'all',
       title: '✅ Food Handover Verified via OTP',
-      message: 'Secure pickup OTP verified. Food in transit to community shelter.',
+      message:
+          'Secure pickup OTP verified. Food in transit to community shelter.',
       type: 'pickup_verified',
       entityId: donationId,
       metadata: {'donation_id': donationId},
@@ -847,7 +891,8 @@ class SupabaseService {
       id: 'notif-del-${DateTime.now().millisecondsSinceEpoch}',
       recipientRole: 'all',
       title: '🏆 $mealsCount Meals Delivered Successfully!',
-      message: 'Zero-waste cycle complete. Impact recorded on public transparency ledger.',
+      message:
+          'Zero-waste cycle complete. Impact recorded on public transparency ledger.',
       type: 'delivered',
       entityId: donationId,
       metadata: {'donation_id': donationId, 'meals': mealsCount},
@@ -877,14 +922,19 @@ class SupabaseService {
       final contentType = isPng
           ? 'image/png'
           : isPdf
-              ? 'application/pdf'
-              : 'image/jpeg';
+          ? 'application/pdf'
+          : 'image/jpeg';
 
-      await _supabaseClient.storage.from(bucket).uploadBinary(
-        path,
-        bytes,
-        fileOptions: supa.FileOptions(contentType: contentType, upsert: true),
-      );
+      await _supabaseClient.storage
+          .from(bucket)
+          .uploadBinary(
+            path,
+            bytes,
+            fileOptions: supa.FileOptions(
+              contentType: contentType,
+              upsert: true,
+            ),
+          );
       final publicUrl = _supabaseClient.storage.from(bucket).getPublicUrl(path);
       debugPrint('🟢 Uploaded $filename to bucket "$bucket": $publicUrl');
       return publicUrl;
@@ -898,15 +948,12 @@ class SupabaseService {
         final contentType = isPng
             ? 'image/png'
             : isPdf
-                ? 'application/pdf'
-                : 'image/jpeg';
+            ? 'application/pdf'
+            : 'image/jpeg';
 
         final res = await _client.post(
           Uri.parse('$_baseUrl/storage/v1/object/$bucket/$path'),
-          headers: {
-            ..._headers,
-            'Content-Type': contentType,
-          },
+          headers: {..._headers, 'Content-Type': contentType},
           body: bytes,
         );
         if (res.statusCode == 200 || res.statusCode == 201) {
@@ -949,9 +996,11 @@ class SupabaseService {
     } catch (e) {
       debugPrint('Supabase getNGOs SDK notice (using REST fallback): $e');
       try {
-        String endpoint = '$_baseUrl/rest/v1/ngos?select=*&order=created_at.desc';
+        String endpoint =
+            '$_baseUrl/rest/v1/ngos?select=*&order=created_at.desc';
         if (verificationStatus != null && verificationStatus.isNotEmpty) {
-          endpoint += '&verification_status=eq.${verificationStatus.toUpperCase()}';
+          endpoint +=
+              '&verification_status=eq.${verificationStatus.toUpperCase()}';
         }
 
         final response = await _client
@@ -972,8 +1021,11 @@ class SupabaseService {
 
     if (verificationStatus != null && verificationStatus.isNotEmpty) {
       return _localNGOs
-          .where((n) =>
-              n.verificationStatus.dbValue == verificationStatus.toUpperCase())
+          .where(
+            (n) =>
+                n.verificationStatus.dbValue ==
+                verificationStatus.toUpperCase(),
+          )
           .toList();
     }
     return List.from(_localNGOs);
@@ -985,8 +1037,9 @@ class SupabaseService {
     NGOModel finalCreated = ngo;
     try {
       final payload = ngo.toJson();
-      final isUuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-          .hasMatch(ngo.id);
+      final isUuid = RegExp(
+        r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+      ).hasMatch(ngo.id);
       if (isUuid) {
         payload['id'] = ngo.id;
       }
@@ -998,13 +1051,16 @@ class SupabaseService {
           .single()
           .timeout(const Duration(seconds: 15));
       finalCreated = NGOModel.fromJson(Map<String, dynamic>.from(res));
-      debugPrint('🟢 Successfully registered NGO in Supabase: ${finalCreated.id}');
+      debugPrint(
+        '🟢 Successfully registered NGO in Supabase: ${finalCreated.id}',
+      );
     } catch (e) {
       debugPrint('Supabase registerNGO SDK notice (trying REST): $e');
       try {
         final payload = ngo.toJson();
-        final isUuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
-            .hasMatch(ngo.id);
+        final isUuid = RegExp(
+          r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+        ).hasMatch(ngo.id);
         if (isUuid) {
           payload['id'] = ngo.id;
         }
@@ -1036,7 +1092,9 @@ class SupabaseService {
 
   /// Admin update NGO verification status
   Future<bool> updateNGOVerificationStatus(
-      String ngoId, NGOVerificationStatus status) async {
+    String ngoId,
+    NGOVerificationStatus status,
+  ) async {
     _initLocalSeed();
     try {
       final response = await _client

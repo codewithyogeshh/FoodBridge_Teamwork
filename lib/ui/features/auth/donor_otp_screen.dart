@@ -17,8 +17,10 @@ class DonorOtpScreen extends StatefulWidget {
 
 class _DonorOtpScreenState extends State<DonorOtpScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  final List<TextEditingController> _otpControllers =
-      List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   bool _otpSent = false;
@@ -104,7 +106,9 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Incorrect OTP! Please check the SMS banner or resend.'),
+          content: Text(
+            'Incorrect OTP! Please check the SMS banner or resend.',
+          ),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -187,8 +191,11 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                           color: AppTheme.emerald,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.sms_rounded,
-                            color: Colors.white, size: 22),
+                        child: const Icon(
+                          Icons.sms_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -232,15 +239,21 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                           backgroundColor: AppTheme.restrainedLime,
                           foregroundColor: AppTheme.richCharcoal,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                         onPressed: _autofillOtp,
-                        child: const Text('Autofill',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.w800)),
+                        child: const Text(
+                          'Autofill',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -298,8 +311,11 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.lock_outline_rounded,
-                          size: 18, color: AppTheme.forestGreen),
+                      Icon(
+                        Icons.lock_outline_rounded,
+                        size: 18,
+                        color: AppTheme.forestGreen,
+                      ),
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -336,8 +352,10 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                       onPressed: () {
                         setState(() => _otpSent = false);
                       },
-                      child: const Text('Change Phone',
-                          style: TextStyle(fontSize: 12)),
+                      child: const Text(
+                        'Change Phone',
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
                   ],
                 ),
@@ -375,7 +393,9 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(
-                                color: AppTheme.forestGreen, width: 2),
+                              color: AppTheme.forestGreen,
+                              width: 2,
+                            ),
                           ),
                         ),
                         onChanged: (val) {
@@ -384,8 +404,9 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                           } else if (val.isEmpty && index > 0) {
                             _focusNodes[index - 1].requestFocus();
                           }
-                          if (_otpControllers
-                              .every((c) => c.text.trim().isNotEmpty)) {
+                          if (_otpControllers.every(
+                            (c) => c.text.trim().isNotEmpty,
+                          )) {
                             _verifyOtp();
                           }
                         },
@@ -398,8 +419,11 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.error_outline_rounded,
-                          color: AppTheme.statusCritical, size: 16),
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        color: AppTheme.statusCritical,
+                        size: 16,
+                      ),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(

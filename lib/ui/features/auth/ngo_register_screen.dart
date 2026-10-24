@@ -77,7 +77,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
     final query = _signInQueryController.text.trim();
     if (query.isEmpty) {
       setState(() {
-        _signInError = 'Please enter your registered phone number or registration number.';
+        _signInError =
+            'Please enter your registered phone number or registration number.';
       });
       return;
     }
@@ -98,7 +99,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  'Welcome back, ${existingNgo.organizationName}! Verification active.'),
+                'Welcome back, ${existingNgo.organizationName}! Verification active.',
+              ),
               backgroundColor: AppTheme.forestGreen,
             ),
           );
@@ -106,7 +108,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  'Account found for ${existingNgo.organizationName}. Awaiting Admin Review.'),
+                'Account found for ${existingNgo.organizationName}. Awaiting Admin Review.',
+              ),
               backgroundColor: const Color(0xFFD97706),
             ),
           );
@@ -141,10 +144,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
   }) async {
     try {
       final picker = ImagePicker();
-      final picked = await picker.pickImage(
-        source: source,
-        imageQuality: 90,
-      );
+      final picked = await picker.pickImage(source: source, imageQuality: 90);
 
       if (picked == null) return;
 
@@ -164,7 +164,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           : '$sizeKb KB';
 
       // Upload directly to public Supabase bucket 'ngo-documents'
-      final safeName = '${isGovtId ? "govt_id" : "fssai"}_${DateTime.now().millisecondsSinceEpoch}_$rawName';
+      final safeName =
+          '${isGovtId ? "govt_id" : "fssai"}_${DateTime.now().millisecondsSinceEpoch}_$rawName';
       final uploadedUrl = await widget.repository.uploadImage(
         bytes,
         safeName,
@@ -194,7 +195,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -269,8 +274,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       color: AppTheme.emeraldLight,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.cloud_upload_rounded,
-                        color: AppTheme.forestGreen, size: 24),
+                    child: const Icon(
+                      Icons.cloud_upload_rounded,
+                      color: AppTheme.forestGreen,
+                      size: 24,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -323,8 +331,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.folder_open_rounded,
-                            color: AppTheme.forestGreen, size: 24),
+                        child: const Icon(
+                          Icons.folder_open_rounded,
+                          color: AppTheme.forestGreen,
+                          size: 24,
+                        ),
                       ),
                       const SizedBox(width: 14),
                       const Expanded(
@@ -350,8 +361,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           ],
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios_rounded,
-                          size: 16, color: AppTheme.forestGreen),
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 16,
+                        color: AppTheme.forestGreen,
+                      ),
                     ],
                   ),
                 ),
@@ -382,8 +396,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.camera_alt_rounded,
-                            color: AppTheme.forestGreen, size: 24),
+                        child: const Icon(
+                          Icons.camera_alt_rounded,
+                          color: AppTheme.forestGreen,
+                          size: 24,
+                        ),
                       ),
                       const SizedBox(width: 14),
                       const Expanded(
@@ -409,8 +426,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           ],
                         ),
                       ),
-                      const Icon(Icons.arrow_forward_ios_rounded,
-                          size: 16, color: AppTheme.forestGreen),
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 16,
+                        color: AppTheme.forestGreen,
+                      ),
                     ],
                   ),
                 ),
@@ -424,7 +444,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.lock_rounded, size: 16, color: AppTheme.forestGreen),
+                    Icon(
+                      Icons.lock_rounded,
+                      size: 16,
+                      color: AppTheme.forestGreen,
+                    ),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -453,17 +477,24 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
     final regNumInput = _regNumController.text.trim();
 
     // Check if account already exists
-    final existingNgo = widget.repository.findNGOByPhoneOrReg(phoneInput) ??
+    final existingNgo =
+        widget.repository.findNGOByPhoneOrReg(phoneInput) ??
         widget.repository.findNGOByPhoneOrReg(regNumInput);
 
     if (existingNgo != null) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: const Row(
             children: [
-              Icon(Icons.account_circle_rounded, color: AppTheme.forestGreen, size: 28),
+              Icon(
+                Icons.account_circle_rounded,
+                color: AppTheme.forestGreen,
+                size: 28,
+              ),
               SizedBox(width: 10),
               Text('Account Already Exists'),
             ],
@@ -481,7 +512,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.forestGreen,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: () {
                 Navigator.pop(ctx);
@@ -503,7 +536,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-              'Compulsory requirement: Please upload your Government Identity document.'),
+            'Compulsory requirement: Please upload your Government Identity document.',
+          ),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -514,7 +548,8 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-              'Compulsory requirement: Please upload your Food Safety / FSSAI license document.'),
+            'Compulsory requirement: Please upload your Food Safety / FSSAI license document.',
+          ),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -539,7 +574,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
       govtIdNumber: _govtIdNumberController.text.trim(),
       govtDocFileName: _govtDocFileName,
       fssaiDocFileName: _fssaiDocFileName,
-      docFileSize: _fssaiDocFileSize.isNotEmpty ? _fssaiDocFileSize : _govtDocFileSize,
+      docFileSize: _fssaiDocFileSize.isNotEmpty
+          ? _fssaiDocFileSize
+          : _govtDocFileSize,
       verificationDocumentUrl: _fssaiDocUrl ?? _govtDocUrl ?? '',
       createdAt: DateTime.now(),
     );
@@ -586,7 +623,10 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           unselectedLabelColor: AppTheme.charcoalMuted,
           indicatorColor: AppTheme.forestGreen,
           indicatorWeight: 3,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 13,
+          ),
           tabs: const [
             Tab(
               icon: Icon(Icons.login_rounded, size: 20),
@@ -602,10 +642,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
       body: SafeArea(
         child: TabBarView(
           controller: _tabController,
-          children: [
-            _buildSignInTab(),
-            _buildRegisterTab(),
-          ],
+          children: [_buildSignInTab(), _buildRegisterTab()],
         ),
       ),
     );
@@ -638,7 +675,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               width: 22,
               height: 22,
               child: CircularProgressIndicator(
-                  strokeWidth: 2.5, color: AppTheme.forestGreen),
+                strokeWidth: 2.5,
+                color: AppTheme.forestGreen,
+              ),
             ),
             SizedBox(width: 14),
             Expanded(
@@ -682,8 +721,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           color: AppTheme.forestGreen,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.verified_rounded,
-                            color: Colors.white, size: 20),
+                        child: const Icon(
+                          Icons.verified_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   )
@@ -694,8 +736,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       color: AppTheme.forestGreen,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.verified_rounded,
-                        color: Colors.white, size: 20),
+                    child: const Icon(
+                      Icons.verified_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -725,8 +770,10 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppTheme.emeraldLight,
                     borderRadius: BorderRadius.circular(6),
@@ -747,11 +794,18 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton.icon(
-                  icon: const Icon(Icons.delete_outline_rounded,
-                      size: 16, color: AppTheme.statusCritical),
-                  label: const Text('Remove',
-                      style: TextStyle(
-                          fontSize: 12, color: AppTheme.statusCritical)),
+                  icon: const Icon(
+                    Icons.delete_outline_rounded,
+                    size: 16,
+                    color: AppTheme.statusCritical,
+                  ),
+                  label: const Text(
+                    'Remove',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.statusCritical,
+                    ),
+                  ),
                   onPressed: () {
                     setState(() {
                       if (isGovtId) {
@@ -775,17 +829,20 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.forestGreen,
                     foregroundColor: Colors.white,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   icon: const Icon(Icons.change_circle_rounded, size: 16),
-                  label: const Text('Change File',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-                  onPressed: () =>
-                      _openDocumentPickerModal(isGovtId: isGovtId),
+                  label: const Text(
+                    'Change File',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                  ),
+                  onPressed: () => _openDocumentPickerModal(isGovtId: isGovtId),
                 ),
               ],
             ),
@@ -809,8 +866,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.cloud_upload_rounded,
-                color: AppTheme.forestGreen, size: 24),
+            child: const Icon(
+              Icons.cloud_upload_rounded,
+              color: AppTheme.forestGreen,
+              size: 24,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -839,14 +899,16 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.forestGreen,
               foregroundColor: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             icon: const Icon(Icons.upload_rounded, size: 16),
-            label: const Text('Upload',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+            label: const Text(
+              'Upload',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+            ),
             onPressed: () => _openDocumentPickerModal(isGovtId: isGovtId),
           ),
         ],
@@ -867,8 +929,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               color: AppTheme.emeraldLight,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.volunteer_activism_rounded,
-                size: 28, color: AppTheme.forestGreen),
+            child: const Icon(
+              Icons.volunteer_activism_rounded,
+              size: 28,
+              color: AppTheme.forestGreen,
+            ),
           ),
           const SizedBox(height: 18),
           const Text(
@@ -911,8 +976,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.shield_outlined,
-                          size: 20, color: AppTheme.forestGreen),
+                      Icon(
+                        Icons.shield_outlined,
+                        size: 20,
+                        color: AppTheme.forestGreen,
+                      ),
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -938,8 +1006,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.error_outline_rounded,
-                            color: AppTheme.statusCritical, size: 20),
+                        const Icon(
+                          Icons.error_outline_rounded,
+                          color: AppTheme.statusCritical,
+                          size: 20,
+                        ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -969,7 +1040,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           Center(
             child: TextButton.icon(
               icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
-              label: const Text('New to FoodBridge? Register Organization here'),
+              label: const Text(
+                'New to FoodBridge? Register Organization here',
+              ),
               onPressed: () {
                 _tabController.animateTo(1);
               },
@@ -1016,8 +1089,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline_rounded,
-                      size: 20, color: AppTheme.forestGreen),
+                  const Icon(
+                    Icons.info_outline_rounded,
+                    size: 20,
+                    color: AppTheme.forestGreen,
+                  ),
                   const SizedBox(width: 10),
                   const Expanded(
                     child: Text(
@@ -1031,7 +1107,10 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       minimumSize: const Size(50, 30),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
@@ -1148,8 +1227,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   // COMPULSORY GOVERNMENT IDENTITY SECTION
                   Row(
                     children: [
-                      const Icon(Icons.badge_rounded,
-                          color: AppTheme.forestGreen, size: 20),
+                      const Icon(
+                        Icons.badge_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       const Text(
                         '2. Compulsory Government Identity',
@@ -1162,7 +1244,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       const SizedBox(width: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.statusCritical.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4),
@@ -1181,8 +1265,10 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   const SizedBox(height: 10),
                   const Text(
                     'Upload government-issued identity proof of authorized trustee or organization.',
-                    style:
-                        TextStyle(fontSize: 12, color: AppTheme.charcoalMuted),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.charcoalMuted,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -1237,8 +1323,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   // FOOD SAFETY COMPLIANCE SECTION
                   Row(
                     children: [
-                      const Icon(Icons.health_and_safety_rounded,
-                          color: AppTheme.forestGreen, size: 20),
+                      const Icon(
+                        Icons.health_and_safety_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       const Text(
                         '3. Food Safety / FSSAI License Document',
@@ -1268,7 +1357,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             Center(
               child: TextButton.icon(
                 icon: const Icon(Icons.login_rounded, size: 18),
-                label: const Text('Already registered? Sign In to your account'),
+                label: const Text(
+                  'Already registered? Sign In to your account',
+                ),
                 onPressed: () {
                   _tabController.animateTo(0);
                 },

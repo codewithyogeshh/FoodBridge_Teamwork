@@ -63,7 +63,9 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
             actions: [
               IconButton(
                 icon: Icon(
-                  _isMapView ? Icons.format_list_bulleted_rounded : Icons.map_rounded,
+                  _isMapView
+                      ? Icons.format_list_bulleted_rounded
+                      : Icons.map_rounded,
                   color: AppTheme.forestGreen,
                 ),
                 tooltip: _isMapView ? 'Switch to List' : 'Switch to Map',
@@ -77,14 +79,20 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
               children: [
                 // Search Input
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
                   child: TextField(
                     controller: _searchController,
-                    onChanged: (val) => setState(() => _searchQuery = val.trim()),
+                    onChanged: (val) =>
+                        setState(() => _searchQuery = val.trim()),
                     decoration: InputDecoration(
                       hintText: 'Search food batches, bakeries, banquets...',
-                      prefixIcon: const Icon(Icons.search_rounded,
-                          color: AppTheme.charcoalMuted),
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
+                        color: AppTheme.charcoalMuted,
+                      ),
                       suffixIcon: _searchQuery.isNotEmpty
                           ? IconButton(
                               icon: const Icon(Icons.clear_rounded, size: 18),
@@ -94,8 +102,10 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                               },
                             )
                           : null,
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                     ),
                   ),
                 ),
@@ -111,9 +121,13 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                         setState(() => _selectedCategory = 'All');
                       }),
                       ...AppConstants.foodCategories.map((cat) {
-                        return _buildFilterChip(cat, _selectedCategory == cat, () {
-                          setState(() => _selectedCategory = cat);
-                        });
+                        return _buildFilterChip(
+                          cat,
+                          _selectedCategory == cat,
+                          () {
+                            setState(() => _selectedCategory = cat);
+                          },
+                        );
                       }),
                     ],
                   ),
@@ -138,7 +152,9 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                         onTap: () => setState(() => _selectedUrgency = null),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: _selectedUrgency == null
                                 ? AppTheme.forestGreen
@@ -159,13 +175,17 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                       ),
                       const SizedBox(width: 6),
                       InkWell(
-                        onTap: () => setState(() => _selectedUrgency =
-                            _selectedUrgency == UrgencyLevel.critical
-                                ? null
-                                : UrgencyLevel.critical),
+                        onTap: () => setState(
+                          () => _selectedUrgency =
+                              _selectedUrgency == UrgencyLevel.critical
+                              ? null
+                              : UrgencyLevel.critical,
+                        ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: _selectedUrgency == UrgencyLevel.critical
                                 ? AppTheme.statusCritical
@@ -267,7 +287,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                   StatusBadge(status: item.status),
                 ],
               ),
-               const SizedBox(height: 12),
+              const SizedBox(height: 12),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -311,8 +331,11 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(Icons.storefront_rounded,
-                                size: 14, color: AppTheme.charcoalMuted),
+                            const Icon(
+                              Icons.storefront_rounded,
+                              size: 14,
+                              color: AppTheme.charcoalMuted,
+                            ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
@@ -334,15 +357,21 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
               ),
               const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppTheme.warmIvoryDark,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.timer_outlined,
-                        size: 14, color: AppTheme.forestGreen),
+                    const Icon(
+                      Icons.timer_outlined,
+                      size: 14,
+                      color: AppTheme.forestGreen,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       item.formattedTimeRemaining,
@@ -353,8 +382,11 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                       ),
                     ),
                     const Spacer(),
-                    const Icon(Icons.location_on_outlined,
-                        size: 14, color: AppTheme.charcoalMuted),
+                    const Icon(
+                      Icons.location_on_outlined,
+                      size: 14,
+                      color: AppTheme.charcoalMuted,
+                    ),
                     const SizedBox(width: 4),
                     const Text(
                       '~1.8 km away',
@@ -410,8 +442,11 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                       color: AppTheme.forestGreen,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.near_me_rounded,
-                        color: Colors.white, size: 20),
+                    child: const Icon(
+                      Icons.near_me_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -438,8 +473,10 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.chevron_right_rounded,
-                      color: AppTheme.forestGreen),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppTheme.forestGreen,
+                  ),
                 ],
               ),
             ),

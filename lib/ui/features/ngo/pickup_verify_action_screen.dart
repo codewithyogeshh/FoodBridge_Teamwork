@@ -23,8 +23,10 @@ class PickupVerifyActionScreen extends StatefulWidget {
 
 class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
     with SingleTickerProviderStateMixin {
-  final List<TextEditingController> _otpControllers =
-      List.generate(4, (_) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    4,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
 
   late AnimationController _scannerAnim;
@@ -78,8 +80,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
             ),
             title: const Row(
               children: [
-                Icon(Icons.verified_rounded,
-                    color: AppTheme.emerald, size: 26),
+                Icon(Icons.verified_rounded, color: AppTheme.emerald, size: 26),
                 SizedBox(width: 10),
                 Text('Pickup Authenticated!'),
               ],
@@ -124,9 +125,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Verify Hand-Off'),
-      ),
+      appBar: AppBar(title: const Text('Verify Hand-Off')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -161,8 +160,9 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         backgroundColor: _isScannerMode
                             ? AppTheme.forestGreen
                             : Colors.white,
-                        foregroundColor:
-                            _isScannerMode ? Colors.white : AppTheme.forestGreen,
+                        foregroundColor: _isScannerMode
+                            ? Colors.white
+                            : AppTheme.forestGreen,
                       ),
                       onPressed: () => setState(() => _isScannerMode = true),
                       child: const Row(
@@ -182,8 +182,9 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         backgroundColor: !_isScannerMode
                             ? AppTheme.forestGreen
                             : Colors.white,
-                        foregroundColor:
-                            !_isScannerMode ? Colors.white : AppTheme.forestGreen,
+                        foregroundColor: !_isScannerMode
+                            ? Colors.white
+                            : AppTheme.forestGreen,
                       ),
                       onPressed: () => setState(() => _isScannerMode = false),
                       child: const Row(
@@ -274,7 +275,8 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                 ),
                 const SizedBox(height: 24),
                 AppButton(
-                  label: 'Simulate Camera Scan (Code: ${widget.donation.pickupOtp})',
+                  label:
+                      'Simulate Camera Scan (Code: ${widget.donation.pickupOtp})',
                   icon: Icons.camera_alt_rounded,
                   isLoading: _isVerifying,
                   onPressed: () => _verifyCode(widget.donation.pickupOtp),
@@ -340,7 +342,8 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         child: TextButton.icon(
                           icon: const Icon(Icons.flash_on_rounded, size: 16),
                           label: Text(
-                              'Autofill Donor Code: ${widget.donation.pickupOtp}'),
+                            'Autofill Donor Code: ${widget.donation.pickupOtp}',
+                          ),
                           onPressed: () {
                             final code = widget.donation.pickupOtp;
                             for (int i = 0; i < 4 && i < code.length; i++) {
@@ -355,7 +358,9 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         icon: Icons.check_circle_outline_rounded,
                         isLoading: _isVerifying,
                         onPressed: () {
-                          final code = _otpControllers.map((c) => c.text).join();
+                          final code = _otpControllers
+                              .map((c) => c.text)
+                              .join();
                           _verifyCode(code);
                         },
                       ),

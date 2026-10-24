@@ -38,16 +38,14 @@ class _RealtimeNotificationOverlayState
       duration: const Duration(milliseconds: 350),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.2),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animController,
-        curve: Curves.easeOutBack,
-        reverseCurve: Curves.easeInCubic,
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, -1.2), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animController,
+            curve: Curves.easeOutBack,
+            reverseCurve: Curves.easeInCubic,
+          ),
+        );
 
     _sub = widget.repository.onNotificationStream.listen((notif) {
       final currentRoleStr = widget.repository.currentRole.name.toLowerCase();
@@ -103,8 +101,10 @@ class _RealtimeNotificationOverlayState
             right: 0,
             child: SafeArea(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: SlideTransition(
                   position: _slideAnimation,
                   child: Material(
@@ -121,10 +121,11 @@ class _RealtimeNotificationOverlayState
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: (_activeNotification!.isUrgent
-                                    ? AppTheme.statusCritical
-                                    : AppTheme.forestGreen)
-                                .withValues(alpha: 0.18),
+                            color:
+                                (_activeNotification!.isUrgent
+                                        ? AppTheme.statusCritical
+                                        : AppTheme.forestGreen)
+                                    .withValues(alpha: 0.18),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -173,11 +174,14 @@ class _RealtimeNotificationOverlayState
                                       const SizedBox(width: 6),
                                       Container(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 6, vertical: 2),
+                                          horizontal: 6,
+                                          vertical: 2,
+                                        ),
                                         decoration: BoxDecoration(
                                           color: AppTheme.statusCritical,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
                                         ),
                                         child: const Text(
                                           'URGENT',
@@ -216,11 +220,14 @@ class _RealtimeNotificationOverlayState
                                 widget.onActionTap!(notif);
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: _activeNotification!.accentColor,
+                                backgroundColor:
+                                    _activeNotification!.accentColor,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),

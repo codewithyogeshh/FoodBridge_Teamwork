@@ -34,7 +34,8 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
   void initState() {
     super.initState();
     _portionsController = TextEditingController(
-        text: widget.donation.quantityServings.toString());
+      text: widget.donation.quantityServings.toString(),
+    );
   }
 
   @override
@@ -50,7 +51,8 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
 
     setState(() => _isSubmitting = true);
 
-    final count = int.tryParse(_portionsController.text.trim()) ??
+    final count =
+        int.tryParse(_portionsController.text.trim()) ??
         widget.donation.quantityServings;
 
     final success = await widget.repository.confirmDelivery(
@@ -72,8 +74,11 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
             ),
             title: const Row(
               children: [
-                Icon(Icons.celebration_rounded,
-                    color: AppTheme.emerald, size: 28),
+                Icon(
+                  Icons.celebration_rounded,
+                  color: AppTheme.emerald,
+                  size: 28,
+                ),
                 SizedBox(width: 10),
                 Text('Delivery Completed!'),
               ],
@@ -109,9 +114,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Confirm Food Delivery'),
-      ),
+      appBar: AppBar(title: const Text('Confirm Food Delivery')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -196,8 +199,11 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.add_a_photo_rounded,
-                                color: AppTheme.forestGreen, size: 20),
+                            Icon(
+                              Icons.add_a_photo_rounded,
+                              color: AppTheme.forestGreen,
+                              size: 20,
+                            ),
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
@@ -209,8 +215,11 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                                 ),
                               ),
                             ),
-                            Icon(Icons.check_circle_rounded,
-                                color: AppTheme.emerald, size: 18),
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: AppTheme.emerald,
+                              size: 18,
+                            ),
                           ],
                         ),
                       ),

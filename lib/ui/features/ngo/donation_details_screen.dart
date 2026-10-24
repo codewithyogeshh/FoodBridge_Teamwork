@@ -25,9 +25,7 @@ class DonationDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Donation Details'),
-      ),
+      appBar: AppBar(title: const Text('Donation Details')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -53,14 +51,20 @@ class DonationDetailsScreen extends StatelessWidget {
                           height: 180,
                           fit: BoxFit.cover,
                           errorBuilder: (_, _, _) => const Center(
-                            child: Icon(Icons.restaurant_rounded,
-                                size: 56, color: Colors.white54),
+                            child: Icon(
+                              Icons.restaurant_rounded,
+                              size: 56,
+                              color: Colors.white54,
+                            ),
                           ),
                         )
                       else
                         const Center(
-                          child: Icon(Icons.restaurant_rounded,
-                              size: 56, color: Colors.white54),
+                          child: Icon(
+                            Icons.restaurant_rounded,
+                            size: 56,
+                            color: Colors.white54,
+                          ),
                         ),
                       Container(
                         decoration: BoxDecoration(
@@ -166,7 +170,8 @@ class DonationDetailsScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
-                              color: donation.urgencyLevel == UrgencyLevel.critical
+                              color:
+                                  donation.urgencyLevel == UrgencyLevel.critical
                                   ? AppTheme.statusCritical
                                   : AppTheme.forestGreen,
                             ),
@@ -193,8 +198,11 @@ class DonationDetailsScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.ac_unit_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.ac_unit_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Thermal & Handling Protocol',
@@ -208,7 +216,8 @@ class DonationDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      donation.storageRequirements ?? 'Ambient Food-Safe Storage',
+                      donation.storageRequirements ??
+                          'Ambient Food-Safe Storage',
                       style: const TextStyle(
                         fontSize: 13,
                         color: AppTheme.richCharcoal,
@@ -240,7 +249,9 @@ class DonationDetailsScreen extends StatelessWidget {
                         children: donation.allergens.map((allergen) {
                           return Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.warmIvoryDark,
                               borderRadius: BorderRadius.circular(6),
@@ -269,8 +280,11 @@ class DonationDetailsScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.location_on_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.location_on_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Pickup Location & Gate Access',

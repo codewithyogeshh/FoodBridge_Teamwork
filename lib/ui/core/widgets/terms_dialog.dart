@@ -55,8 +55,11 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                     color: AppTheme.emeraldLight,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.gavel_rounded,
-                      color: AppTheme.forestGreen, size: 26),
+                  child: const Icon(
+                    Icons.gavel_rounded,
+                    color: AppTheme.forestGreen,
+                    size: 26,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 const Expanded(
@@ -165,7 +168,8 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
             ),
             InkWell(
               onTap: () => setState(
-                  () => _agreedToSafetyCharter = !_agreedToSafetyCharter),
+                () => _agreedToSafetyCharter = !_agreedToSafetyCharter,
+              ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(

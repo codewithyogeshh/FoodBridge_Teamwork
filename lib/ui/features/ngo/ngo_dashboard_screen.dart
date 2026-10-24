@@ -91,8 +91,10 @@ class NGODashboardScreen extends StatelessWidget {
                 onPressed: () => repository.refreshAllData(),
               ),
               IconButton(
-                icon: const Icon(Icons.logout_rounded,
-                    color: AppTheme.statusCritical),
+                icon: const Icon(
+                  Icons.logout_rounded,
+                  color: AppTheme.statusCritical,
+                ),
                 tooltip: 'Log Out',
                 onPressed: () => _confirmLogout(context),
               ),
@@ -105,7 +107,10 @@ class NGODashboardScreen extends StatelessWidget {
               color: AppTheme.forestGreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -161,7 +166,8 @@ class NGODashboardScreen extends StatelessWidget {
 
                     // Primary Action: Discover Surplus Food
                     AppButton(
-                      label: 'Discover Surplus Food & Live Map (${available.length})',
+                      label:
+                          'Discover Surplus Food & Live Map (${available.length})',
                       icon: Icons.travel_explore_rounded,
                       onPressed: () {
                         Navigator.push(
@@ -247,7 +253,9 @@ class NGODashboardScreen extends StatelessWidget {
                           final item = reserved[index];
                           return AppCard(
                             border: const BorderSide(
-                                color: AppTheme.emerald, width: 1.5),
+                              color: AppTheme.emerald,
+                              width: 1.5,
+                            ),
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -266,7 +274,9 @@ class NGODashboardScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 3),
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppTheme.emeraldLight,
                                         borderRadius: BorderRadius.circular(6),
@@ -304,8 +314,11 @@ class NGODashboardScreen extends StatelessWidget {
                                 const SizedBox(height: 12),
                                 Row(
                                   children: [
-                                    const Icon(Icons.timer_outlined,
-                                        size: 14, color: AppTheme.statusCritical),
+                                    const Icon(
+                                      Icons.timer_outlined,
+                                      size: 14,
+                                      color: AppTheme.statusCritical,
+                                    ),
                                     const SizedBox(width: 4),
                                     Text(
                                       item.formattedTimeRemaining,
@@ -324,8 +337,11 @@ class NGODashboardScreen extends StatelessWidget {
                                         color: AppTheme.forestGreen,
                                       ),
                                     ),
-                                    const Icon(Icons.chevron_right_rounded,
-                                        size: 16, color: AppTheme.forestGreen),
+                                    const Icon(
+                                      Icons.chevron_right_rounded,
+                                      size: 16,
+                                      color: AppTheme.forestGreen,
+                                    ),
                                   ],
                                 ),
                               ],

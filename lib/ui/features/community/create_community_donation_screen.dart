@@ -96,7 +96,6 @@ class _CreateCommunityDonationScreenState
     }
   }
 
-
   void _onCategoryChanged(CommunityDonationCategory cat) {
     setState(() {
       _selectedCategory = cat;
@@ -111,7 +110,8 @@ class _CreateCommunityDonationScreenState
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-                'Please enter your PAN Card number to generate your official 80G Tax Exemption Certificate.'),
+              'Please enter your PAN Card number to generate your official 80G Tax Exemption Certificate.',
+            ),
             backgroundColor: AppTheme.statusCritical,
           ),
         );
@@ -145,8 +145,8 @@ class _CreateCommunityDonationScreenState
       tax80GReceiptNumber: taxReceipt,
       paymentTransactionId:
           _selectedCategory == CommunityDonationCategory.monetary
-              ? 'TXN-UPI-${DateTime.now().millisecondsSinceEpoch}'
-              : null,
+          ? 'TXN-UPI-${DateTime.now().millisecondsSinceEpoch}'
+          : null,
       conditionRating: _condition,
       createdAt: DateTime.now(),
     );
@@ -198,8 +198,11 @@ class _CreateCommunityDonationScreenState
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.receipt_long_rounded,
-                      color: AppTheme.forestGreen, size: 24),
+                  const Icon(
+                    Icons.receipt_long_rounded,
+                    color: AppTheme.forestGreen,
+                    size: 24,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -238,9 +241,10 @@ class _CreateCommunityDonationScreenState
                   ? '🔒 Anonymous Giving Mode: Your legal receipt is privately sent to your contact details and not publicized.'
                   : 'A copy has been dispatched to your email address.',
               style: const TextStyle(
-                  fontSize: 11,
-                  color: AppTheme.charcoalMuted,
-                  fontStyle: FontStyle.italic),
+                fontSize: 11,
+                color: AppTheme.charcoalMuted,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ],
         ),
@@ -268,9 +272,7 @@ class _CreateCommunityDonationScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Donate Items or Funds'),
-      ),
+      appBar: AppBar(title: const Text('Donate Items or Funds')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -315,10 +317,10 @@ class _CreateCommunityDonationScreenState
                                 cat == CommunityDonationCategory.clothes
                                     ? Icons.checkroom_rounded
                                     : cat == CommunityDonationCategory.books
-                                        ? Icons.menu_book_rounded
-                                        : cat == CommunityDonationCategory.monetary
-                                            ? Icons.currency_rupee_rounded
-                                            : Icons.inventory_2_rounded,
+                                    ? Icons.menu_book_rounded
+                                    : cat == CommunityDonationCategory.monetary
+                                    ? Icons.currency_rupee_rounded
+                                    : Icons.inventory_2_rounded,
                                 size: 16,
                                 color: isSelected
                                     ? Colors.white
@@ -331,7 +333,9 @@ class _CreateCommunityDonationScreenState
                           selected: isSelected,
                           selectedColor: AppTheme.forestGreen,
                           labelStyle: TextStyle(
-                            color: isSelected ? Colors.white : AppTheme.richCharcoal,
+                            color: isSelected
+                                ? Colors.white
+                                : AppTheme.richCharcoal,
                             fontWeight: isSelected
                                 ? FontWeight.w800
                                 : FontWeight.w600,
@@ -358,8 +362,9 @@ class _CreateCommunityDonationScreenState
                         hint: _titleHint,
                         controller: _titleController,
                         prefixIcon: Icons.title_rounded,
-                        validator: (v) =>
-                            v == null || v.trim().isEmpty ? 'Required field' : null,
+                        validator: (v) => v == null || v.trim().isEmpty
+                            ? 'Required field'
+                            : null,
                       ),
                       const SizedBox(height: 14),
 
@@ -407,25 +412,33 @@ class _CreateCommunityDonationScreenState
                       SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         activeThumbColor: AppTheme.forestGreen,
-                        activeTrackColor: AppTheme.forestGreen.withValues(alpha: 0.4),
+                        activeTrackColor: AppTheme.forestGreen.withValues(
+                          alpha: 0.4,
+                        ),
                         title: const Row(
                           children: [
-                            Icon(Icons.visibility_off_rounded,
-                                size: 18, color: AppTheme.forestGreen),
+                            Icon(
+                              Icons.visibility_off_rounded,
+                              size: 18,
+                              color: AppTheme.forestGreen,
+                            ),
                             SizedBox(width: 8),
                             Text(
                               'Donate Anonymously',
                               style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppTheme.richCharcoal),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.richCharcoal,
+                              ),
                             ),
                           ],
                         ),
                         subtitle: const Text(
                           'Hide your name and phone number on public community walls and recipient rosters.',
                           style: TextStyle(
-                              fontSize: 11, color: AppTheme.charcoalMuted),
+                            fontSize: 11,
+                            color: AppTheme.charcoalMuted,
+                          ),
                         ),
                         value: _isAnonymous,
                         onChanged: (val) => setState(() => _isAnonymous = val),
@@ -462,9 +475,10 @@ class _CreateCommunityDonationScreenState
         const Text(
           'Select Sponsorship Tier',
           style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: AppTheme.richCharcoal),
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.richCharcoal,
+          ),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -507,14 +521,20 @@ class _CreateCommunityDonationScreenState
           ),
           child: const Row(
             children: [
-              Icon(Icons.shield_outlined,
-                  size: 18, color: AppTheme.forestGreen),
+              Icon(
+                Icons.shield_outlined,
+                size: 18,
+                color: AppTheme.forestGreen,
+              ),
               SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Tax certificate is generated instantly upon payment confirmation. 50% eligible deduction under Section 80G.',
                   style: TextStyle(
-                      fontSize: 11, color: AppTheme.charcoalMuted, height: 1.3),
+                    fontSize: 11,
+                    color: AppTheme.charcoalMuted,
+                    height: 1.3,
+                  ),
                 ),
               ),
             ],
@@ -545,11 +565,14 @@ class _CreateCommunityDonationScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Condition',
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.richCharcoal)),
+                  const Text(
+                    'Condition',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.richCharcoal,
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -564,13 +587,19 @@ class _CreateCommunityDonationScreenState
                         isExpanded: true,
                         items: const [
                           DropdownMenuItem(
-                              value: 'Brand New (Unused)',
-                              child: Text('Brand New',
-                                  style: TextStyle(fontSize: 12))),
+                            value: 'Brand New (Unused)',
+                            child: Text(
+                              'Brand New',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
                           DropdownMenuItem(
-                              value: 'Gently Used (Clean & Sanitized)',
-                              child: Text('Gently Used',
-                                  style: TextStyle(fontSize: 12))),
+                            value: 'Gently Used (Clean & Sanitized)',
+                            child: Text(
+                              'Gently Used',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
                         ],
                         onChanged: (v) => setState(() => _condition = v!),
                       ),
@@ -601,11 +630,14 @@ class _CreateCommunityDonationScreenState
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Audience / Educational Level',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.richCharcoal)),
+            const Text(
+              'Audience / Educational Level',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.richCharcoal,
+              ),
+            ),
             const SizedBox(height: 6),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -620,21 +652,33 @@ class _CreateCommunityDonationScreenState
                   isExpanded: true,
                   items: const [
                     DropdownMenuItem(
-                        value: 'Primary School (Grades 1-5)',
-                        child: Text('Primary (Grades 1-5)',
-                            style: TextStyle(fontSize: 12))),
+                      value: 'Primary School (Grades 1-5)',
+                      child: Text(
+                        'Primary (Grades 1-5)',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                     DropdownMenuItem(
-                        value: 'High School (Grades 8-10)',
-                        child: Text('High School (Grades 8-10)',
-                            style: TextStyle(fontSize: 12))),
+                      value: 'High School (Grades 8-10)',
+                      child: Text(
+                        'High School (Grades 8-10)',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                     DropdownMenuItem(
-                        value: 'College / Reference',
-                        child: Text('College / Reference',
-                            style: TextStyle(fontSize: 12))),
+                      value: 'College / Reference',
+                      child: Text(
+                        'College / Reference',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                     DropdownMenuItem(
-                        value: 'Storybooks & Fiction',
-                        child: Text('Storybooks & Literature',
-                            style: TextStyle(fontSize: 12))),
+                      value: 'Storybooks & Fiction',
+                      child: Text(
+                        'Storybooks & Literature',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                   ],
                   onChanged: (v) => setState(() => _bookGrade = v!),
                 ),

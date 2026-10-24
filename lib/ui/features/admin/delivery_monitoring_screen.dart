@@ -18,9 +18,7 @@ class DeliveryMonitoringScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('Live Delivery & Transit Ops'),
-          ),
+          appBar: AppBar(title: const Text('Live Delivery & Transit Ops')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -31,7 +29,8 @@ class DeliveryMonitoringScreen extends StatelessWidget {
                   const MapPreviewWidget(
                     height: 260,
                     locationTitle: 'Metropolitan Fleet Ground Control',
-                    subtitle: '1 Live Transit Route • 3 Verified Kitchen Hubs Active',
+                    subtitle:
+                        '1 Live Transit Route • 3 Verified Kitchen Hubs Active',
                     showRoute: true,
                     destinationTitle: 'Robin Hood Rescue Van',
                   ),
@@ -52,7 +51,9 @@ class DeliveryMonitoringScreen extends StatelessWidget {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.emeraldLight,
                           borderRadius: BorderRadius.circular(8),
@@ -76,7 +77,9 @@ class DeliveryMonitoringScreen extends StatelessWidget {
                     ...activeReserved.map((item) {
                       return AppCard(
                         border: const BorderSide(
-                            color: AppTheme.emerald, width: 1.5),
+                          color: AppTheme.emerald,
+                          width: 1.5,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -84,7 +87,9 @@ class DeliveryMonitoringScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 3),
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: AppTheme.emeraldLight,
                                     borderRadius: BorderRadius.circular(6),
@@ -135,8 +140,11 @@ class DeliveryMonitoringScreen extends StatelessWidget {
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.timer_outlined,
-                                      size: 14, color: AppTheme.statusCritical),
+                                  const Icon(
+                                    Icons.timer_outlined,
+                                    size: 14,
+                                    color: AppTheme.statusCritical,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(
                                     'Safe consumption limit: ${item.formattedTimeRemaining}',

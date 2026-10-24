@@ -65,9 +65,11 @@ class DonorDashboardScreen extends StatelessWidget {
       builder: (context, _) {
         final donations = repository.donations;
         final activeListings = donations
-            .where((d) =>
-                d.status == DonationStatus.available ||
-                d.status == DonationStatus.reserved)
+            .where(
+              (d) =>
+                  d.status == DonationStatus.available ||
+                  d.status == DonationStatus.reserved,
+            )
             .toList();
 
         return Scaffold(
@@ -95,8 +97,10 @@ class DonorDashboardScreen extends StatelessWidget {
                 onPressed: () => repository.refreshAllData(),
               ),
               IconButton(
-                icon: const Icon(Icons.logout_rounded,
-                    color: AppTheme.statusCritical),
+                icon: const Icon(
+                  Icons.logout_rounded,
+                  color: AppTheme.statusCritical,
+                ),
                 tooltip: 'Log Out',
                 onPressed: () => _confirmLogout(context),
               ),
@@ -109,7 +113,10 @@ class DonorDashboardScreen extends StatelessWidget {
               color: AppTheme.forestGreen,
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -158,7 +165,9 @@ class DonorDashboardScreen extends StatelessWidget {
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.forestGreen,
                               borderRadius: BorderRadius.circular(8),
@@ -191,7 +200,9 @@ class DonorDashboardScreen extends StatelessWidget {
                               onDonationCreated: (newDonation) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Food batch published! Now visible to nearby NGOs.'),
+                                    content: Text(
+                                      'Food batch published! Now visible to nearby NGOs.',
+                                    ),
                                     backgroundColor: AppTheme.forestGreen,
                                   ),
                                 );
@@ -225,7 +236,8 @@ class DonorDashboardScreen extends StatelessWidget {
                         Expanded(
                           child: _buildMetricTile(
                             label: 'CO2e Saved',
-                            value: '${(repository.totalCo2OffsetKg / 1000).toStringAsFixed(1)}t',
+                            value:
+                                '${(repository.totalCo2OffsetKg / 1000).toStringAsFixed(1)}t',
                             icon: Icons.eco_rounded,
                           ),
                         ),
@@ -279,7 +291,9 @@ class DonorDashboardScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ActiveDonationStatusScreen(donation: item),
+                                      ActiveDonationStatusScreen(
+                                        donation: item,
+                                      ),
                                 ),
                               );
                             },
@@ -300,7 +314,8 @@ class DonorDashboardScreen extends StatelessWidget {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) ...[
+                                    if (item.imageUrl != null &&
+                                        item.imageUrl!.isNotEmpty) ...[
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.network(
@@ -309,28 +324,32 @@ class DonorDashboardScreen extends StatelessWidget {
                                           height: 72,
                                           fit: BoxFit.cover,
                                           errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Container(
-                                            width: 72,
-                                            height: 72,
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.emeraldLight,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: const Icon(
-                                              Icons.fastfood_rounded,
-                                              color: AppTheme.forestGreen,
-                                              size: 28,
-                                            ),
-                                          ),
+                                              (
+                                                context,
+                                                error,
+                                                stackTrace,
+                                              ) => Container(
+                                                width: 72,
+                                                height: 72,
+                                                decoration: BoxDecoration(
+                                                  color: AppTheme.emeraldLight,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.fastfood_rounded,
+                                                  color: AppTheme.forestGreen,
+                                                  size: 28,
+                                                ),
+                                              ),
                                         ),
                                       ),
                                       const SizedBox(width: 12),
                                     ],
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             item.title,
@@ -357,15 +376,20 @@ class DonorDashboardScreen extends StatelessWidget {
                                 const SizedBox(height: 12),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: AppTheme.warmIvoryDark,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.timer_outlined,
-                                          size: 14, color: AppTheme.forestGreen),
+                                      const Icon(
+                                        Icons.timer_outlined,
+                                        size: 14,
+                                        color: AppTheme.forestGreen,
+                                      ),
                                       const SizedBox(width: 6),
                                       Text(
                                         item.formattedTimeRemaining,

@@ -18,9 +18,7 @@ class NGOImpactScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('NGO Rescue Analytics'),
-          ),
+          appBar: AppBar(title: const Text('NGO Rescue Analytics')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -60,10 +58,7 @@ class NGOImpactScreen extends StatelessWidget {
                         ),
                         const Text(
                           'Community Portions Rescued & Served',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.white70,
-                          ),
+                          style: TextStyle(fontSize: 13, color: Colors.white70),
                         ),
                         const SizedBox(height: 18),
                         const Divider(color: Colors.white24, height: 1),
@@ -221,10 +216,7 @@ class NGOImpactScreen extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 11,
-            color: Colors.white70,
-          ),
+          style: const TextStyle(fontSize: 11, color: Colors.white70),
         ),
       ],
     );

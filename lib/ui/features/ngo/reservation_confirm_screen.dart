@@ -54,8 +54,11 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
             ),
             title: const Row(
               children: [
-                Icon(Icons.check_circle_rounded,
-                    color: AppTheme.emerald, size: 26),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: AppTheme.emerald,
+                  size: 26,
+                ),
                 SizedBox(width: 10),
                 Text('Reservation Locked!'),
               ],
@@ -100,9 +103,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Confirm Food Reservation'),
-      ),
+      appBar: AppBar(title: const Text('Confirm Food Reservation')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -154,14 +155,19 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                     const SizedBox(height: 14),
                     const Divider(color: AppTheme.borderColor),
                     const SizedBox(height: 10),
-                    _buildRow('Portions Committed',
-                        '${widget.donation.quantityServings} Meals'),
-                    _buildRow('Pickup Deadline',
-                        widget.donation.formattedTimeRemaining),
                     _buildRow(
-                        'Pickup Address', widget.donation.pickupAddress),
-                    _buildRow('Handling Condition',
-                        widget.donation.storageRequirements ?? 'Standard Safe'),
+                      'Portions Committed',
+                      '${widget.donation.quantityServings} Meals',
+                    ),
+                    _buildRow(
+                      'Pickup Deadline',
+                      widget.donation.formattedTimeRemaining,
+                    ),
+                    _buildRow('Pickup Address', widget.donation.pickupAddress),
+                    _buildRow(
+                      'Handling Condition',
+                      widget.donation.storageRequirements ?? 'Standard Safe',
+                    ),
                   ],
                 ),
               ),
@@ -178,8 +184,11 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.lock_clock_rounded,
-                        color: AppTheme.forestGreen, size: 22),
+                    Icon(
+                      Icons.lock_clock_rounded,
+                      color: AppTheme.forestGreen,
+                      size: 22,
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Column(

@@ -84,7 +84,7 @@ class DonationModel {
           : DateTime.now(),
       safeUntil: json['safe_until'] != null
           ? DateTime.tryParse(json['safe_until'] as String) ??
-              DateTime.now().add(const Duration(hours: 4))
+                DateTime.now().add(const Duration(hours: 4))
           : DateTime.now().add(const Duration(hours: 4)),
       storageRequirements: json['storage_requirements'] as String?,
       allergens: json['allergens'] != null
@@ -92,14 +92,19 @@ class DonationModel {
           : <String>[],
       pickupAddress: json['pickup_address'] as String? ?? '',
       pickupLatitude: (json['pickup_latitude'] as num?)?.toDouble() ?? 12.9716,
-      pickupLongitude: (json['pickup_longitude'] as num?)?.toDouble() ?? 77.5946,
+      pickupLongitude:
+          (json['pickup_longitude'] as num?)?.toDouble() ?? 77.5946,
       pickupInstructions: json['pickup_instructions'] as String?,
       pickupOtp: json['pickup_otp'] as String? ?? '1234',
       imageUrl: json['image_url'] as String?,
-      urgencyLevel: UrgencyLevel.fromString(json['urgency_level'] as String? ?? 'MEDIUM'),
+      urgencyLevel: UrgencyLevel.fromString(
+        json['urgency_level'] as String? ?? 'MEDIUM',
+      ),
       aiUrgencyScore: (json['ai_urgency_score'] as num?)?.toInt() ?? 70,
       aiRecommendationSummary: json['ai_recommendation_summary'] as String?,
-      status: DonationStatus.fromString(json['status'] as String? ?? 'AVAILABLE'),
+      status: DonationStatus.fromString(
+        json['status'] as String? ?? 'AVAILABLE',
+      ),
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String) ?? DateTime.now()
           : DateTime.now(),

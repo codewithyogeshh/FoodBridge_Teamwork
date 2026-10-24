@@ -49,8 +49,10 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
   // Alternate Phone OTP Login
   bool _usePhoneOtp = false;
   final _phoneController = TextEditingController();
-  final List<TextEditingController> _otpControllers =
-      List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> _otpControllers = List.generate(
+    6,
+    (_) => TextEditingController(),
+  );
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
   bool _otpSent = false;
   String? _generatedOtp;
@@ -155,8 +157,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
     }
 
     if (!_acceptedTerms) {
-      setState(() =>
-          _errorMessage = 'Please review and accept our Privacy Policy.');
+      setState(
+        () => _errorMessage = 'Please review and accept our Privacy Policy.',
+      );
       return;
     }
 
@@ -253,14 +256,20 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
   }
 
   void _showForgotPasswordDialog() {
-    final resetEmailController = TextEditingController(text: _loginEmailController.text);
+    final resetEmailController = TextEditingController(
+      text: _loginEmailController.text,
+    );
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
-            Icon(Icons.lock_reset_rounded, color: AppTheme.forestGreen, size: 26),
+            Icon(
+              Icons.lock_reset_rounded,
+              color: AppTheme.forestGreen,
+              size: 26,
+            ),
             SizedBox(width: 10),
             Text('Reset Password'),
           ],
@@ -271,7 +280,11 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
           children: [
             const Text(
               'Enter your registered email address. We will transmit an encrypted single-use password reset link.',
-              style: TextStyle(fontSize: 13, height: 1.4, color: AppTheme.charcoalMuted),
+              style: TextStyle(
+                fontSize: 13,
+                height: 1.4,
+                color: AppTheme.charcoalMuted,
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -280,7 +293,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                 labelText: 'Account Email',
                 hintText: 'name@example.com',
                 prefixIcon: const Icon(Icons.email_outlined),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ],
@@ -294,13 +309,17 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.forestGreen,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             onPressed: () {
               Navigator.pop(ctx);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Encrypted password reset token dispatched to email.'),
+                  content: Text(
+                    'Encrypted password reset token dispatched to email.',
+                  ),
                   backgroundColor: AppTheme.forestGreen,
                 ),
               );
@@ -317,8 +336,8 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
     final roleName = widget.role == UserRole.community
         ? 'Community Giver'
         : widget.role == UserRole.donor
-            ? 'Food Donor'
-            : widget.role.name.toUpperCase();
+        ? 'Food Donor'
+        : widget.role.name.toUpperCase();
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
@@ -337,10 +356,19 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
           unselectedLabelColor: AppTheme.charcoalMuted,
           indicatorColor: AppTheme.forestGreen,
           indicatorWeight: 3,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 13,
+          ),
           tabs: const [
-            Tab(icon: Icon(Icons.lock_outline_rounded, size: 18), text: 'Sign In'),
-            Tab(icon: Icon(Icons.person_add_alt_rounded, size: 18), text: 'Create Account'),
+            Tab(
+              icon: Icon(Icons.lock_outline_rounded, size: 18),
+              text: 'Sign In',
+            ),
+            Tab(
+              icon: Icon(Icons.person_add_alt_rounded, size: 18),
+              text: 'Create Account',
+            ),
           ],
         ),
       ),
@@ -350,10 +378,7 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
             constraints: const BoxConstraints(maxWidth: 620),
             child: TabBarView(
               controller: _tabController,
-              children: [
-                _buildSignInView(),
-                _buildSignUpView(),
-              ],
+              children: [_buildSignInView(), _buildSignUpView()],
             ),
           ),
         ),
@@ -386,14 +411,16 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: !_usePhoneOtp ? Colors.white : Colors.transparent,
+                        color: !_usePhoneOtp
+                            ? Colors.white
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: !_usePhoneOtp
                             ? [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 4,
-                                )
+                                ),
                               ]
                             : null,
                       ),
@@ -424,7 +451,7 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 4,
-                                )
+                                ),
                               ]
                             : null,
                       ),
@@ -462,7 +489,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                       prefixIcon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
                       validator: (v) {
-                        if (v == null || v.trim().isEmpty) return 'Email is required';
+                        if (v == null || v.trim().isEmpty) {
+                          return 'Email is required';
+                        }
                         if (!v.contains('@') || !v.contains('.')) {
                           return 'Enter a valid email address';
                         }
@@ -487,11 +516,17 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                               color: AppTheme.charcoalMuted,
                             ),
                             onPressed: () => setState(
-                                () => _loginObscurePassword = !_loginObscurePassword),
+                              () => _loginObscurePassword =
+                                  !_loginObscurePassword,
+                            ),
                           ),
                           validator: (v) {
-                            if (v == null || v.isEmpty) return 'Password is required';
-                            if (v.length < 6) return 'Password too short';
+                            if (v == null || v.isEmpty) {
+                              return 'Password is required';
+                            }
+                            if (v.length < 6) {
+                              return 'Password too short';
+                            }
                             return null;
                           },
                         ),
@@ -545,8 +580,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
 
   // ========================= SIGN UP VIEW =========================
   Widget _buildSignUpView() {
-    final passwordStrength =
-        _calculatePasswordStrength(_regPasswordController.text);
+    final passwordStrength = _calculatePasswordStrength(
+      _regPasswordController.text,
+    );
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -572,7 +608,10 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                   const SizedBox(height: 4),
                   const Text(
                     'Your data is encrypted. You can toggle anonymous mode anytime.',
-                    style: TextStyle(fontSize: 12, color: AppTheme.charcoalMuted),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.charcoalMuted,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
@@ -605,8 +644,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                     controller: _regPhoneController,
                     prefixIcon: Icons.phone_rounded,
                     keyboardType: TextInputType.phone,
-                    validator: (v) =>
-                        v == null || v.trim().length < 10 ? 'Enter valid phone' : null,
+                    validator: (v) => v == null || v.trim().length < 10
+                        ? 'Enter valid phone'
+                        : null,
                   ),
                   const SizedBox(height: 14),
 
@@ -625,7 +665,8 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                         color: AppTheme.charcoalMuted,
                       ),
                       onPressed: () => setState(
-                          () => _regObscurePassword = !_regObscurePassword),
+                        () => _regObscurePassword = !_regObscurePassword,
+                      ),
                     ),
                     validator: (v) {
                       if (v == null || v.isEmpty) return 'Password required';
@@ -645,9 +686,10 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                           const Text(
                             'Password Strength:',
                             style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppTheme.charcoalMuted),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppTheme.charcoalMuted,
+                            ),
                           ),
                           Text(
                             _getStrengthLabel(passwordStrength),
@@ -666,7 +708,8 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                           value: passwordStrength,
                           backgroundColor: Colors.grey.shade200,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                              _getStrengthColor(passwordStrength)),
+                            _getStrengthColor(passwordStrength),
+                          ),
                           minHeight: 5,
                         ),
                       ),
@@ -689,7 +732,8 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                         color: AppTheme.charcoalMuted,
                       ),
                       onPressed: () => setState(
-                          () => _regObscureConfirm = !_regObscureConfirm),
+                        () => _regObscureConfirm = !_regObscureConfirm,
+                      ),
                     ),
                     validator: (v) {
                       if (v != _regPasswordController.text) {
@@ -706,49 +750,68 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     activeThumbColor: AppTheme.forestGreen,
-                    activeTrackColor: AppTheme.forestGreen.withValues(alpha: 0.4),
+                    activeTrackColor: AppTheme.forestGreen.withValues(
+                      alpha: 0.4,
+                    ),
                     title: const Row(
                       children: [
-                        Icon(Icons.visibility_off_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.visibility_off_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Anonymous Donor Mode',
                           style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.richCharcoal),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.richCharcoal,
+                          ),
                         ),
                       ],
                     ),
                     subtitle: const Text(
                       'Hide my identity on public leaderboards, shelter feeds, and delivery handoffs.',
-                      style: TextStyle(fontSize: 11, color: AppTheme.charcoalMuted),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.charcoalMuted,
+                      ),
                     ),
                     value: _donateAnonymously,
-                    onChanged: (val) => setState(() => _donateAnonymously = val),
+                    onChanged: (val) =>
+                        setState(() => _donateAnonymously = val),
                   ),
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     activeThumbColor: AppTheme.forestGreen,
-                    activeTrackColor: AppTheme.forestGreen.withValues(alpha: 0.4),
+                    activeTrackColor: AppTheme.forestGreen.withValues(
+                      alpha: 0.4,
+                    ),
                     title: const Row(
                       children: [
-                        Icon(Icons.fingerprint_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.fingerprint_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Enable Device Biometric Quick-Unlock',
                           style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.richCharcoal),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.richCharcoal,
+                          ),
                         ),
                       ],
                     ),
                     subtitle: const Text(
                       'Use Touch ID / Face ID for fast, encrypted session resumption.',
-                      style: TextStyle(fontSize: 11, color: AppTheme.charcoalMuted),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.charcoalMuted,
+                      ),
                     ),
                     value: _enableBiometrics,
                     onChanged: (val) => setState(() => _enableBiometrics = val),
@@ -760,7 +823,10 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                     controlAffinity: ListTileControlAffinity.leading,
                     title: const Text(
                       'I agree to FoodBridge Safety Guidelines & DPDP Privacy Terms.',
-                      style: TextStyle(fontSize: 11.5, color: AppTheme.richCharcoal),
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        color: AppTheme.richCharcoal,
+                      ),
                     ),
                     value: _acceptedTerms,
                     onChanged: (val) =>
@@ -813,16 +879,18 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                         const Text(
                           'MESSAGES • REAL-TIME OTP',
                           style: TextStyle(
-                              color: AppTheme.limeLight,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800),
+                            color: AppTheme.limeLight,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                         Text(
                           'Your FoodBridge Passcode: $_generatedOtp',
                           style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w800),
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ],
                     ),
@@ -832,12 +900,19 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                       backgroundColor: AppTheme.restrainedLime,
                       foregroundColor: AppTheme.richCharcoal,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       minimumSize: const Size(40, 28),
                     ),
                     onPressed: _autofillOtp,
-                    child: const Text('Autofill',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
+                    child: const Text(
+                      'Autofill',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -866,14 +941,17 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                 const Text(
                   'Enter 6-Digit Passcode',
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.richCharcoal),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.richCharcoal,
+                  ),
                 ),
                 TextButton(
                   onPressed: () => setState(() => _otpSent = false),
-                  child: const Text('Change Number',
-                      style: TextStyle(fontSize: 11, color: AppTheme.forestGreen)),
+                  child: const Text(
+                    'Change Number',
+                    style: TextStyle(fontSize: 11, color: AppTheme.forestGreen),
+                  ),
                 ),
               ],
             ),
@@ -891,9 +969,10 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                     keyboardType: TextInputType.number,
                     maxLength: 1,
                     style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        color: AppTheme.forestGreen),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: AppTheme.forestGreen,
+                    ),
                     decoration: InputDecoration(
                       counterText: '',
                       contentPadding: EdgeInsets.zero,
@@ -903,7 +982,9 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
-                            color: AppTheme.forestGreen, width: 2),
+                          color: AppTheme.forestGreen,
+                          width: 2,
+                        ),
                       ),
                     ),
                     onChanged: (val) {
@@ -928,16 +1009,22 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
                   _otpCountdown > 0
                       ? 'Resend OTP in ${_otpCountdown}s'
                       : 'Did not receive code?',
-                  style: const TextStyle(fontSize: 11, color: AppTheme.charcoalMuted),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppTheme.charcoalMuted,
+                  ),
                 ),
                 if (_otpCountdown == 0)
                   TextButton(
                     onPressed: _sendPhoneOtp,
-                    child: const Text('Resend Code',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            color: AppTheme.forestGreen)),
+                    child: const Text(
+                      'Resend Code',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.forestGreen,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -969,7 +1056,11 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
       ),
       child: const Row(
         children: [
-          Icon(Icons.verified_user_rounded, color: AppTheme.forestGreen, size: 22),
+          Icon(
+            Icons.verified_user_rounded,
+            color: AppTheme.forestGreen,
+            size: 22,
+          ),
           SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -1010,8 +1101,11 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded,
-              color: AppTheme.statusCritical, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: AppTheme.statusCritical,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -1035,8 +1129,11 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_clock_rounded,
-                  size: 14, color: AppTheme.charcoalMuted),
+              const Icon(
+                Icons.lock_clock_rounded,
+                size: 14,
+                color: AppTheme.charcoalMuted,
+              ),
               const SizedBox(width: 6),
               Text(
                 'Zero Knowledge Architecture • Passwords Never Stored in Plain Text',

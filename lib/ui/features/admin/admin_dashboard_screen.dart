@@ -92,8 +92,10 @@ class AdminDashboardScreen extends StatelessWidget {
                 onPressed: () => repository.refreshAllData(),
               ),
               IconButton(
-                icon: const Icon(Icons.logout_rounded,
-                    color: AppTheme.statusCritical),
+                icon: const Icon(
+                  Icons.logout_rounded,
+                  color: AppTheme.statusCritical,
+                ),
                 tooltip: 'Log Out of Admin Operations',
                 onPressed: () => _confirmLogout(context),
               ),
@@ -129,7 +131,9 @@ class AdminDashboardScreen extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.restrainedLime,
                                 borderRadius: BorderRadius.circular(6),
@@ -264,9 +268,8 @@ class AdminDashboardScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AIAllocationScreen(
-                            repository: repository,
-                          ),
+                          builder: (context) =>
+                              AIAllocationScreen(repository: repository),
                         ),
                       );
                     },
@@ -276,15 +279,15 @@ class AdminDashboardScreen extends StatelessWidget {
                   // Donation Batch Moderation
                   _buildNavCard(
                     title: 'Donation Batch Moderation',
-                    subtitle: 'Inspect and manage all $totalDonations active food batches',
+                    subtitle:
+                        'Inspect and manage all $totalDonations active food batches',
                     icon: Icons.inventory_rounded,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DonationManagementScreen(
-                            repository: repository,
-                          ),
+                          builder: (context) =>
+                              DonationManagementScreen(repository: repository),
                         ),
                       );
                     },
@@ -294,15 +297,15 @@ class AdminDashboardScreen extends StatelessWidget {
                   // Live Delivery Monitoring
                   _buildNavCard(
                     title: 'Live Delivery & Transit Map',
-                    subtitle: 'Monitor active couriers, ETAs, and handoff passcodes',
+                    subtitle:
+                        'Monitor active couriers, ETAs, and handoff passcodes',
                     icon: Icons.map_rounded,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DeliveryMonitoringScreen(
-                            repository: repository,
-                          ),
+                          builder: (context) =>
+                              DeliveryMonitoringScreen(repository: repository),
                         ),
                       );
                     },
@@ -312,15 +315,15 @@ class AdminDashboardScreen extends StatelessWidget {
                   // Reports and Settings
                   _buildNavCard(
                     title: 'Environmental Audit & Platform Settings',
-                    subtitle: 'Export CSV audit trail and tune safety threshold rules',
+                    subtitle:
+                        'Export CSV audit trail and tune safety threshold rules',
                     icon: Icons.tune_rounded,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReportsSettingsScreen(
-                            repository: repository,
-                          ),
+                          builder: (context) =>
+                              ReportsSettingsScreen(repository: repository),
                         ),
                       );
                     },
@@ -414,7 +417,9 @@ class AdminDashboardScreen extends StatelessWidget {
                     if (badgeCount != null && badgeCount > 0)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 2),
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.statusCritical,
                           borderRadius: BorderRadius.circular(10),
@@ -431,7 +436,9 @@ class AdminDashboardScreen extends StatelessWidget {
                     if (badgeText != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 2),
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.emeraldLight,
                           borderRadius: BorderRadius.circular(10),
@@ -459,8 +466,10 @@ class AdminDashboardScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-          const Icon(Icons.chevron_right_rounded,
-              color: AppTheme.charcoalLight),
+          const Icon(
+            Icons.chevron_right_rounded,
+            color: AppTheme.charcoalLight,
+          ),
         ],
       ),
     );

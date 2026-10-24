@@ -4,7 +4,9 @@ import 'package:foodbridge/data/repositories/app_repository.dart';
 import 'package:foodbridge/data/services/supabase_service.dart';
 
 void main() {
-  testWidgets('FoodBridgeApp initial launch smoke test', (WidgetTester tester) async {
+  testWidgets('FoodBridgeApp initial launch smoke test', (
+    WidgetTester tester,
+  ) async {
     final supabaseService = SupabaseService(enableRealtime: false);
     final repository = AppRepository(supabaseService: supabaseService);
     addTearDown(() {
@@ -21,6 +23,9 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify Onboarding appears
-    expect(find.text('Bridge Surplus Meals to Real Community Impact'), findsOneWidget);
+    expect(
+      find.text('Bridge Surplus Meals to Real Community Impact'),
+      findsOneWidget,
+    );
   });
 }

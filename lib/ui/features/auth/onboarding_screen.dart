@@ -73,7 +73,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   return Center(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 16,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,12 +93,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               ),
                               borderRadius: BorderRadius.circular(32),
                               border: Border.all(
-                                color: const Color(0xFF4EDEA3).withValues(alpha: 0.5),
+                                color: const Color(
+                                  0xFF4EDEA3,
+                                ).withValues(alpha: 0.5),
                                 width: 1.5,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF10B981).withValues(alpha: 0.35),
+                                  color: const Color(
+                                    0xFF10B981,
+                                  ).withValues(alpha: 0.35),
                                   blurRadius: 30,
                                   offset: const Offset(0, 8),
                                 ),
@@ -110,12 +117,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           const SizedBox(height: 36),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
+                              horizontal: 12,
+                              vertical: 5,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.emeraldLight,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: AppTheme.restrainedLime.withValues(alpha: 0.4),
+                                color: AppTheme.restrainedLime.withValues(
+                                  alpha: 0.4,
+                                ),
                               ),
                             ),
                             child: Text(
@@ -180,7 +191,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           boxShadow: _currentPage == index
                               ? [
                                   BoxShadow(
-                                    color: AppTheme.restrainedLime.withValues(alpha: 0.5),
+                                    color: AppTheme.restrainedLime.withValues(
+                                      alpha: 0.5,
+                                    ),
                                     blurRadius: 8,
                                   ),
                                 ]

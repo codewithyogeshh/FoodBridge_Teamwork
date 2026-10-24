@@ -126,39 +126,53 @@ class AIAllocationService {
 
       final List<String> reasons = [];
       if (distance <= 3.0) {
-        reasons.add('Ultra-close proximity (${distance.toStringAsFixed(1)} km) allows rapid ${travelMinutes}m pickup');
+        reasons.add(
+          'Ultra-close proximity (${distance.toStringAsFixed(1)} km) allows rapid ${travelMinutes}m pickup',
+        );
       } else if (distance <= 7.0) {
-        reasons.add('Strategic corridor access (${distance.toStringAsFixed(1)} km) within safe transit window');
+        reasons.add(
+          'Strategic corridor access (${distance.toStringAsFixed(1)} km) within safe transit window',
+        );
       } else {
         reasons.add('Regional reach (${distance.toStringAsFixed(1)} km)');
       }
 
       if (capacitySufficient) {
-        reasons.add('Capacity verified: handles ${ngo.capacityMealsPerDay} meals/day (${donation.quantityServings} portions requested)');
+        reasons.add(
+          'Capacity verified: handles ${ngo.capacityMealsPerDay} meals/day (${donation.quantityServings} portions requested)',
+        );
       } else {
-        reasons.add('Partial batch capacity (${ngo.capacityMealsPerDay} meals/day)');
+        reasons.add(
+          'Partial batch capacity (${ngo.capacityMealsPerDay} meals/day)',
+        );
       }
 
       if (ngo.foodSafetyCertId != null && ngo.foodSafetyCertId!.isNotEmpty) {
         reasons.add('Food Safety Compliance: ${ngo.foodSafetyCertId}');
       }
 
-      matches.add(AIRecommendationMatch(
-        ngo: ngo,
-        matchScore: double.parse(score.toStringAsFixed(1)),
-        distanceKm: double.parse(distance.toStringAsFixed(1)),
-        estimatedTravelMinutes: travelMinutes,
-        currentRequestedCapacity: donation.quantityServings,
-        matchReasons: reasons,
-        capacitySufficient: capacitySufficient,
-      ));
+      matches.add(
+        AIRecommendationMatch(
+          ngo: ngo,
+          matchScore: double.parse(score.toStringAsFixed(1)),
+          distanceKm: double.parse(distance.toStringAsFixed(1)),
+          estimatedTravelMinutes: travelMinutes,
+          currentRequestedCapacity: donation.quantityServings,
+          matchReasons: reasons,
+          capacitySufficient: capacitySufficient,
+        ),
+      );
     }
 
     // Sort matches by highest score first
     matches.sort((a, b) => b.matchScore.compareTo(a.matchScore));
 
-    final topMatchName = matches.isNotEmpty ? matches.first.ngo.organizationName : 'Nearest Verified Partner';
-    final topMatchDistance = matches.isNotEmpty ? '${matches.first.distanceKm} km' : 'nearby';
+    final topMatchName = matches.isNotEmpty
+        ? matches.first.ngo.organizationName
+        : 'Nearest Verified Partner';
+    final topMatchDistance = matches.isNotEmpty
+        ? '${matches.first.distanceKm} km'
+        : 'nearby';
 
     final transparentReasoning =
         'FoodBridge AI evaluated ${verifiedNGOs.length} verified regional distribution hubs. '

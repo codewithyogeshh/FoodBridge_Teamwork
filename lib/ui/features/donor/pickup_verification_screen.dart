@@ -13,9 +13,7 @@ class PickupVerificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Digital Pickup Passcode'),
-      ),
+      appBar: AppBar(title: const Text('Digital Pickup Passcode')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -56,8 +54,11 @@ class PickupVerificationScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.security_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.security_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Chain of Custody Protocol',
@@ -94,8 +95,10 @@ class PickupVerificationScreen extends StatelessWidget {
 
               // Verification Safety Badge
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: AppTheme.emeraldLight,
                   borderRadius: BorderRadius.circular(12),
@@ -104,8 +107,11 @@ class PickupVerificationScreen extends StatelessWidget {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.lock_rounded,
-                        size: 16, color: AppTheme.forestGreen),
+                    Icon(
+                      Icons.lock_rounded,
+                      size: 16,
+                      color: AppTheme.forestGreen,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'Cryptographic Handoff Secured by Supabase RLS',

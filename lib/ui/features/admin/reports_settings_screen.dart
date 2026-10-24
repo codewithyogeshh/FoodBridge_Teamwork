@@ -23,9 +23,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Reports & System Settings'),
-      ),
+      appBar: AppBar(title: const Text('Reports & System Settings')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -78,7 +76,8 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'FoodBridge_Environmental_Audit_2026.csv generated successfully!'),
+                                    'FoodBridge_Environmental_Audit_2026.csv generated successfully!',
+                                  ),
                                   backgroundColor: AppTheme.forestGreen,
                                 ),
                               );
@@ -96,7 +95,8 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'FoodBridge_CSR_Impact_Report_2026.pdf generated!'),
+                                    'FoodBridge_CSR_Impact_Report_2026.pdf generated!',
+                                  ),
                                   backgroundColor: AppTheme.forestGreen,
                                 ),
                               );
@@ -208,8 +208,11 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                         color: AppTheme.emeraldLight,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.cloud_done_rounded,
-                          color: AppTheme.forestGreen, size: 20),
+                      child: const Icon(
+                        Icons.cloud_done_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 20,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     const Expanded(

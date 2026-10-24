@@ -24,9 +24,7 @@ class SuggestedNGOsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('AI Suggested Receivers'),
-      ),
+      appBar: AppBar(title: const Text('AI Suggested Receivers')),
       body: SafeArea(
         child: Column(
           children: [
@@ -42,8 +40,11 @@ class SuggestedNGOsScreen extends StatelessWidget {
                       color: AppTheme.emeraldLight,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.hub_rounded,
-                        size: 20, color: AppTheme.forestGreen),
+                    child: const Icon(
+                      Icons.hub_rounded,
+                      size: 20,
+                      color: AppTheme.forestGreen,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -88,7 +89,9 @@ class SuggestedNGOsScreen extends StatelessWidget {
                         ? AppTheme.emeraldLight.withValues(alpha: 0.15)
                         : Colors.white,
                     border: BorderSide(
-                      color: isTopMatch ? AppTheme.emerald : AppTheme.borderColor,
+                      color: isTopMatch
+                          ? AppTheme.emerald
+                          : AppTheme.borderColor,
                       width: isTopMatch ? 1.5 : 1,
                     ),
                     child: Column(
@@ -99,7 +102,9 @@ class SuggestedNGOsScreen extends StatelessWidget {
                             if (isTopMatch)
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 3),
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
                                 margin: const EdgeInsets.only(right: 8),
                                 decoration: BoxDecoration(
                                   color: AppTheme.forestGreen,
@@ -115,13 +120,13 @@ class SuggestedNGOsScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            NGOVerifiedBadge(
-                              isVerified: match.ngo.isVerified,
-                            ),
+                            NGOVerifiedBadge(isVerified: match.ngo.isVerified),
                             const Spacer(),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 9, vertical: 4),
+                                horizontal: 9,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.limeLight,
                                 borderRadius: BorderRadius.circular(10),
@@ -149,8 +154,11 @@ class SuggestedNGOsScreen extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Icon(Icons.near_me_rounded,
-                                size: 14, color: AppTheme.charcoalMuted),
+                            const Icon(
+                              Icons.near_me_rounded,
+                              size: 14,
+                              color: AppTheme.charcoalMuted,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               '${match.distanceKm} km away (${match.estimatedTravelMinutes} mins travel)',
@@ -161,8 +169,11 @@ class SuggestedNGOsScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 12),
-                            const Icon(Icons.soup_kitchen_rounded,
-                                size: 14, color: AppTheme.charcoalMuted),
+                            const Icon(
+                              Icons.soup_kitchen_rounded,
+                              size: 14,
+                              color: AppTheme.charcoalMuted,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               '${match.ngo.capacityMealsPerDay} meals/day capacity',
@@ -190,8 +201,11 @@ class SuggestedNGOsScreen extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(Icons.check_circle_outline_rounded,
-                                    size: 14, color: AppTheme.emerald),
+                                const Icon(
+                                  Icons.check_circle_outline_rounded,
+                                  size: 14,
+                                  color: AppTheme.emerald,
+                                ),
                                 const SizedBox(width: 6),
                                 Expanded(
                                   child: Text(
@@ -220,7 +234,9 @@ class SuggestedNGOsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: AppTheme.subtleShadow,
-                border: const Border(top: BorderSide(color: AppTheme.borderColor)),
+                border: const Border(
+                  top: BorderSide(color: AppTheme.borderColor),
+                ),
               ),
               child: AppButton(
                 label: 'Confirm Listing & Broadcast to NGOs',
@@ -229,7 +245,8 @@ class SuggestedNGOsScreen extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Donation broadcasted to ${matches.length} verified regional NGOs!'),
+                        'Donation broadcasted to ${matches.length} verified regional NGOs!',
+                      ),
                       backgroundColor: AppTheme.forestGreen,
                     ),
                   );

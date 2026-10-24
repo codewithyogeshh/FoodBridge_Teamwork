@@ -49,7 +49,7 @@ class QRCodeWidget extends StatelessWidget {
                       color: Colors.black26,
                       blurRadius: 4,
                       offset: Offset(0, 2),
-                    )
+                    ),
                   ],
                 ),
                 child: const Icon(
@@ -137,9 +137,7 @@ class _QRPainter extends CustomPainter {
     for (int r = 0; r < 15; r++) {
       for (int c = 0; c < 15; c++) {
         // Skip corner finder areas
-        if ((r < 5 && c < 5) ||
-            (r < 5 && c >= 10) ||
-            (r >= 10 && c < 5)) {
+        if ((r < 5 && c < 5) || (r < 5 && c >= 10) || (r >= 10 && c < 5)) {
           continue;
         }
         // Skip center logo
@@ -161,7 +159,13 @@ class _QRPainter extends CustomPainter {
     }
   }
 
-  void _drawFinder(Canvas canvas, double x, double y, double step, Paint paint) {
+  void _drawFinder(
+    Canvas canvas,
+    double x,
+    double y,
+    double step,
+    Paint paint,
+  ) {
     // Outer 5x5 box
     canvas.drawRRect(
       RRect.fromRectAndRadius(

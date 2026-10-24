@@ -63,9 +63,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('AI Allocation & Urgency Engine'),
-      ),
+      appBar: AppBar(title: const Text('AI Allocation & Urgency Engine')),
       body: SafeArea(
         child: _isProcessing
             ? _buildProcessingAnimation()
@@ -138,8 +136,11 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.shield_outlined,
-                      size: 15, color: AppTheme.forestGreen),
+                  Icon(
+                    Icons.shield_outlined,
+                    size: 15,
+                    color: AppTheme.forestGreen,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     'FSSAI Safe Food Chain Protocol Active',
@@ -248,8 +249,11 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.thermostat_rounded,
-                        color: AppTheme.forestGreen, size: 20),
+                    Icon(
+                      Icons.thermostat_rounded,
+                      color: AppTheme.forestGreen,
+                      size: 20,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'Perishability & Cold-Chain Directive',
@@ -279,8 +283,11 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.info_outline_rounded,
-                          size: 18, color: AppTheme.forestGreen),
+                      const Icon(
+                        Icons.info_outline_rounded,
+                        size: 18,
+                        color: AppTheme.forestGreen,
+                      ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -307,8 +314,11 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.psychology_alt_rounded,
-                        color: AppTheme.emeraldDark, size: 20),
+                    Icon(
+                      Icons.psychology_alt_rounded,
+                      color: AppTheme.emeraldDark,
+                      size: 20,
+                    ),
                     SizedBox(width: 8),
                     Text(
                       'AI Transparent Allocation Logic',

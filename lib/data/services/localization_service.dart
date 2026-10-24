@@ -35,7 +35,8 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.en: {
       'app_title': 'FoodBridge 2.0',
       'role_select_title': 'Choose How You Wish to Make an Impact',
-      'role_select_desc': 'Select your persona to unlock role-tailored dashboards and secure features.',
+      'role_select_desc':
+          'Select your persona to unlock role-tailored dashboards and secure features.',
       'role_donor': 'Commercial Food Donor',
       'role_community': 'Community Giver',
       'role_ngo': 'Verified NGO / Kitchen',
@@ -59,7 +60,8 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.hi: {
       'app_title': 'फूडब्रिज २.०',
       'role_select_title': 'चुनें कि आप कैसे योगदान देना चाहते हैं',
-      'role_select_desc': 'सुरक्षित सुविधाओं और डैशबोर्ड को अनलॉक करने के लिए अपनी भूमिका चुनें।',
+      'role_select_desc':
+          'सुरक्षित सुविधाओं और डैशबोर्ड को अनलॉक करने के लिए अपनी भूमिका चुनें।',
       'role_donor': 'व्यावसायिक भोजन दाता',
       'role_community': 'समुदाय दानी (कपड़े, पुस्तकें व राशि)',
       'role_ngo': 'सत्यापित एनजीओ / रसोई',
@@ -83,7 +85,8 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.mr: {
       'app_title': 'फूडब्रिज २.०',
       'role_select_title': 'आपण कसा प्रभाव पाडू इच्छिता ते निवडा',
-      'role_select_desc': 'आपल्या गरजेनुसार डॅशबोर्ड अनलॉक करण्यासाठी भूमिका निवडा.',
+      'role_select_desc':
+          'आपल्या गरजेनुसार डॅशबोर्ड अनलॉक करण्यासाठी भूमिका निवडा.',
       'role_donor': 'अन्न दाता (हॉटेल/कॅटरर्स)',
       'role_community': 'समुदाय दाता (कपडे, पुस्तके व निधी)',
       'role_ngo': 'प्रमाणित स्वयंसेवी संस्था / निवारा',
@@ -107,12 +110,14 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.ta: {
       'app_title': 'ஃபுட்பிரிட்ஜ் 2.0',
       'role_select_title': 'உங்களின் பங்களிப்பைத் தேர்வுசெய்யவும்',
-      'role_select_desc': 'தனிப்பயனாக்கப்பட்ட வசதிகளைப் பெற உங்கள் பங்களிப்பைத் தேர்ந்தெடுக்கவும்.',
+      'role_select_desc':
+          'தனிப்பயனாக்கப்பட்ட வசதிகளைப் பெற உங்கள் பங்களிப்பைத் தேர்ந்தெடுக்கவும்.',
       'role_donor': 'உணவு வழங்குநர்',
       'role_community': 'சமூக கொடையாளர் (ஆடை, புத்தகங்கள்)',
       'role_ngo': 'சரிபார்க்கப்பட்ட என்.ஜி.ஓ',
       'role_admin': 'நிர்வாகி',
-      'tag_anyone_can_give': 'யாரும் உதவலாம் • உடைகள், புத்தகங்கள் மற்றும் நிதி',
+      'tag_anyone_can_give':
+          'யாரும் உதவலாம் • உடைகள், புத்தகங்கள் மற்றும் நிதி',
       'continue_btn': 'தொடரவும்',
       'post_surplus': 'உணவை பதிவு செய்யவும்',
       'giving_hub': 'கொடை மையம்',
@@ -131,12 +136,14 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.te: {
       'app_title': 'ఫుడ్‌బ్రిడ్జ్ 2.0',
       'role_select_title': 'మీరు ఎలా సహాయం చేయాలనుకుంటున్నారో ఎంచుకోండి',
-      'role_select_desc': 'మీకు సరిపోయే డ్యాష్‌బోర్డ్ తెరవడానికి పాత్రను ఎంచుకోండి.',
+      'role_select_desc':
+          'మీకు సరిపోయే డ్యాష్‌బోర్డ్ తెరవడానికి పాత్రను ఎంచుకోండి.',
       'role_donor': 'ఆహార దాత (హోటళ్ళు & క్యాటరర్లు)',
       'role_community': 'కమ్యూనిటీ దాత (బట్టలు, పుస్తకాలు & నిధులు)',
       'role_ngo': 'ధృవీకరించబడిన ఎన్జీవో',
       'role_admin': 'ప్లాట్‌ఫారమ్ అడ్మిన్',
-      'tag_anyone_can_give': 'ఎవరైనా సహాయం చేయవచ్చు • బట్టలు, పుస్తకాలు & నిధులు',
+      'tag_anyone_can_give':
+          'ఎవరైనా సహాయం చేయవచ్చు • బట్టలు, పుస్తకాలు & నిధులు',
       'continue_btn': 'కొనసాగించండి',
       'post_surplus': 'మిగిలిన ఆహారాన్ని పోస్ట్ చేయండి',
       'giving_hub': 'సహాయ కేంద్రం',
@@ -155,7 +162,8 @@ class LocalizationService extends ChangeNotifier {
     AppLanguage.bn: {
       'app_title': 'ফুডব্রিজ ২.০',
       'role_select_title': 'আপনার অবদানের ধরণ নির্বাচন করুন',
-      'role_select_desc': 'আপনার প্রয়োজন অনুযায়ী ড্যাশবোর্ড ব্যবহার করতে ভূমিকা বেছে নিন।',
+      'role_select_desc':
+          'আপনার প্রয়োজন অনুযায়ী ড্যাশবোর্ড ব্যবহার করতে ভূমিকা বেছে নিন।',
       'role_donor': 'খাবার দাতা',
       'role_community': 'কমিউনিটি দাতা (পোশাক, বই ও অনুদান)',
       'role_ngo': 'যাচাইকৃত এনজিও',

@@ -28,23 +28,25 @@ class _NGOVerificationQueueScreenState
         final allNGOs = widget.repository.ngos;
         final list = _filterPendingOnly
             ? allNGOs
-                .where((n) =>
-                    n.verificationStatus == NGOVerificationStatus.pending)
-                .toList()
+                  .where(
+                    (n) =>
+                        n.verificationStatus == NGOVerificationStatus.pending,
+                  )
+                  .toList()
             : allNGOs;
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('NGO Verification Queue'),
-          ),
+          appBar: AppBar(title: const Text('NGO Verification Queue')),
           body: SafeArea(
             child: Column(
               children: [
                 // Filter Tabs
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
                   color: Colors.white,
                   child: Row(
                     children: [
@@ -59,7 +61,8 @@ class _NGOVerificationQueueScreenState
                       const SizedBox(width: 8),
                       ChoiceChip(
                         label: Text(
-                            'Pending Review (${widget.repository.pendingNGOs.length})'),
+                          'Pending Review (${widget.repository.pendingNGOs.length})',
+                        ),
                         selected: _filterPendingOnly,
                         selectedColor: const Color(0xFFFEF3C7),
                         onSelected: (val) {
@@ -94,9 +97,9 @@ class _NGOVerificationQueueScreenState
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         NGOVerificationDetailScreen(
-                                      ngo: item,
-                                      repository: widget.repository,
-                                    ),
+                                          ngo: item,
+                                          repository: widget.repository,
+                                        ),
                                   ),
                                 );
                               },
@@ -145,8 +148,10 @@ class _NGOVerificationQueueScreenState
                                       ],
                                     ),
                                   ),
-                                  const Icon(Icons.chevron_right_rounded,
-                                      color: AppTheme.charcoalLight),
+                                  const Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: AppTheme.charcoalLight,
+                                  ),
                                 ],
                               ),
                             );

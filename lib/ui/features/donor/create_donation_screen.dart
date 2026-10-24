@@ -105,7 +105,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
     String? uploadedImageUrl = _presetImageUrl;
     if (_selectedImageBytes != null) {
       try {
-        final safeName = _selectedImageName ??
+        final safeName =
+            _selectedImageName ??
             'donation_${DateTime.now().millisecondsSinceEpoch}.jpg';
         final uploaded = await widget.repository.uploadImage(
           _selectedImageBytes!,
@@ -140,7 +141,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       pickupLongitude: 77.5946,
       pickupInstructions: _instructionsController.text.trim(),
       pickupOtp: otp,
-      imageUrl: uploadedImageUrl ??
+      imageUrl:
+          uploadedImageUrl ??
           'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
       urgencyLevel: _selectedFoodType == 'Cooked Meals'
           ? UrgencyLevel.critical
@@ -186,9 +188,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('Post Surplus Food'),
-      ),
+      appBar: AppBar(title: const Text('Post Surplus Food')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -230,7 +230,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      if (_selectedImageBytes != null || _presetImageUrl != null)
+                      if (_selectedImageBytes != null ||
+                          _presetImageUrl != null)
                         Container(
                           height: 190,
                           width: double.infinity,
@@ -254,13 +255,16 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                         errorBuilder:
                                             (context, error, stackTrace) =>
                                                 Container(
-                                          color: AppTheme.emeraldLight,
-                                          child: const Center(
-                                            child: Icon(Icons.fastfood_rounded,
-                                                color: AppTheme.forestGreen,
-                                                size: 40),
-                                          ),
-                                        ),
+                                                  color: AppTheme.emeraldLight,
+                                                  child: const Center(
+                                                    child: Icon(
+                                                      Icons.fastfood_rounded,
+                                                      color:
+                                                          AppTheme.forestGreen,
+                                                      size: 40,
+                                                    ),
+                                                  ),
+                                                ),
                                       ),
                               ),
                               Positioned(
@@ -268,7 +272,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                 left: 8,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Colors.black.withValues(alpha: 0.75),
                                     borderRadius: BorderRadius.circular(20),
@@ -276,15 +282,20 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Icon(Icons.check_circle_rounded,
-                                          color: AppTheme.emerald, size: 14),
+                                      const Icon(
+                                        Icons.check_circle_rounded,
+                                        color: AppTheme.emerald,
+                                        size: 14,
+                                      ),
                                       const SizedBox(width: 5),
                                       Text(
-                                        _selectedImageName ?? 'Photo Ready for Upload',
+                                        _selectedImageName ??
+                                            'Photo Ready for Upload',
                                         style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w600),
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -306,13 +317,16 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                       shape: BoxShape.circle,
                                       boxShadow: [
                                         BoxShadow(
-                                            color: Colors.black26,
-                                            blurRadius: 4)
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                        ),
                                       ],
                                     ),
-                                    child: const Icon(Icons.close_rounded,
-                                        size: 16,
-                                        color: AppTheme.statusCritical),
+                                    child: const Icon(
+                                      Icons.close_rounded,
+                                      size: 16,
+                                      color: AppTheme.statusCritical,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -320,21 +334,35 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                 bottom: 8,
                                 right: 8,
                                 child: OutlinedButton.icon(
-                                  onPressed: () => _pickFoodImage(ImageSource.gallery),
+                                  onPressed: () =>
+                                      _pickFoodImage(ImageSource.gallery),
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white.withValues(alpha: 0.9),
+                                    backgroundColor: Colors.white.withValues(
+                                      alpha: 0.9,
+                                    ),
                                     foregroundColor: AppTheme.richCharcoal,
-                                    side: const BorderSide(color: AppTheme.borderColor),
+                                    side: const BorderSide(
+                                      color: AppTheme.borderColor,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 6),
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
                                   ),
-                                  icon: const Icon(Icons.refresh_rounded, size: 14),
-                                  label: const Text('Change Photo',
-                                      style: TextStyle(
-                                          fontSize: 11, fontWeight: FontWeight.w700)),
+                                  icon: const Icon(
+                                    Icons.refresh_rounded,
+                                    size: 14,
+                                  ),
+                                  label: const Text(
+                                    'Change Photo',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -357,8 +385,11 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                   color: AppTheme.emeraldLight,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(Icons.add_a_photo_rounded,
-                                    color: AppTheme.forestGreen, size: 26),
+                                child: const Icon(
+                                  Icons.add_a_photo_rounded,
+                                  color: AppTheme.forestGreen,
+                                  size: 26,
+                                ),
                               ),
                               const SizedBox(height: 10),
                               const Text(
@@ -388,20 +419,27 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                     style: OutlinedButton.styleFrom(
                                       foregroundColor: AppTheme.forestGreen,
                                       side: const BorderSide(
-                                          color: AppTheme.forestGreen),
+                                        color: AppTheme.forestGreen,
+                                      ),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 14, vertical: 8),
+                                        horizontal: 14,
+                                        vertical: 8,
+                                      ),
                                     ),
                                     icon: const Icon(
-                                        Icons.camera_alt_outlined,
-                                        size: 16),
-                                    label: const Text('Camera',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700)),
+                                      Icons.camera_alt_outlined,
+                                      size: 16,
+                                    ),
+                                    label: const Text(
+                                      'Camera',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   OutlinedButton.icon(
@@ -410,20 +448,27 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                     style: OutlinedButton.styleFrom(
                                       foregroundColor: const Color(0xFF2563EB),
                                       side: const BorderSide(
-                                          color: Color(0xFF2563EB)),
+                                        color: Color(0xFF2563EB),
+                                      ),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 14, vertical: 8),
+                                        horizontal: 14,
+                                        vertical: 8,
+                                      ),
                                     ),
                                     icon: const Icon(
-                                        Icons.photo_library_outlined,
-                                        size: 16),
-                                    label: const Text('Gallery / Files',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700)),
+                                      Icons.photo_library_outlined,
+                                      size: 16,
+                                    ),
+                                    label: const Text(
+                                      'Gallery / Files',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -445,10 +490,14 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                 children: [
                                   ActionChip(
                                     avatar: const Text('🍛'),
-                                    label: const Text('Fresh Biryani',
-                                        style: TextStyle(fontSize: 11)),
+                                    label: const Text(
+                                      'Fresh Biryani',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                     backgroundColor: Colors.white,
-                                    side: const BorderSide(color: AppTheme.borderColor),
+                                    side: const BorderSide(
+                                      color: AppTheme.borderColor,
+                                    ),
                                     onPressed: () => _selectPresetPhoto(
                                       'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
                                       'Fresh Biryani & Curry',
@@ -456,10 +505,14 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                   ),
                                   ActionChip(
                                     avatar: const Text('🥐'),
-                                    label: const Text('Fresh Bakery',
-                                        style: TextStyle(fontSize: 11)),
+                                    label: const Text(
+                                      'Fresh Bakery',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                     backgroundColor: Colors.white,
-                                    side: const BorderSide(color: AppTheme.borderColor),
+                                    side: const BorderSide(
+                                      color: AppTheme.borderColor,
+                                    ),
                                     onPressed: () => _selectPresetPhoto(
                                       'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop',
                                       'Fresh Bakery & Bread',
@@ -467,10 +520,14 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                   ),
                                   ActionChip(
                                     avatar: const Text('🍱'),
-                                    label: const Text('Meal Trays',
-                                        style: TextStyle(fontSize: 11)),
+                                    label: const Text(
+                                      'Meal Trays',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                     backgroundColor: Colors.white,
-                                    side: const BorderSide(color: AppTheme.borderColor),
+                                    side: const BorderSide(
+                                      color: AppTheme.borderColor,
+                                    ),
                                     onPressed: () => _selectPresetPhoto(
                                       'https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&auto=format&fit=crop',
                                       'Sealed Meal Trays',
@@ -513,8 +570,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                               color: isSelected
                                   ? AppTheme.forestGreen
                                   : AppTheme.richCharcoal,
-                              fontWeight:
-                                  isSelected ? FontWeight.w700 : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
                               fontSize: 12,
                             ),
                             onSelected: (val) {
@@ -591,15 +649,20 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                           if (_safeHours <= 3)
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.statusCriticalBg,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Row(
                                 children: [
-                                  Icon(Icons.warning_amber_rounded,
-                                      size: 16, color: AppTheme.statusCritical),
+                                  Icon(
+                                    Icons.warning_amber_rounded,
+                                    size: 16,
+                                    color: AppTheme.statusCritical,
+                                  ),
                                   SizedBox(width: 6),
                                   Expanded(
                                     child: Text(
@@ -641,10 +704,13 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                             items: AppConstants.storageOptions.map((opt) {
                               return DropdownMenuItem(
                                 value: opt,
-                                child: Text(opt,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: AppTheme.richCharcoal)),
+                                child: Text(
+                                  opt,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: AppTheme.richCharcoal,
+                                  ),
+                                ),
                               );
                             }).toList(),
                             onChanged: (val) {
@@ -670,8 +736,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                         spacing: 6,
                         runSpacing: 6,
                         children: AppConstants.commonAllergens.map((allergen) {
-                          final isIncluded =
-                              _selectedAllergens.contains(allergen);
+                          final isIncluded = _selectedAllergens.contains(
+                            allergen,
+                          );
                           return FilterChip(
                             label: Text(allergen),
                             selected: isIncluded,
@@ -681,8 +748,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                   ? AppTheme.forestGreen
                                   : AppTheme.charcoalMuted,
                               fontSize: 12,
-                              fontWeight:
-                                  isIncluded ? FontWeight.w700 : FontWeight.w500,
+                              fontWeight: isIncluded
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
                             ),
                             onSelected: (val) {
                               setState(() {

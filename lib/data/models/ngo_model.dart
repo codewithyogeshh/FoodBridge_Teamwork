@@ -81,7 +81,8 @@ class NGOModel {
   /// Calculate distance in Kilometers from a given coordinate using Haversine formula
   double distanceTo(double lat, double lng) {
     const double p = 0.017453292519943295; // Math.PI / 180
-    final double a = 0.5 -
+    final double a =
+        0.5 -
         math.cos((lat - latitude) * p) / 2 +
         math.cos(latitude * p) *
             math.cos(lat * p) *
@@ -95,7 +96,8 @@ class NGOModel {
       id: json['id'] as String? ?? '',
       profileId: json['profile_id'] as String?,
       organizationName: json['organization_name'] as String? ?? 'Verified NGO',
-      registrationNumber: json['registration_number'] as String? ?? 'REG-PENDING',
+      registrationNumber:
+          json['registration_number'] as String? ?? 'REG-PENDING',
       contactPerson: json['contact_person'] as String? ?? 'Coordinator',
       phone: json['phone'] as String? ?? '',
       address: json['address'] as String? ?? '',
@@ -111,11 +113,14 @@ class NGOModel {
       govtIdType: json['govt_id_type'] as String? ?? 'Aadhaar Card',
       govtIdNumber: json['govt_id_number'] as String? ?? '5482 1928 8912',
       govtDocFileName:
-          json['govt_doc_file_name'] as String? ?? 'Aadhaar_Card_Verified_Scan.pdf',
+          json['govt_doc_file_name'] as String? ??
+          'Aadhaar_Card_Verified_Scan.pdf',
       fssaiDocFileName:
-          json['fssai_doc_file_name'] as String? ?? 'FSSAI_Certificate_Scan.pdf',
+          json['fssai_doc_file_name'] as String? ??
+          'FSSAI_Certificate_Scan.pdf',
       docFileSize: json['doc_file_size'] as String? ?? '1.4 MB',
-      docVerifiedHash: json['doc_verified_hash'] as String? ??
+      docVerifiedHash:
+          json['doc_verified_hash'] as String? ??
           'SHA256: 8F2A-94B1-C84E-Verified',
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String) ?? DateTime.now()

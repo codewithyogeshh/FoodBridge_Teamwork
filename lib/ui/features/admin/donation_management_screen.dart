@@ -18,9 +18,7 @@ class DonationManagementScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('Donation Batch Moderation'),
-          ),
+          appBar: AppBar(title: const Text('Donation Batch Moderation')),
           body: SafeArea(
             child: ListView.separated(
               padding: const EdgeInsets.all(20),
@@ -70,7 +68,9 @@ class DonationManagementScreen extends StatelessWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.warmIvoryDark,
                               borderRadius: BorderRadius.circular(6),

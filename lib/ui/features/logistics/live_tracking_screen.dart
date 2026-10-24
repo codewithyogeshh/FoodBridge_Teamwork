@@ -72,15 +72,19 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
             ),
             child: const Row(
               children: [
-                Icon(Icons.satellite_alt_rounded,
-                    size: 14, color: Color(0xFF15803D)),
+                Icon(
+                  Icons.satellite_alt_rounded,
+                  size: 14,
+                  color: Color(0xFF15803D),
+                ),
                 SizedBox(width: 4),
                 Text(
                   'GPS LOCK ACTIVE',
                   style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF15803D)),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF15803D),
+                  ),
                 ),
               ],
             ),
@@ -124,24 +128,31 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         left: 14,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.7),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.1)),
+                              color: Colors.white.withValues(alpha: 0.1),
+                            ),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.speed_rounded,
-                                  color: Color(0xFF38BDF8), size: 16),
+                              const Icon(
+                                Icons.speed_rounded,
+                                color: Color(0xFF38BDF8),
+                                size: 16,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 '${_speedKmh.toStringAsFixed(0)} km/h • ${_distanceKm.toStringAsFixed(1)} km left',
                                 style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
@@ -154,7 +165,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         right: 14,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6),
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             color: AppTheme.forestGreen,
                             borderRadius: BorderRadius.circular(12),
@@ -164,9 +177,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                                 ? 'ARRIVED AT SHELTER'
                                 : 'EN ROUTE TO PICKUP',
                             style: const TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -178,7 +192,9 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         right: 14,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.85),
                             borderRadius: BorderRadius.circular(14),
@@ -190,19 +206,23 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Text('ESTIMATED ARRIVAL',
-                                      style: TextStyle(
-                                          fontSize: 9,
-                                          color: Colors.white70,
-                                          fontWeight: FontWeight.w700)),
+                                  const Text(
+                                    'ESTIMATED ARRIVAL',
+                                    style: TextStyle(
+                                      fontSize: 9,
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                   Text(
                                     _etaMinutes > 0
                                         ? '$_etaMinutes Mins'
                                         : 'Arrived Just Now',
                                     style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w900),
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -242,10 +262,14 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                       children: [
                         CircleAvatar(
                           radius: 28,
-                          backgroundColor:
-                              AppTheme.forestGreen.withValues(alpha: 0.15),
-                          child: const Icon(Icons.delivery_dining_rounded,
-                              size: 32, color: AppTheme.forestGreen),
+                          backgroundColor: AppTheme.forestGreen.withValues(
+                            alpha: 0.15,
+                          ),
+                          child: const Icon(
+                            Icons.delivery_dining_rounded,
+                            size: 32,
+                            color: AppTheme.forestGreen,
+                          ),
                         ),
                         const Positioned(
                           bottom: 0,
@@ -253,7 +277,11 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                           child: CircleAvatar(
                             radius: 8,
                             backgroundColor: Color(0xFF22C55E),
-                            child: Icon(Icons.check, size: 10, color: Colors.white),
+                            child: Icon(
+                              Icons.check,
+                              size: 10,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
@@ -268,28 +296,35 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                               Text(
                                 'Vikram R. (Verified Courier)',
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppTheme.richCharcoal),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.richCharcoal,
+                                ),
                               ),
                               SizedBox(width: 6),
-                              Icon(Icons.verified_rounded,
-                                  size: 14, color: Color(0xFF0284C7)),
+                              Icon(
+                                Icons.verified_rounded,
+                                size: 14,
+                                color: Color(0xFF0284C7),
+                              ),
                             ],
                           ),
                           SizedBox(height: 2),
                           Text(
                             'Van: KA-01-EQ-9812 • FoodGrade Insulated',
                             style: TextStyle(
-                                fontSize: 11, color: AppTheme.charcoalMuted),
+                              fontSize: 11,
+                              color: AppTheme.charcoalMuted,
+                            ),
                           ),
                           SizedBox(height: 4),
                           Text(
                             '⭐ 4.96 (184 food rescues fulfilled)',
                             style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFFD97706)),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFD97706),
+                            ),
                           ),
                         ],
                       ),
@@ -301,14 +336,18 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                           color: AppTheme.forestGreen.withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.call_rounded,
-                            color: AppTheme.forestGreen, size: 20),
+                        child: const Icon(
+                          Icons.call_rounded,
+                          color: AppTheme.forestGreen,
+                          size: 20,
+                        ),
                       ),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                                'Dialing Vikram R. (+91 98450 11200) via masked secure proxy...'),
+                              'Dialing Vikram R. (+91 98450 11200) via masked secure proxy...',
+                            ),
                             backgroundColor: AppTheme.forestGreen,
                           ),
                         );
@@ -327,9 +366,10 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                     const Text(
                       'Chain-of-Custody Handoff',
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.richCharcoal),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.richCharcoal,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _buildTimelineStep(
@@ -371,7 +411,8 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         side: const BorderSide(color: AppTheme.borderColor),
                       ),
                       icon: const Icon(Icons.share_rounded, size: 18),
@@ -380,7 +421,8 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                                'Live GPS tracking link copied: https://foodbridge.ngo/track/fb-courier-9812'),
+                              'Live GPS tracking link copied: https://foodbridge.ngo/track/fb-courier-9812',
+                            ),
                             backgroundColor: AppTheme.forestGreen,
                           ),
                         );
@@ -396,7 +438,8 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                                'FoodBridge 24x7 Safety & Logistics Desk alerted!'),
+                              'FoodBridge 24x7 Safety & Logistics Desk alerted!',
+                            ),
                             backgroundColor: AppTheme.statusCritical,
                           ),
                         );
@@ -433,8 +476,8 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
               color: isDone
                   ? AppTheme.forestGreen
                   : isCurrent
-                      ? const Color(0xFF0284C7)
-                      : Colors.grey.shade300,
+                  ? const Color(0xFF0284C7)
+                  : Colors.grey.shade300,
             ),
             child: Icon(
               isDone ? Icons.check : Icons.circle,
@@ -450,21 +493,32 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(title,
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: isDone || isCurrent
-                                ? AppTheme.richCharcoal
-                                : AppTheme.charcoalMuted)),
-                    Text(time,
-                        style: const TextStyle(
-                            fontSize: 10, color: AppTheme.charcoalMuted)),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: isDone || isCurrent
+                            ? AppTheme.richCharcoal
+                            : AppTheme.charcoalMuted,
+                      ),
+                    ),
+                    Text(
+                      time,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: AppTheme.charcoalMuted,
+                      ),
+                    ),
                   ],
                 ),
-                Text(subtitle,
-                    style: const TextStyle(
-                        fontSize: 11, color: AppTheme.charcoalMuted)),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppTheme.charcoalMuted,
+                  ),
+                ),
               ],
             ),
           ),
@@ -523,25 +577,35 @@ class _MapGridPainter extends CustomPainter {
     // Pickup Marker (Donor)
     final donorPaint = Paint()..color = const Color(0xFF22C55E);
     canvas.drawCircle(Offset(30, size.height - 40), 9, donorPaint);
-    canvas.drawCircle(Offset(30, size.height - 40), 14,
-        Paint()..color = const Color(0xFF22C55E).withValues(alpha: 0.3));
+    canvas.drawCircle(
+      Offset(30, size.height - 40),
+      14,
+      Paint()..color = const Color(0xFF22C55E).withValues(alpha: 0.3),
+    );
 
     // Destination Marker (Shelter)
     final shelterPaint = Paint()..color = const Color(0xFFEF4444);
     canvas.drawCircle(Offset(size.width - 40, 50), 9, shelterPaint);
-    canvas.drawCircle(Offset(size.width - 40, 50), 14,
-        Paint()..color = const Color(0xFFEF4444).withValues(alpha: 0.3));
+    canvas.drawCircle(
+      Offset(size.width - 40, 50),
+      14,
+      Paint()..color = const Color(0xFFEF4444).withValues(alpha: 0.3),
+    );
 
     // Vehicle Marker along path
     final pathMetrics = path.computeMetrics().first;
-    final tangent =
-        pathMetrics.getTangentForOffset(pathMetrics.length * progress);
+    final tangent = pathMetrics.getTangentForOffset(
+      pathMetrics.length * progress,
+    );
     if (tangent != null) {
       final vehiclePos = tangent.position;
       final vanPaint = Paint()..color = Colors.white;
       canvas.drawCircle(vehiclePos, 12, vanPaint);
-      canvas.drawCircle(vehiclePos, 18,
-          Paint()..color = const Color(0xFF38BDF8).withValues(alpha: 0.35));
+      canvas.drawCircle(
+        vehiclePos,
+        18,
+        Paint()..color = const Color(0xFF38BDF8).withValues(alpha: 0.35),
+      );
 
       final centerDot = Paint()..color = const Color(0xFF0284C7);
       canvas.drawCircle(vehiclePos, 5, centerDot);

@@ -45,7 +45,9 @@ class CommunityDashboardScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.statusCritical,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             onPressed: () {
               Navigator.pop(ctx);
@@ -71,7 +73,10 @@ class CommunityDashboardScreen extends StatelessWidget {
             title: const Text('Community Giving Hub'),
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout_rounded, color: AppTheme.statusCritical),
+                icon: const Icon(
+                  Icons.logout_rounded,
+                  color: AppTheme.statusCritical,
+                ),
                 tooltip: 'Sign Out',
                 onPressed: () => _showLogoutConfirmation(context),
               ),
@@ -113,17 +118,25 @@ class CommunityDashboardScreen extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.emerald.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                    color: AppTheme.limeLight.withValues(alpha: 0.4)),
+                                  color: AppTheme.limeLight.withValues(
+                                    alpha: 0.4,
+                                  ),
+                                ),
                               ),
                               child: const Row(
                                 children: [
-                                  Icon(Icons.volunteer_activism_rounded,
-                                      size: 13, color: AppTheme.limeLight),
+                                  Icon(
+                                    Icons.volunteer_activism_rounded,
+                                    size: 13,
+                                    color: AppTheme.limeLight,
+                                  ),
                                   SizedBox(width: 6),
                                   Text(
                                     'CITIZEN RELIEF NETWORK',
@@ -198,8 +211,11 @@ class CommunityDashboardScreen extends StatelessWidget {
                       TextButton.icon(
                         style: TextButton.styleFrom(padding: EdgeInsets.zero),
                         onPressed: onNavigateToDonate,
-                        icon: const Icon(Icons.add_circle_outline_rounded,
-                            size: 16, color: AppTheme.forestGreen),
+                        icon: const Icon(
+                          Icons.add_circle_outline_rounded,
+                          size: 16,
+                          color: AppTheme.forestGreen,
+                        ),
                         label: const Text(
                           'All Options',
                           style: TextStyle(
@@ -227,7 +243,9 @@ class CommunityDashboardScreen extends StatelessWidget {
                         title: 'Clothes & Blankets',
                         subtitle: 'Winter wear, uniforms, blankets',
                         color: const Color(0xFF38BDF8),
-                        bgColor: const Color(0xFF38BDF8).withValues(alpha: 0.15),
+                        bgColor: const Color(
+                          0xFF38BDF8,
+                        ).withValues(alpha: 0.15),
                         onTap: onNavigateToDonate,
                       ),
                       _buildCategoryActionCard(
@@ -235,7 +253,9 @@ class CommunityDashboardScreen extends StatelessWidget {
                         title: 'Books & Stationery',
                         subtitle: 'School textbooks & notebooks',
                         color: const Color(0xFFF59E0B),
-                        bgColor: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                        bgColor: const Color(
+                          0xFFF59E0B,
+                        ).withValues(alpha: 0.15),
                         onTap: onNavigateToDonate,
                       ),
                       _buildCategoryActionCard(
@@ -243,7 +263,9 @@ class CommunityDashboardScreen extends StatelessWidget {
                         title: 'Monetary 80G Relief',
                         subtitle: 'Sponsor hot meals (Instant receipt)',
                         color: const Color(0xFF4EDEA3),
-                        bgColor: const Color(0xFF10B981).withValues(alpha: 0.15),
+                        bgColor: const Color(
+                          0xFF10B981,
+                        ).withValues(alpha: 0.15),
                         onTap: onNavigateToDonate,
                       ),
                       _buildCategoryActionCard(
@@ -251,7 +273,9 @@ class CommunityDashboardScreen extends StatelessWidget {
                         title: 'Dry Essentials',
                         subtitle: 'Rice, dal, oil & hygiene kits',
                         color: const Color(0xFFA78BFA),
-                        bgColor: const Color(0xFF7C3AED).withValues(alpha: 0.15),
+                        bgColor: const Color(
+                          0xFF7C3AED,
+                        ).withValues(alpha: 0.15),
                         onTap: onNavigateToDonate,
                       ),
                     ],
@@ -274,7 +298,9 @@ class CommunityDashboardScreen extends StatelessWidget {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: AppTheme.emeraldLight,
                           borderRadius: BorderRadius.circular(6),
@@ -333,10 +359,7 @@ class CommunityDashboardScreen extends StatelessWidget {
         ),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 11,
-            color: Colors.white70,
-          ),
+          style: const TextStyle(fontSize: 11, color: Colors.white70),
         ),
       ],
     );
@@ -390,10 +413,7 @@ class CommunityDashboardScreen extends StatelessWidget {
             subtitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 11,
-              color: AppTheme.charcoalMuted,
-            ),
+            style: const TextStyle(fontSize: 11, color: AppTheme.charcoalMuted),
           ),
         ],
       ),
@@ -527,8 +547,10 @@ class CommunityDashboardScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppTheme.cardSurfaceElevated,
                     borderRadius: BorderRadius.circular(8),
@@ -550,8 +572,11 @@ class CommunityDashboardScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                const Icon(Icons.verified_rounded,
-                    size: 14, color: AppTheme.forestGreen),
+                const Icon(
+                  Icons.verified_rounded,
+                  size: 14,
+                  color: AppTheme.forestGreen,
+                ),
                 const SizedBox(width: 6),
                 Text(
                   'Tax Exemption Certificate: ${item.tax80GReceiptNumber}',

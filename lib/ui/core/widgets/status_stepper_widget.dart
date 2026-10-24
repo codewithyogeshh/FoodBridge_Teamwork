@@ -35,8 +35,11 @@ class StatusStepperWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: AppTheme.statusCritical, size: 20),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: AppTheme.statusCritical,
+              size: 20,
+            ),
             const SizedBox(width: 8),
             Text(
               'This donation is currently ${currentStatus.dbValue}',
@@ -75,9 +78,7 @@ class StatusStepperWidget extends StatelessWidget {
             return Expanded(
               child: Container(
                 height: 3,
-                color: isPassed
-                    ? AppTheme.forestGreen
-                    : Colors.grey.shade300,
+                color: isPassed ? AppTheme.forestGreen : Colors.grey.shade300,
               ),
             );
           }
@@ -94,9 +95,7 @@ class StatusStepperWidget extends StatelessWidget {
                 height: 32,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isCompleted
-                      ? AppTheme.forestGreen
-                      : Colors.white,
+                  color: isCompleted ? AppTheme.forestGreen : Colors.white,
                   border: Border.all(
                     color: isCompleted
                         ? AppTheme.forestGreen
@@ -110,7 +109,9 @@ class StatusStepperWidget extends StatelessWidget {
                       : Icon(
                           steps[stepIdx]['icon'] as IconData,
                           size: 15,
-                          color: isCompleted ? Colors.white : AppTheme.charcoalLight,
+                          color: isCompleted
+                              ? Colors.white
+                              : AppTheme.charcoalLight,
                         ),
                 ),
               ),

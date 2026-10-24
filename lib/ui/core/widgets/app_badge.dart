@@ -6,11 +6,7 @@ class UrgencyBadge extends StatelessWidget {
   final UrgencyLevel level;
   final bool compact;
 
-  const UrgencyBadge({
-    super.key,
-    required this.level,
-    this.compact = false,
-  });
+  const UrgencyBadge({super.key, required this.level, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +198,11 @@ class NGOVerifiedBadge extends StatelessWidget {
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.hourglass_top_rounded, size: 13, color: AppTheme.statusHigh),
+          Icon(
+            Icons.hourglass_top_rounded,
+            size: 13,
+            color: AppTheme.statusHigh,
+          ),
           SizedBox(width: 4),
           Text(
             'Verification Pending',

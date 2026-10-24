@@ -39,7 +39,8 @@ class WhatsAppAlertMessage {
 }
 
 class DispatchWebhookService extends ChangeNotifier {
-  static final DispatchWebhookService instance = DispatchWebhookService._internal();
+  static final DispatchWebhookService instance =
+      DispatchWebhookService._internal();
   DispatchWebhookService._internal();
 
   final List<WhatsAppAlertMessage> _alerts = [

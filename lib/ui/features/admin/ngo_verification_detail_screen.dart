@@ -35,8 +35,10 @@ class _NGOVerificationDetailScreenState
   void _updateStatus(NGOVerificationStatus newStatus) async {
     setState(() => _isUpdating = true);
 
-    final success =
-        await widget.repository.updateNGOVerification(_ngo.id, newStatus);
+    final success = await widget.repository.updateNGOVerification(
+      _ngo.id,
+      newStatus,
+    );
 
     if (mounted) {
       setState(() {
@@ -65,9 +67,7 @@ class _NGOVerificationDetailScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(
-        title: const Text('NGO Verification Audit'),
-      ),
+      appBar: AppBar(title: const Text('NGO Verification Audit')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -118,10 +118,14 @@ class _NGOVerificationDetailScreenState
                     _buildRow('Primary Coordinator', _ngo.contactPerson),
                     _buildRow('Official Phone', _ngo.phone),
                     _buildRow('Kitchen Facility Address', _ngo.address),
-                    _buildRow('Daily Meal Capacity',
-                        '${_ngo.capacityMealsPerDay} Meals / Day'),
-                    _buildRow('FSSAI Certificate ID',
-                        _ngo.foodSafetyCertId ?? 'PENDING AUDIT'),
+                    _buildRow(
+                      'Daily Meal Capacity',
+                      '${_ngo.capacityMealsPerDay} Meals / Day',
+                    ),
+                    _buildRow(
+                      'FSSAI Certificate ID',
+                      _ngo.foodSafetyCertId ?? 'PENDING AUDIT',
+                    ),
                   ],
                 ),
               ),
@@ -134,8 +138,11 @@ class _NGOVerificationDetailScreenState
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.description_rounded,
-                            size: 18, color: AppTheme.forestGreen),
+                        Icon(
+                          Icons.description_rounded,
+                          size: 18,
+                          color: AppTheme.forestGreen,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Compliance & Government Identity Documents',
@@ -165,8 +172,11 @@ class _NGOVerificationDetailScreenState
                               color: AppTheme.emeraldLight,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.badge_rounded,
-                                color: AppTheme.forestGreen, size: 24),
+                            child: const Icon(
+                              Icons.badge_rounded,
+                              color: AppTheme.forestGreen,
+                              size: 24,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -187,7 +197,9 @@ class _NGOVerificationDetailScreenState
                                     const SizedBox(width: 6),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 6, vertical: 1),
+                                        horizontal: 6,
+                                        vertical: 1,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppTheme.emerald,
                                         borderRadius: BorderRadius.circular(4),
@@ -219,21 +231,32 @@ class _NGOVerificationDetailScreenState
                               backgroundColor: AppTheme.forestGreen,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            icon: const Icon(Icons.visibility_rounded, size: 14),
-                            label: const Text('View Doc',
-                                style: TextStyle(fontSize: 12)),
+                            icon: const Icon(
+                              Icons.visibility_rounded,
+                              size: 14,
+                            ),
+                            label: const Text(
+                              'View Doc',
+                              style: TextStyle(fontSize: 12),
+                            ),
                             onPressed: () {
                               _openDocumentViewer(
-                                docTitle: 'Government Identity Verification Document',
-                                docType: _ngo.govtIdType ?? 'Aadhaar Card (UIDAI)',
-                                docFileName: _ngo.govtDocFileName ??
+                                docTitle:
+                                    'Government Identity Verification Document',
+                                docType:
+                                    _ngo.govtIdType ?? 'Aadhaar Card (UIDAI)',
+                                docFileName:
+                                    _ngo.govtDocFileName ??
                                     'Aadhaar_Card_Verified_Scan.pdf',
-                                docIdNumber: _ngo.govtIdNumber ?? '5482 1928 8912',
+                                docIdNumber:
+                                    _ngo.govtIdNumber ?? '5482 1928 8912',
                                 docFileSize: '2.1 MB',
                                 issuingAuthority:
                                     'Government of India / Unique Identification Authority',
@@ -261,8 +284,11 @@ class _NGOVerificationDetailScreenState
                               color: const Color(0xFFFEF3C7),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.picture_as_pdf_rounded,
-                                color: Color(0xFFD97706), size: 24),
+                            child: const Icon(
+                              Icons.picture_as_pdf_rounded,
+                              color: Color(0xFFD97706),
+                              size: 24,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -283,7 +309,9 @@ class _NGOVerificationDetailScreenState
                                     const SizedBox(width: 6),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 6, vertical: 1),
+                                        horizontal: 6,
+                                        vertical: 1,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: AppTheme.forestGreen,
                                         borderRadius: BorderRadius.circular(4),
@@ -314,23 +342,35 @@ class _NGOVerificationDetailScreenState
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.cardSurfaceElevated,
                               foregroundColor: AppTheme.restrainedLime,
-                              side: const BorderSide(color: AppTheme.restrainedLime),
+                              side: const BorderSide(
+                                color: AppTheme.restrainedLime,
+                              ),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            icon: const Icon(Icons.visibility_rounded, size: 14),
-                            label: const Text('View Doc',
-                                style: TextStyle(fontSize: 12)),
+                            icon: const Icon(
+                              Icons.visibility_rounded,
+                              size: 14,
+                            ),
+                            label: const Text(
+                              'View Doc',
+                              style: TextStyle(fontSize: 12),
+                            ),
                             onPressed: () {
                               _openDocumentViewer(
-                                docTitle: 'FSSAI Food Safety Compliance Certificate',
+                                docTitle:
+                                    'FSSAI Food Safety Compliance Certificate',
                                 docType: 'State Food Safety Authority License',
-                                docFileName: _ngo.fssaiDocFileName ??
+                                docFileName:
+                                    _ngo.fssaiDocFileName ??
                                     'FSSAI_Certificate_Scan.pdf',
-                                docIdNumber: _ngo.foodSafetyCertId ??
+                                docIdNumber:
+                                    _ngo.foodSafetyCertId ??
                                     'FSSAI-2024-901844-KA',
                                 docFileSize: _ngo.docFileSize ?? '1.4 MB',
                                 issuingAuthority:
@@ -375,8 +415,11 @@ class _NGOVerificationDetailScreenState
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.verified_rounded,
-                          color: AppTheme.forestGreen, size: 22),
+                      Icon(
+                        Icons.verified_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 22,
+                      ),
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -444,8 +487,9 @@ class _NGOVerificationDetailScreenState
       context: context,
       builder: (ctx) {
         return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           backgroundColor: AppTheme.cardSurface,
           child: Container(
             width: 580,
@@ -464,8 +508,11 @@ class _NGOVerificationDetailScreenState
                         color: AppTheme.emeraldLight,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(Icons.verified_user_rounded,
-                          color: AppTheme.forestGreen, size: 24),
+                      child: const Icon(
+                        Icons.verified_user_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 24,
+                      ),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -507,7 +554,10 @@ class _NGOVerificationDetailScreenState
                       decoration: BoxDecoration(
                         color: const Color(0xFFFCFBF9),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFD4AF37), width: 2), // Gold official border
+                        border: Border.all(
+                          color: const Color(0xFFD4AF37),
+                          width: 2,
+                        ), // Gold official border
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.05),
@@ -525,12 +575,20 @@ class _NGOVerificationDetailScreenState
                             height: 52,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppTheme.forestGreen.withValues(alpha: 0.08),
-                              border: Border.all(color: AppTheme.forestGreen, width: 2),
+                              color: AppTheme.forestGreen.withValues(
+                                alpha: 0.08,
+                              ),
+                              border: Border.all(
+                                color: AppTheme.forestGreen,
+                                width: 2,
+                              ),
                             ),
                             child: const Center(
-                              child: Icon(Icons.shield_rounded,
-                                  color: AppTheme.forestGreen, size: 30),
+                              child: Icon(
+                                Icons.shield_rounded,
+                                color: AppTheme.forestGreen,
+                                size: 30,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -558,14 +616,30 @@ class _NGOVerificationDetailScreenState
                           const SizedBox(height: 14),
 
                           // Certificate Data Table
-                          _buildCertRow('Entity Legal Name', _ngo.organizationName),
-                          _buildCertRow('Registration / 80G No.', _ngo.registrationNumber),
-                          _buildCertRow('Authorized Trustee', _ngo.contactPerson),
+                          _buildCertRow(
+                            'Entity Legal Name',
+                            _ngo.organizationName,
+                          ),
+                          _buildCertRow(
+                            'Registration / 80G No.',
+                            _ngo.registrationNumber,
+                          ),
+                          _buildCertRow(
+                            'Authorized Trustee',
+                            _ngo.contactPerson,
+                          ),
                           _buildCertRow('Registered Phone', _ngo.phone),
                           _buildCertRow('Document Identifier', docIdNumber),
                           _buildCertRow('Kitchen Coordinates', _ngo.address),
-                          _buildCertRow('Daily Meal Quota', '${_ngo.capacityMealsPerDay} Meals / Day'),
-                          _buildCertRow('Digital Security Hash', _ngo.docVerifiedHash ?? 'SHA256: 8F2A-94B1-C84E-Verified'),
+                          _buildCertRow(
+                            'Daily Meal Quota',
+                            '${_ngo.capacityMealsPerDay} Meals / Day',
+                          ),
+                          _buildCertRow(
+                            'Digital Security Hash',
+                            _ngo.docVerifiedHash ??
+                                'SHA256: 8F2A-94B1-C84E-Verified',
+                          ),
                           _buildCertRow('Attached File Record', docFileName),
 
                           const SizedBox(height: 20),
@@ -573,7 +647,9 @@ class _NGOVerificationDetailScreenState
                           // Verified Stamp Banner
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.emeraldLight,
                               borderRadius: BorderRadius.circular(8),
@@ -582,8 +658,11 @@ class _NGOVerificationDetailScreenState
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.check_circle_rounded,
-                                    color: AppTheme.forestGreen, size: 20),
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  color: AppTheme.forestGreen,
+                                  size: 20,
+                                ),
                                 SizedBox(width: 8),
                                 Text(
                                   'CRYPTOGRAPHIC AUDIT PASS: VERIFIED AUTHENTIC',
@@ -624,7 +703,8 @@ class _NGOVerificationDetailScreenState
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  'Downloading $docFileName for local audit storage...'),
+                                'Downloading $docFileName for local audit storage...',
+                              ),
                               backgroundColor: AppTheme.forestGreen,
                             ),
                           );
@@ -674,8 +754,10 @@ class _NGOVerificationDetailScreenState
               ),
             ),
           ),
-          const Text(': ',
-              style: TextStyle(fontSize: 11.5, color: AppTheme.charcoalMuted)),
+          const Text(
+            ': ',
+            style: TextStyle(fontSize: 11.5, color: AppTheme.charcoalMuted),
+          ),
           Expanded(
             child: Text(
               value,

@@ -21,9 +21,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(
-            title: const Text('Impact Ledger & 80G Receipts'),
-          ),
+          appBar: AppBar(title: const Text('Impact Ledger & 80G Receipts')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -47,8 +45,11 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                             color: AppTheme.forestGreen,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.receipt_long_rounded,
-                              color: Colors.white, size: 26),
+                          child: const Icon(
+                            Icons.receipt_long_rounded,
+                            color: Colors.white,
+                            size: 26,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         const Expanded(
@@ -99,7 +100,9 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                           child: Text(
                             'No monetary contributions recorded yet. Sponsor meals to generate instant 80G certificates.',
                             style: TextStyle(
-                                fontSize: 13, color: AppTheme.charcoalMuted),
+                              fontSize: 13,
+                              color: AppTheme.charcoalMuted,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -119,8 +122,11 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.verified_rounded,
-                                      size: 16, color: AppTheme.forestGreen),
+                                  const Icon(
+                                    Icons.verified_rounded,
+                                    size: 16,
+                                    color: AppTheme.forestGreen,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(
                                     item.tax80GReceiptNumber ?? '',
@@ -133,7 +139,9 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                                   const Spacer(),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 3),
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: AppTheme.emeraldLight,
                                       borderRadius: BorderRadius.circular(6),
@@ -162,7 +170,9 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                               Text(
                                 'Beneficiary: ${item.assignedNgoName}',
                                 style: const TextStyle(
-                                    fontSize: 12, color: AppTheme.charcoalMuted),
+                                  fontSize: 12,
+                                  color: AppTheme.charcoalMuted,
+                                ),
                               ),
                               const SizedBox(height: 12),
                               Row(
@@ -172,31 +182,39 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                                   Text(
                                     item.createdAt.toString().split(' ')[0],
                                     style: const TextStyle(
-                                        fontSize: 11,
-                                        color: AppTheme.charcoalMuted),
+                                      fontSize: 11,
+                                      color: AppTheme.charcoalMuted,
+                                    ),
                                   ),
                                   ElevatedButton.icon(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppTheme.forestGreen,
                                       foregroundColor: Colors.white,
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6),
+                                        horizontal: 10,
+                                        vertical: 6,
+                                      ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                    icon: const Icon(Icons.download_rounded,
-                                        size: 14),
-                                    label: const Text('Download PDF',
-                                        style: TextStyle(fontSize: 11)),
+                                    icon: const Icon(
+                                      Icons.download_rounded,
+                                      size: 14,
+                                    ),
+                                    label: const Text(
+                                      'Download PDF',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
                                     onPressed: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                              'Downloading official 80G Tax Exemption Certificate: ${item.tax80GReceiptNumber}'),
-                                          backgroundColor:
-                                              AppTheme.forestGreen,
+                                            'Downloading official 80G Tax Exemption Certificate: ${item.tax80GReceiptNumber}',
+                                          ),
+                                          backgroundColor: AppTheme.forestGreen,
                                         ),
                                       );
                                     },
@@ -222,9 +240,9 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  ...communityList
-                      .where((c) => c.tax80GReceiptNumber == null)
-                      .map((item) {
+                  ...communityList.where((c) => c.tax80GReceiptNumber == null).map((
+                    item,
+                  ) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: AppCard(
@@ -241,9 +259,9 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                                         CommunityDonationCategory.clothes
                                     ? Icons.checkroom_rounded
                                     : item.category ==
-                                            CommunityDonationCategory.books
-                                        ? Icons.menu_book_rounded
-                                        : Icons.inventory_2_rounded,
+                                          CommunityDonationCategory.books
+                                    ? Icons.menu_book_rounded
+                                    : Icons.inventory_2_rounded,
                                 color: AppTheme.forestGreen,
                                 size: 22,
                               ),
@@ -264,14 +282,18 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                                   Text(
                                     '${item.quantityOrAmount} • ${item.status.label}',
                                     style: const TextStyle(
-                                        fontSize: 11,
-                                        color: AppTheme.charcoalMuted),
+                                      fontSize: 11,
+                                      color: AppTheme.charcoalMuted,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            const Icon(Icons.check_circle_rounded,
-                                size: 18, color: AppTheme.forestGreen),
+                            const Icon(
+                              Icons.check_circle_rounded,
+                              size: 18,
+                              color: AppTheme.forestGreen,
+                            ),
                           ],
                         ),
                       ),

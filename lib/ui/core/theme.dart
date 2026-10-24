@@ -23,7 +23,9 @@ class AppTheme {
   static const Color cardSurfaceElevated = Color(0xFFFFFFFF);
 
   // Fresh Living Emeralds & Mints
-  static const Color forestGreen = Color(0xFF059669); // Primary deep fresh emerald
+  static const Color forestGreen = Color(
+    0xFF059669,
+  ); // Primary deep fresh emerald
   static const Color forestGreenLight = Color(0xFF10B981);
   static const Color forestGreenDark = Color(0xFF047857);
 
@@ -36,9 +38,15 @@ class AppTheme {
   static const Color limeDark = Color(0xFF047857);
 
   // High-Trust Sharp Typography
-  static const Color richCharcoal = Color(0xFF111827); // Deep sharp charcoal text
-  static const Color charcoalMuted = Color(0xFF4B5563); // Refined slate subtitles
-  static const Color charcoalLight = Color(0xFF9CA3AF); // Soft gray labels & hints
+  static const Color richCharcoal = Color(
+    0xFF111827,
+  ); // Deep sharp charcoal text
+  static const Color charcoalMuted = Color(
+    0xFF4B5563,
+  ); // Refined slate subtitles
+  static const Color charcoalLight = Color(
+    0xFF9CA3AF,
+  ); // Soft gray labels & hints
 
   // Accents & Warmth
   static const Color sunflowerGold = Color(0xFFD97706);
@@ -55,44 +63,46 @@ class AppTheme {
   static const Color statusSuccessBg = Color(0xFFECFDF5);
 
   // Borders & Glow Layers
-  static const Color borderColor = Color(0xFFE5E7EB); // Crisp subtle light border
+  static const Color borderColor = Color(
+    0xFFE5E7EB,
+  ); // Crisp subtle light border
   static const Color borderLight = Color(0xFFF3F4F6);
   static const Color borderGlow = Color(0x3310B981); // Soft emerald aura
 
   // Elevation Shadows (Smooth, Modern & Subtle)
   static List<BoxShadow> get subtleShadow => [
-        const BoxShadow(
-          color: Color(0x08000000),
-          blurRadius: 10,
-          offset: Offset(0, 3),
-        ),
-        const BoxShadow(
-          color: Color(0x04000000),
-          blurRadius: 2,
-          offset: Offset(0, 1),
-        ),
-      ];
+    const BoxShadow(
+      color: Color(0x08000000),
+      blurRadius: 10,
+      offset: Offset(0, 3),
+    ),
+    const BoxShadow(
+      color: Color(0x04000000),
+      blurRadius: 2,
+      offset: Offset(0, 1),
+    ),
+  ];
 
   static List<BoxShadow> get cardElevation => [
-        const BoxShadow(
-          color: Color(0x0D000000),
-          blurRadius: 16,
-          offset: Offset(0, 6),
-        ),
-        const BoxShadow(
-          color: Color(0x05000000),
-          blurRadius: 4,
-          offset: Offset(0, 2),
-        ),
-      ];
+    const BoxShadow(
+      color: Color(0x0D000000),
+      blurRadius: 16,
+      offset: Offset(0, 6),
+    ),
+    const BoxShadow(
+      color: Color(0x05000000),
+      blurRadius: 4,
+      offset: Offset(0, 2),
+    ),
+  ];
 
   static List<BoxShadow> get emeraldGlow => [
-        const BoxShadow(
-          color: Color(0x1F059669),
-          blurRadius: 16,
-          offset: Offset(0, 4),
-        ),
-      ];
+    const BoxShadow(
+      color: Color(0x1F059669),
+      blurRadius: 16,
+      offset: Offset(0, 4),
+    ),
+  ];
 
   // Theme Data Definition (Clean Modern Light & Fresh Emerald)
   static ThemeData get lightTheme => _cleanModernLightTheme;
@@ -183,16 +193,16 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: forestGreen,
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: borderColor),
@@ -222,8 +232,14 @@ class AppTheme {
         unselectedItemColor: charcoalLight,
         type: BottomNavigationBarType.fixed,
         elevation: 6,
-        selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-        unselectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        selectedLabelStyle: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: Colors.white,
@@ -249,9 +265,7 @@ class AppTheme {
           fontSize: 13,
           fontWeight: FontWeight.w600,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         behavior: SnackBarBehavior.floating,
       ),
       dividerTheme: const DividerThemeData(
@@ -265,7 +279,11 @@ class AppTheme {
         selectedColor: emeraldLight,
         secondarySelectedColor: forestGreen,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        labelStyle: const TextStyle(color: richCharcoal, fontSize: 13, fontWeight: FontWeight.w600),
+        labelStyle: const TextStyle(
+          color: richCharcoal,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: borderColor),
