@@ -217,3 +217,36 @@ class NGOVerifiedBadge extends StatelessWidget {
     );
   }
 }
+
+class AppBadge extends StatelessWidget {
+  final String label;
+  final Color color;
+  final Color bgColor;
+
+  const AppBadge({
+    super.key,
+    required this.label,
+    required this.color,
+    required this.bgColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontSize: 10,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.3,
+        ),
+      ),
+    );
+  }
+}

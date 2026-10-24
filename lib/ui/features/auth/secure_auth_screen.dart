@@ -337,6 +337,8 @@ class _SecureAuthScreenState extends State<SecureAuthScreen>
         ? 'Community Giver'
         : widget.role == UserRole.donor
         ? 'Food Donor'
+        : widget.role == UserRole.volunteer
+        ? 'Volunteer Delivery Partner'
         : widget.role.name.toUpperCase();
 
     return Scaffold(

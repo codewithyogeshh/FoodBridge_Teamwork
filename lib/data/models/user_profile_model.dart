@@ -33,6 +33,9 @@ class UserProfileModel {
       case 'community':
         role = UserRole.community;
         break;
+      case 'volunteer':
+        role = UserRole.volunteer;
+        break;
       case 'donor':
       default:
         role = UserRole.donor;

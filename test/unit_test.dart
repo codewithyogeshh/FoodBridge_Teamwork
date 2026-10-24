@@ -398,4 +398,154 @@ void main() {
       },
     );
   });
+
+  group('Volunteer Role & Delivery Logistics Tests', () {
+    test(
+      'NGOModel calculates affordable delivery fee (₹20-₹30) based on distance',
+      () {
+        final now = DateTime.now();
+        final ngoWithFleet = NGOModel(
+          id: 'ngo-fleet-1',
+          organizationName: 'Fleet NGO',
+          registrationNumber: 'REG-1',
+          contactPerson: 'Leader',
+          phone: '+91 9999999999',
+          address: 'MG Road',
+          latitude: 12.9716,
+          longitude: 77.5946,
+          verificationStatus: NGOVerificationStatus.verified,
+          capacityMealsPerDay: 300,
+          hasOwnVolunteers: true,
+          createdAt: now,
+        );
+
+        final ngoWithoutFleet = NGOModel(
+          id: 'ngo-nofleet-2',
+          organizationName: 'Shelter NGO',
+          registrationNumber: 'REG-2',
+          contactPerson: 'Coordinator',
+          phone: '+91 8888888888',
+          address: 'Koramangala',
+          latitude: 12.9716,
+          longitude: 77.5946,
+          verificationStatus: NGOVerificationStatus.verified,
+          capacityMealsPerDay: 150,
+          hasOwnVolunteers: false,
+          createdAt: now,
+        );
+
+        // If NGO has own fleet, fee is 0
+        expect(ngoWithFleet.calculateVolunteerDeliveryFee(3.0), equals(0.0));
+
+        // If NGO lacks fleet, fee is between ₹20 and ₹30
+        final shortDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(1.5);
+        expect(shortDistFee, equals(20.0));
+
+        final midDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(4.0);
+        expect(midDistFee, inInclusiveRange(20.0, 30.0));
+
+        final longDistFee = ngoWithoutFleet.calculateVolunteerDeliveryFee(15.0);
+        expect(longDistFee, equals(30.0));
+      },
+    );
+
+    test('UserProfileModel correctly parses UserRole.volunteer', () {
+      final profile = UserProfileModel.fromJson({
+        'id': 'vol-001',
+        'phone': '+91 9988776655',
+        'full_name': 'Ramesh Rider',
+        'role': 'volunteer',
+      });
+      expect(profile.role, equals(UserRole.volunteer));
+      expect(profile.toJson()['role'], equals('volunteer'));
+    });
+
+    test(
+      'Volunteer workflow: accept, pickup, and complete delivery with fee',
+      () async {
+        final repository = AppRepository();
+        repository.setRole(UserRole.volunteer);
+
+        expect(repository.currentRole, equals(UserRole.volunteer));
+
+        // Create a test donation requiring volunteer delivery
+        final donation = await repository.createDonation(
+          DonationModel(
+            id: 'test-vol-don-001',
+            donorName: 'Biryani Express',
+            donorPhone: '+91 9876543210',
+            title: '30 Hot Meal Boxes',
+            foodType: 'Cooked Meals',
+            quantityLabel: '30 Boxes',
+            quantityServings: 30,
+            preparedAt: DateTime.now().subtract(const Duration(minutes: 30)),
+            safeUntil: DateTime.now().add(const Duration(hours: 3)),
+            storageRequirements: 'Keep warm',
+            allergens: const ['Dairy'],
+            pickupAddress: 'Brigade Road, Bengaluru',
+            pickupLatitude: 12.9716,
+            pickupLongitude: 77.5946,
+            pickupOtp: '1234',
+            urgencyLevel: UrgencyLevel.high,
+            aiUrgencyScore: 85,
+            status: DonationStatus.available,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        );
+
+        // Reserve with volunteer delivery requested
+        await repository.reserveDonation(
+          donationId: donation.id,
+          ngoId: 'test-ngo-id',
+          ngoName: 'Seva Orphanage',
+          requiresVolunteerDelivery: true,
+          deliveryFee: 26.0,
+        );
+
+        // Verify it appears in available volunteer deliveries
+        final available = repository.availableVolunteerDeliveries;
+        expect(available.any((d) => d.id == donation.id), isTrue);
+
+        // Volunteer accepts delivery
+        final accepted = await repository.acceptVolunteerDelivery(
+          donationId: donation.id,
+          volunteerId: 'vol-user-1',
+          volunteerName: 'Ramesh Rider',
+        );
+        expect(accepted, isTrue);
+
+        // Verify it moves to active deliveries
+        expect(
+          repository.myActiveDeliveries.any((d) => d.id == donation.id),
+          isTrue,
+        );
+
+        // Volunteer confirms pickup
+        final pickedUp = await repository.confirmVolunteerPickup(
+          donationId: donation.id,
+          enteredOtp: '1234',
+        );
+        expect(pickedUp, isTrue);
+
+        final initialEarnings = repository.volunteerTotalEarnings;
+
+        // Volunteer completes delivery
+        final completed = await repository.completeVolunteerDelivery(
+          donationId: donation.id,
+        );
+        expect(completed, isTrue);
+        expect(
+          repository.volunteerTotalEarnings,
+          equals(initialEarnings + 26.0),
+        );
+        expect(
+          repository.myCompletedDeliveries.any((d) => d.id == donation.id),
+          isTrue,
+        );
+
+        repository.dispose();
+      },
+    );
+  });
 }

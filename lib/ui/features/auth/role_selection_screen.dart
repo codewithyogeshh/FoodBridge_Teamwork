@@ -64,6 +64,22 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       'perks': ['Live Radar Map', 'Atomic Claim Locks', 'FSSAI Verified'],
     },
     {
+      'role': UserRole.volunteer,
+      'title': 'Volunteer Delivery Partner',
+      'subtitle': 'Food Courier Riders, Students & Community Heroes',
+      'description':
+          'Pick up surplus food from donors and deliver directly to NGOs lacking transport. Earn ₹20–₹30 per delivery while eliminating hunger.',
+      'icon': Icons.delivery_dining_rounded,
+      'tag': 'HERO ON WHEELS • EARN ₹20-₹30 / TRIP',
+      'tagColor': Color(0xFFEA580C),
+      'tagBg': Color(0xFFFFF7ED),
+      'perks': [
+        'Donor-to-NGO Route',
+        '₹20–₹30 per Trip',
+        'Direct Social Impact',
+      ],
+    },
+    {
       'role': UserRole.admin,
       'title': 'Platform Admin & Compliance',
       'subtitle': 'Auditor, Operations & Safety Desk',
@@ -762,6 +778,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
         ? 'Continue as Food Donor'
         : _selectedRole == UserRole.ngo
         ? 'Continue as Verified NGO'
+        : _selectedRole == UserRole.volunteer
+        ? 'Continue as Volunteer Delivery Partner'
         : 'Continue as Platform Admin';
 
     return Container(

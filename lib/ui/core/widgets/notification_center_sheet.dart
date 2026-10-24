@@ -40,10 +40,10 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: widget.repository,
+      listenable: widget.repository.notificationService,
       builder: (context, _) {
-        final allNotifs = widget.repository.notifications;
-        final unreadCount = widget.repository.unreadNotificationCount;
+        final allNotifs = widget.repository.notificationService.notifications;
+        final unreadCount = widget.repository.notificationService.unreadCount;
 
         List<NotificationModel> filtered = allNotifs;
         if (_selectedFilter == 'unread') {
@@ -149,7 +149,9 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                     if (unreadCount > 0)
                       TextButton(
                         onPressed: () {
-                          widget.repository.markAllNotificationsRead();
+                          widget.repository.notificationService.markAllAsRead(
+                            widget.repository.currentRole.name.toLowerCase(),
+                          );
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -304,7 +306,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
     final isUnread = !notif.isRead;
     return InkWell(
       onTap: () {
-        widget.repository.markNotificationRead(notif.id);
+        widget.repository.notificationService.markAsRead(notif.id);
         if (widget.onNotificationTap != null) {
           Navigator.pop(context);
           widget.onNotificationTap!(notif);

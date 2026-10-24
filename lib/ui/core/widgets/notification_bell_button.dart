@@ -19,9 +19,9 @@ class NotificationBellButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: repository,
+      listenable: repository.notificationService,
       builder: (context, _) {
-        final unreadCount = repository.unreadNotificationCount;
+        final unreadCount = repository.notificationService.unreadCount;
         final hasUnread = unreadCount > 0;
 
         return Stack(

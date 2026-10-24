@@ -401,6 +401,38 @@ class SupabaseService {
         createdAt: DateTime.now().subtract(const Duration(hours: 2)),
         updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
       ),
+      DonationModel(
+        id: 'b5ee7f11-9292-4f88-a111-9c8877aa22bb',
+        donorName: 'Grand Orchid Banquet Hall',
+        donorPhone: '+91 98860 99881',
+        title: 'Dal Makhani, Pulao & Roti Boxes (50 Meals)',
+        foodType: 'Cooked Meals',
+        quantityLabel: '50 Warm Thali Boxes',
+        quantityServings: 50,
+        preparedAt: DateTime.now().subtract(const Duration(minutes: 45)),
+        safeUntil: DateTime.now().add(const Duration(hours: 3)),
+        storageRequirements:
+            'Thermal box transport, safe temperature controlled',
+        allergens: const ['Dairy'],
+        pickupAddress: 'Grand Orchid, MG Road, Bengaluru',
+        pickupLatitude: 12.9755,
+        pickupLongitude: 77.6066,
+        pickupInstructions: 'Kitchen loading bay, door #2. Contact Chef Anand.',
+        pickupOtp: '8914',
+        imageUrl:
+            'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
+        urgencyLevel: UrgencyLevel.critical,
+        aiUrgencyScore: 91,
+        aiRecommendationSummary:
+            'Cooked food reserved by Seva Orphanage without own vehicle. FoodBridge volunteer delivery assigned.',
+        status: DonationStatus.reserved,
+        requiresVolunteerDelivery: true,
+        deliveryFee: 25.0,
+        reservedNgoId: 'a3333333-3333-3333-3333-333333333333',
+        reservedNgoName: 'Seva Orphanage & Children Shelter',
+        createdAt: DateTime.now().subtract(const Duration(minutes: 30)),
+        updatedAt: DateTime.now().subtract(const Duration(minutes: 20)),
+      ),
     ]);
 
     // Initial local notifications seed
@@ -413,6 +445,21 @@ class SupabaseService {
             'Supabase Realtime WebSockets & Database Triggers are connected. Instant push alerts enabled.',
         type: 'system',
         createdAt: DateTime.now().subtract(const Duration(minutes: 15)),
+      ),
+      NotificationModel(
+        id: 'notif-seed-vol-01',
+        recipientRole: 'volunteer',
+        title: '🚴 New Delivery Available (कमाई: ₹25)',
+        message:
+            'Pick up 50 hot meals from Grand Orchid Banquet, deliver to Seva Orphanage (3.1 km). Guaranteed delivery fee ₹25!',
+        type: 'donation_reserved',
+        entityId: 'b5ee7f11-9292-4f88-a111-9c8877aa22bb',
+        metadata: {
+          'donation_id': 'b5ee7f11-9292-4f88-a111-9c8877aa22bb',
+          'delivery_fee': 25.0,
+          'ngo_name': 'Seva Orphanage & Children Shelter',
+        },
+        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
       ),
       NotificationModel(
         id: 'notif-seed-02',
@@ -808,6 +855,8 @@ class SupabaseService {
     required String donationId,
     required String ngoId,
     required String ngoName,
+    bool requiresVolunteerDelivery = false,
+    double deliveryFee = 0.0,
   }) async {
     _initLocalSeed();
     try {
@@ -826,10 +875,24 @@ class SupabaseService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> result = jsonDecode(response.body);
         if (result['success'] == true) {
-          _updateLocalStatus(donationId, DonationStatus.reserved);
-          _broadcastReservationAlert(donationId, ngoName);
+          final idx = _localDonations.indexWhere((d) => d.id == donationId);
+          if (idx != -1) {
+            _localDonations[idx] = _localDonations[idx].copyWith(
+              status: DonationStatus.reserved,
+              requiresVolunteerDelivery: requiresVolunteerDelivery,
+              deliveryFee: deliveryFee,
+              reservedNgoId: ngoId,
+              reservedNgoName: ngoName,
+            );
+          }
+          _broadcastReservationAlert(
+            donationId,
+            ngoName,
+            requiresVolunteer: requiresVolunteerDelivery,
+            deliveryFee: deliveryFee,
+          );
+          return result;
         }
-        return result;
       }
     } catch (e) {
       debugPrint('Supabase reserveDonationAtomic RPC notice: $e');
@@ -841,8 +904,17 @@ class SupabaseService {
       if (_localDonations[index].status == DonationStatus.available) {
         _localDonations[index] = _localDonations[index].copyWith(
           status: DonationStatus.reserved,
+          requiresVolunteerDelivery: requiresVolunteerDelivery,
+          deliveryFee: deliveryFee,
+          reservedNgoId: ngoId,
+          reservedNgoName: ngoName,
         );
-        _broadcastReservationAlert(donationId, ngoName);
+        _broadcastReservationAlert(
+          donationId,
+          ngoName,
+          requiresVolunteer: requiresVolunteerDelivery,
+          deliveryFee: deliveryFee,
+        );
         return {
           'success': true,
           'message': 'Reserved successfully (Local atomic state locked)',
@@ -859,19 +931,52 @@ class SupabaseService {
     return {'success': false, 'message': 'Donation record not found'};
   }
 
-  void _broadcastReservationAlert(String donationId, String ngoName) {
+  void _broadcastReservationAlert(
+    String donationId,
+    String ngoName, {
+    bool requiresVolunteer = false,
+    double deliveryFee = 0.0,
+  }) {
     final notif = NotificationModel(
       id: 'notif-res-${DateTime.now().millisecondsSinceEpoch}',
       recipientRole: 'admin',
       title: '🤝 Donation Reserved by $ngoName',
-      message: '$ngoName has dispatched a volunteer for pickup.',
+      message: requiresVolunteer
+          ? '$ngoName reserved batch. FoodBridge volunteer delivery requested (Fee: ₹${deliveryFee.toStringAsFixed(0)}).'
+          : '$ngoName has dispatched their own volunteer fleet for pickup.',
       type: 'donation_reserved',
       entityId: donationId,
-      metadata: {'donation_id': donationId, 'ngo_name': ngoName},
+      metadata: {
+        'donation_id': donationId,
+        'ngo_name': ngoName,
+        'requires_volunteer': requiresVolunteer,
+        'delivery_fee': deliveryFee,
+      },
       createdAt: DateTime.now(),
     );
     _localNotifications.insert(0, notif);
     _notificationStreamController.add(notif);
+
+    if (requiresVolunteer) {
+      final volNotif = NotificationModel(
+        id: 'notif-vol-${DateTime.now().millisecondsSinceEpoch}',
+        recipientRole: 'volunteer',
+        title: '🚴 New Delivery Available (₹${deliveryFee.toStringAsFixed(0)})',
+        message:
+            'Delivery requested for $ngoName. Earn ₹${deliveryFee.toStringAsFixed(0)} fee upon drop-off!',
+        type: 'donation_reserved',
+        entityId: donationId,
+        metadata: {
+          'donation_id': donationId,
+          'ngo_name': ngoName,
+          'delivery_fee': deliveryFee,
+        },
+        createdAt: DateTime.now(),
+      );
+      _localNotifications.insert(0, volNotif);
+      _notificationStreamController.add(volNotif);
+    }
+
     try {
       _realtimeChannel?.sendBroadcastMessage(
         event: 'realtime_alert',

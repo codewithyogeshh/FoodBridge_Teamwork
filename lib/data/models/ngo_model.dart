@@ -51,6 +51,7 @@ class NGOModel {
   final String? fssaiDocFileName;
   final String? docFileSize;
   final String? docVerifiedHash;
+  final bool hasOwnVolunteers;
   final DateTime createdAt;
 
   const NGOModel({
@@ -73,6 +74,7 @@ class NGOModel {
     this.fssaiDocFileName = 'FSSAI_Certificate_Scan.pdf',
     this.docFileSize = '1.4 MB',
     this.docVerifiedHash = 'SHA256: 8F2A-94B1-C84E-Verified',
+    this.hasOwnVolunteers = false,
     required this.createdAt,
   });
 
@@ -89,6 +91,14 @@ class NGOModel {
             (1 - math.cos((lng - longitude) * p)) /
             2;
     return 12742 * math.asin(math.sqrt(a)); // 2 * R; R = 6371 km
+  }
+
+  /// Calculate affordable nominal volunteer delivery fee (₹20 to ₹30) based on distance
+  double calculateVolunteerDeliveryFee(double distanceKm) {
+    if (hasOwnVolunteers) return 0.0;
+    // Base ₹20 for <= 2.5 km, + ₹3/km up to ₹30
+    final fee = 20.0 + ((distanceKm - 2.5).clamp(0.0, 10.0) * 3.0);
+    return fee.clamp(20.0, 30.0).roundToDouble();
   }
 
   factory NGOModel.fromJson(Map<String, dynamic> json) {
@@ -122,6 +132,9 @@ class NGOModel {
       docVerifiedHash:
           json['doc_verified_hash'] as String? ??
           'SHA256: 8F2A-94B1-C84E-Verified',
+      hasOwnVolunteers:
+          json['has_own_volunteers'] == true ||
+          json['hasOwnVolunteers'] == true,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String) ?? DateTime.now()
           : DateTime.now(),
@@ -147,6 +160,7 @@ class NGOModel {
       'fssai_doc_file_name': fssaiDocFileName,
       'doc_file_size': docFileSize,
       'doc_verified_hash': docVerifiedHash,
+      'has_own_volunteers': hasOwnVolunteers,
     };
   }
 
@@ -170,6 +184,7 @@ class NGOModel {
     String? fssaiDocFileName,
     String? docFileSize,
     String? docVerifiedHash,
+    bool? hasOwnVolunteers,
     DateTime? createdAt,
   }) {
     return NGOModel(
@@ -193,6 +208,7 @@ class NGOModel {
       fssaiDocFileName: fssaiDocFileName ?? this.fssaiDocFileName,
       docFileSize: docFileSize ?? this.docFileSize,
       docVerifiedHash: docVerifiedHash ?? this.docVerifiedHash,
+      hasOwnVolunteers: hasOwnVolunteers ?? this.hasOwnVolunteers,
       createdAt: createdAt ?? this.createdAt,
     );
   }

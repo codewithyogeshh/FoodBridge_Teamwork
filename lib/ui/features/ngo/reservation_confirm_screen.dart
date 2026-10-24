@@ -35,10 +35,19 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
         ? widget.repository.verifiedNGOs.first
         : widget.repository.ngos.first;
 
+    final distanceKm = currentNgo.distanceTo(
+      widget.donation.pickupLatitude,
+      widget.donation.pickupLongitude,
+    );
+    final hasOwnVolunteers = currentNgo.hasOwnVolunteers;
+    final deliveryFee = currentNgo.calculateVolunteerDeliveryFee(distanceKm);
+
     final result = await widget.repository.reserveDonation(
       donationId: widget.donation.id,
       ngoId: currentNgo.id,
       ngoName: currentNgo.organizationName,
+      requiresVolunteerDelivery: !hasOwnVolunteers,
+      deliveryFee: deliveryFee,
     );
 
     if (mounted) {
@@ -64,8 +73,15 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
               ],
             ),
             content: Text(
-              'Atomic lock acquired on donation #${widget.donation.id.substring(0, 8)}.\n\n'
-              'No other organization can reserve this batch. Please dispatch your vehicle for pickup before safe window ends.',
+              hasOwnVolunteers
+                  ? 'Atomic lock acquired on donation #${widget.donation.id.substring(0, 8)}.\n\n'
+                        'Mode: NGO Self-Pickup Fleet (₹0 Delivery Fee).\n'
+                        'No other organization can reserve this batch. Please dispatch your vehicle/volunteers before safe window ends.'
+                  : 'Atomic lock acquired on donation #${widget.donation.id.substring(0, 8)}.\n\n'
+                        'Mode: FoodBridge Volunteer Courier Assigned!\n'
+                        'Distance: ${distanceKm.toStringAsFixed(1)} km\n'
+                        'Affordable Delivery Fee: ₹${deliveryFee.toStringAsFixed(0)} (payable to volunteer courier on drop-off).\n\n'
+                        'A community volunteer has been alerted to pick up the batch from donor and deliver to your kitchen.',
               style: const TextStyle(fontSize: 13, height: 1.4),
             ),
             actions: [
@@ -101,6 +117,16 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentNgo = widget.repository.verifiedNGOs.isNotEmpty
+        ? widget.repository.verifiedNGOs.first
+        : widget.repository.ngos.first;
+    final distanceKm = currentNgo.distanceTo(
+      widget.donation.pickupLatitude,
+      widget.donation.pickupLongitude,
+    );
+    final deliveryFee = currentNgo.calculateVolunteerDeliveryFee(distanceKm);
+    final hasOwnVolunteers = currentNgo.hasOwnVolunteers;
+
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
       appBar: AppBar(title: const Text('Confirm Food Reservation')),
@@ -168,6 +194,22 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                       'Handling Condition',
                       widget.donation.storageRequirements ?? 'Standard Safe',
                     ),
+                    _buildRow(
+                      'Pickup Fleet',
+                      hasOwnVolunteers
+                          ? 'NGO Volunteers (Self-Pickup • ₹0)'
+                          : 'FoodBridge Volunteer Courier',
+                    ),
+                    if (!hasOwnVolunteers) ...[
+                      _buildRow(
+                        'Route Distance',
+                        '${distanceKm.toStringAsFixed(1)} km',
+                      ),
+                      _buildRow(
+                        'Affordable Delivery Fee',
+                        '₹${deliveryFee.toStringAsFixed(0)} (Payable on drop-off)',
+                      ),
+                    ],
                   ],
                 ),
               ),

@@ -67,6 +67,9 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
 
   bool _isSubmitting = false;
 
+  // Logistics & Volunteer Fleet Setup
+  bool _hasOwnVolunteers = false;
+
   @override
   void initState() {
     super.initState();
@@ -578,6 +581,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           ? _fssaiDocFileSize
           : _govtDocFileSize,
       verificationDocumentUrl: _fssaiDocUrl ?? _govtDocUrl ?? '',
+      hasOwnVolunteers: _hasOwnVolunteers,
       createdAt: DateTime.now(),
     );
 
@@ -1224,6 +1228,251 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   const Divider(),
                   const SizedBox(height: 14),
 
+                  // LOGISTICS & VOLUNTEER FLEET SETUP
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.delivery_dining_rounded,
+                        color: AppTheme.forestGreen,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      const Expanded(
+                        child: Text(
+                          '2. Food Pickup & Volunteer Logistics (डिलिव्हरी सोय)',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.forestGreen,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'Does your NGO have its own volunteers/vehicles for food pickups from donors?\n(तुमच्या संस्थेकडे स्वतःचे स्वयंसेवक / वाहन आहे का?)',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.richCharcoal,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Option YES: Own Volunteers
+                  InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => setState(() => _hasOwnVolunteers = true),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: _hasOwnVolunteers
+                            ? AppTheme.emeraldLight.withValues(alpha: 0.4)
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _hasOwnVolunteers
+                              ? AppTheme.forestGreen
+                              : AppTheme.borderColor,
+                          width: _hasOwnVolunteers ? 1.8 : 1.0,
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: _hasOwnVolunteers
+                                      ? AppTheme.forestGreen
+                                      : AppTheme.charcoalMuted.withValues(
+                                          alpha: 0.6,
+                                        ),
+                                  width: 2,
+                                ),
+                              ),
+                              child: _hasOwnVolunteers
+                                  ? Center(
+                                      child: Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppTheme.forestGreen,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'YES — We have our own volunteer fleet',
+                                      style: TextStyle(
+                                        fontSize: 13.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppTheme.richCharcoal,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFECFDF5),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text(
+                                        '₹0 FEE',
+                                        style: TextStyle(
+                                          fontSize: 9.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xFF059669),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 3),
+                                const Text(
+                                  'आमचे स्वतःचे स्वयंसेवक आहेत. Our volunteers will pick up donations directly from donors. No delivery fee charged.',
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    color: AppTheme.charcoalMuted,
+                                    height: 1.3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Option NO: FoodBridge Volunteers Needed
+                  InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => setState(() => _hasOwnVolunteers = false),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: !_hasOwnVolunteers
+                            ? const Color(0xFFFFF7ED)
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: !_hasOwnVolunteers
+                              ? const Color(0xFFEA580C)
+                              : AppTheme.borderColor,
+                          width: !_hasOwnVolunteers ? 1.8 : 1.0,
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: !_hasOwnVolunteers
+                                      ? const Color(0xFFEA580C)
+                                      : AppTheme.charcoalMuted.withValues(
+                                          alpha: 0.6,
+                                        ),
+                                  width: 2,
+                                ),
+                              ),
+                              child: !_hasOwnVolunteers
+                                  ? Center(
+                                      child: Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xFFEA580C),
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'NO — Provide FoodBridge Volunteers',
+                                      style: TextStyle(
+                                        fontSize: 13.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppTheme.richCharcoal,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFFEDD5),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text(
+                                        '₹20 - ₹30 / TRIP',
+                                        style: TextStyle(
+                                          fontSize: 9.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color(0xFFC2410C),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 3),
+                                const Text(
+                                  'आमच्याकडे स्वयंसेवक नाहीत. FoodBridge community couriers will deliver food from donor to your shelter. A nominal delivery fee of ₹20 – ₹30 (based on distance) applies to support riders.',
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    color: AppTheme.charcoalMuted,
+                                    height: 1.3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  const SizedBox(height: 14),
+
                   // COMPULSORY GOVERNMENT IDENTITY SECTION
                   Row(
                     children: [
@@ -1234,7 +1483,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       ),
                       const SizedBox(width: 8),
                       const Text(
-                        '2. Compulsory Government Identity',
+                        '3. Compulsory Government Identity',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -1330,7 +1579,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       ),
                       const SizedBox(width: 8),
                       const Text(
-                        '3. Food Safety / FSSAI License Document',
+                        '4. Food Safety / FSSAI License Document',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,

@@ -27,6 +27,7 @@ import 'ui/features/ai_allocation/ai_allocation_screen.dart';
 import 'ui/core/widgets/notification_banner_overlay.dart';
 import 'ui/core/widgets/notification_center_sheet.dart';
 import 'ui/features/ngo/donation_details_screen.dart';
+import 'ui/features/volunteer/volunteer_dashboard_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,6 +94,7 @@ enum AppFlowStep {
   roleSelection,
   donorAuth,
   communityAuth,
+  volunteerAuth,
   ngoRegister,
   ngoVerificationPending,
   authenticatedMain,
@@ -145,6 +147,8 @@ class _AppRootFlowState extends State<AppRootFlow> {
       setState(() => _currentStep = AppFlowStep.donorAuth);
     } else if (role == UserRole.community) {
       setState(() => _currentStep = AppFlowStep.communityAuth);
+    } else if (role == UserRole.volunteer) {
+      setState(() => _currentStep = AppFlowStep.volunteerAuth);
     } else if (role == UserRole.ngo) {
       setState(() => _currentStep = AppFlowStep.ngoRegister);
     } else {
@@ -190,6 +194,19 @@ class _AppRootFlowState extends State<AppRootFlow> {
       case AppFlowStep.communityAuth:
         return SecureAuthScreen(
           role: UserRole.community,
+          onBack: () {
+            setState(() => _currentStep = AppFlowStep.roleSelection);
+          },
+          onAuthenticated: () {
+            _proceedWithTerms(context, () {
+              setState(() => _currentStep = AppFlowStep.authenticatedMain);
+            });
+          },
+        );
+
+      case AppFlowStep.volunteerAuth:
+        return SecureAuthScreen(
+          role: UserRole.volunteer,
           onBack: () {
             setState(() => _currentStep = AppFlowStep.roleSelection);
           },
@@ -432,6 +449,15 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               body = NGOImpactScreen(repository: widget.repository);
               break;
           }
+        } else if (role == UserRole.volunteer) {
+          return Scaffold(
+            drawer: _buildRoleSwitcherDrawer(),
+            body: VolunteerDashboardScreen(
+              repository: widget.repository,
+              onSwitchRole: widget.onChangeRole,
+              onLogout: widget.onLogout,
+            ),
+          );
         } else {
           // Admin Role
           navItems = const [
@@ -589,6 +615,20 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               onTap: () {
                 Navigator.pop(context);
                 widget.onChangeRole(UserRole.ngo);
+                setState(() => _currentNavIndex = 0);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.delivery_dining_rounded,
+                color: Color(0xFFEA580C),
+              ),
+              title: const Text('Volunteer Courier (₹20-₹30 / Trip)'),
+              selected: currentRole == UserRole.volunteer,
+              selectedTileColor: AppTheme.emeraldLight,
+              onTap: () {
+                Navigator.pop(context);
+                widget.onChangeRole(UserRole.volunteer);
                 setState(() => _currentNavIndex = 0);
               },
             ),

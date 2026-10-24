@@ -8,11 +8,16 @@ import '../models/community_donation_model.dart';
 import '../models/notification_model.dart';
 import '../services/supabase_service.dart';
 import '../services/ai_allocation_service.dart';
+import '../services/notification_service.dart';
 import '../../ui/core/constants.dart';
 
 class AppRepository extends ChangeNotifier {
   final SupabaseService _supabaseService;
   final AIAllocationService _aiService;
+  final NotificationService notificationService;
+
+  bool _isDisposed = false;
+  bool get isDisposed => _isDisposed;
 
   StreamSubscription<NotificationModel>? _notifSubscription;
   StreamSubscription<DonationModel>? _donationSubscription;
@@ -105,9 +110,21 @@ class AppRepository extends ChangeNotifier {
   AppRepository({
     SupabaseService? supabaseService,
     AIAllocationService? aiService,
-  }) : _supabaseService = supabaseService ?? SupabaseService(),
-       _aiService = aiService ?? AIAllocationService() {
+  }) : this._internal(
+         supabaseService ?? SupabaseService(),
+         aiService ?? AIAllocationService(),
+       );
+
+  AppRepository._internal(
+    SupabaseService supabaseService,
+    AIAllocationService aiService,
+  ) : _supabaseService = supabaseService,
+      _aiService = aiService,
+      notificationService = NotificationService(
+        supabaseService: supabaseService,
+      ) {
     _initRealtimeListeners();
+    notificationService.init(role: _currentRole.name.toLowerCase());
     refreshAllData();
   }
 
@@ -248,6 +265,15 @@ class AppRepository extends ChangeNotifier {
         organizationName: 'Hope Care Foundation Kitchen',
         createdAt: DateTime.now().subtract(const Duration(days: 120)),
       );
+    } else if (role == UserRole.volunteer) {
+      _currentUser = UserProfileModel(
+        id: 'u-demo-volunteer-005',
+        phone: '+91 99887 66554',
+        fullName: 'Kiran Patil (Food Courier)',
+        role: UserRole.volunteer,
+        organizationName: 'FoodBridge Volunteer Fleet',
+        createdAt: DateTime.now().subtract(const Duration(days: 15)),
+      );
     } else {
       _currentUser = UserProfileModel(
         id: 'u-demo-admin-003',
@@ -260,6 +286,7 @@ class AppRepository extends ChangeNotifier {
     }
     // Instantly sync user profile with Supabase and refresh data
     syncCurrentUserProfile();
+    notificationService.init(role: role.name.toLowerCase());
     refreshAllData();
     notifyListeners();
   }
@@ -335,9 +362,13 @@ class AppRepository extends ChangeNotifier {
       );
 
       // Synchronize donations list directly with Supabase
-      if (fetchedDonations.isNotEmpty) {
-        _donations.clear();
-        _donations.addAll(fetchedDonations);
+      for (final d in fetchedDonations) {
+        final idx = _donations.indexWhere((existing) => existing.id == d.id);
+        if (idx != -1) {
+          _donations[idx] = d;
+        } else {
+          _donations.add(d);
+        }
       }
       for (final n in fetchedNGOs) {
         final idx = _ngos.indexWhere((x) => x.id == n.id);
@@ -395,6 +426,8 @@ class AppRepository extends ChangeNotifier {
     required String donationId,
     required String ngoId,
     required String ngoName,
+    bool requiresVolunteerDelivery = false,
+    double deliveryFee = 0.0,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -403,6 +436,8 @@ class AppRepository extends ChangeNotifier {
         donationId: donationId,
         ngoId: ngoId,
         ngoName: ngoName,
+        requiresVolunteerDelivery: requiresVolunteerDelivery,
+        deliveryFee: deliveryFee,
       );
 
       if (res['success'] == true) {
@@ -410,10 +445,154 @@ class AppRepository extends ChangeNotifier {
         if (idx != -1) {
           _donations[idx] = _donations[idx].copyWith(
             status: DonationStatus.reserved,
+            requiresVolunteerDelivery: requiresVolunteerDelivery,
+            deliveryFee: deliveryFee,
+            reservedNgoId: ngoId,
+            reservedNgoName: ngoName,
           );
         }
       }
       return res;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // --- Volunteer Delivery Logistics & Earnings ---
+  double _volunteerTotalEarnings = 60.0;
+  double get volunteerTotalEarnings => _volunteerTotalEarnings;
+
+  List<DonationModel> get availableVolunteerDeliveries {
+    return _donations
+        .where(
+          (d) =>
+              d.requiresVolunteerDelivery &&
+              d.status == DonationStatus.reserved &&
+              (d.assignedVolunteerId == null || d.assignedVolunteerId!.isEmpty),
+        )
+        .toList();
+  }
+
+  List<DonationModel> get myActiveDeliveries {
+    return _donations
+        .where(
+          (d) =>
+              d.requiresVolunteerDelivery &&
+              (d.status == DonationStatus.reserved ||
+                  d.status == DonationStatus.pickupVerified) &&
+              d.assignedVolunteerId != null &&
+              d.assignedVolunteerId!.isNotEmpty,
+        )
+        .toList();
+  }
+
+  List<DonationModel> get myCompletedDeliveries {
+    return _donations
+        .where(
+          (d) =>
+              d.requiresVolunteerDelivery &&
+              d.status == DonationStatus.delivered,
+        )
+        .toList();
+  }
+
+  Future<bool> acceptVolunteerDelivery({
+    required String donationId,
+    required String volunteerId,
+    required String volunteerName,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final idx = _donations.indexWhere((d) => d.id == donationId);
+      if (idx != -1) {
+        _donations[idx] = _donations[idx].copyWith(
+          assignedVolunteerId: volunteerId,
+          assignedVolunteerName: volunteerName,
+        );
+
+        final notif = NotificationModel(
+          id: 'notif-vol-accept-${DateTime.now().millisecondsSinceEpoch}',
+          recipientRole: 'ngo',
+          title: '🚴 Courier Assigned for Pickup',
+          message:
+              'Volunteer $volunteerName has accepted the delivery and is heading to ${_donations[idx].donorName}.',
+          type: 'donation_reserved',
+          entityId: donationId,
+          createdAt: DateTime.now(),
+        );
+        notificationService.addLocalNotification(notif);
+        return true;
+      }
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> confirmVolunteerPickup({
+    required String donationId,
+    required String enteredOtp,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final idx = _donations.indexWhere((d) => d.id == donationId);
+      if (idx != -1) {
+        _donations[idx] = _donations[idx].copyWith(
+          status: DonationStatus.pickupVerified,
+        );
+
+        final notif = NotificationModel(
+          id: 'notif-vol-transit-${DateTime.now().millisecondsSinceEpoch}',
+          recipientRole: 'ngo',
+          title: '📦 Surplus Food In Transit',
+          message:
+              'Volunteer ${_donations[idx].assignedVolunteerName ?? "Courier"} has picked up the food batch and is navigating to your facility.',
+          type: 'pickup_verified',
+          entityId: donationId,
+          createdAt: DateTime.now(),
+        );
+        notificationService.addLocalNotification(notif);
+        return true;
+      }
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> completeVolunteerDelivery({required String donationId}) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final idx = _donations.indexWhere((d) => d.id == donationId);
+      if (idx != -1) {
+        final fee = _donations[idx].deliveryFee > 0
+            ? _donations[idx].deliveryFee
+            : 25.0;
+        _volunteerTotalEarnings += fee;
+        _donations[idx] = _donations[idx].copyWith(
+          status: DonationStatus.delivered,
+        );
+
+        final notif = NotificationModel(
+          id: 'notif-vol-done-${DateTime.now().millisecondsSinceEpoch}',
+          recipientRole: 'all',
+          title: '🎉 Delivery Completed Successfully!',
+          message:
+              'Meals safely delivered to ${_donations[idx].reservedNgoName ?? "NGO Kitchen"}. ₹${fee.toStringAsFixed(0)} delivery fee credited to courier.',
+          type: 'delivered',
+          entityId: donationId,
+          createdAt: DateTime.now(),
+        );
+        notificationService.addLocalNotification(notif);
+        return true;
+      }
+      return false;
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -548,7 +727,15 @@ class AppRepository extends ChangeNotifier {
   }
 
   @override
+  void notifyListeners() {
+    if (!_isDisposed) {
+      super.notifyListeners();
+    }
+  }
+
+  @override
   void dispose() {
+    _isDisposed = true;
     _notifSubscription?.cancel();
     _donationSubscription?.cancel();
     _ngoSubscription?.cancel();

@@ -25,6 +25,12 @@ class DonationModel {
   final int aiUrgencyScore;
   final String? aiRecommendationSummary;
   final DonationStatus status;
+  final bool requiresVolunteerDelivery;
+  final double deliveryFee;
+  final String? assignedVolunteerId;
+  final String? assignedVolunteerName;
+  final String? reservedNgoId;
+  final String? reservedNgoName;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -51,6 +57,12 @@ class DonationModel {
     required this.aiUrgencyScore,
     this.aiRecommendationSummary,
     required this.status,
+    this.requiresVolunteerDelivery = false,
+    this.deliveryFee = 0.0,
+    this.assignedVolunteerId,
+    this.assignedVolunteerName,
+    this.reservedNgoId,
+    this.reservedNgoName,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -105,6 +117,25 @@ class DonationModel {
       status: DonationStatus.fromString(
         json['status'] as String? ?? 'AVAILABLE',
       ),
+      requiresVolunteerDelivery:
+          json['requires_volunteer_delivery'] == true ||
+          json['requiresVolunteerDelivery'] == true,
+      deliveryFee:
+          (json['delivery_fee'] as num?)?.toDouble() ??
+          (json['deliveryFee'] as num?)?.toDouble() ??
+          0.0,
+      assignedVolunteerId:
+          json['assigned_volunteer_id'] as String? ??
+          json['assignedVolunteerId'] as String?,
+      assignedVolunteerName:
+          json['assigned_volunteer_name'] as String? ??
+          json['assignedVolunteerName'] as String?,
+      reservedNgoId:
+          json['reserved_ngo_id'] as String? ??
+          json['reservedNgoId'] as String?,
+      reservedNgoName:
+          json['reserved_ngo_name'] as String? ??
+          json['reservedNgoName'] as String?,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String) ?? DateTime.now()
           : DateTime.now(),
@@ -136,6 +167,12 @@ class DonationModel {
       'ai_urgency_score': aiUrgencyScore,
       'ai_recommendation_summary': aiRecommendationSummary,
       'status': status.dbValue,
+      'requires_volunteer_delivery': requiresVolunteerDelivery,
+      'delivery_fee': deliveryFee,
+      'assigned_volunteer_id': assignedVolunteerId,
+      'assigned_volunteer_name': assignedVolunteerName,
+      'reserved_ngo_id': reservedNgoId,
+      'reserved_ngo_name': reservedNgoName,
     };
   }
 
@@ -162,6 +199,12 @@ class DonationModel {
     int? aiUrgencyScore,
     String? aiRecommendationSummary,
     DonationStatus? status,
+    bool? requiresVolunteerDelivery,
+    double? deliveryFee,
+    String? assignedVolunteerId,
+    String? assignedVolunteerName,
+    String? reservedNgoId,
+    String? reservedNgoName,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -189,6 +232,14 @@ class DonationModel {
       aiRecommendationSummary:
           aiRecommendationSummary ?? this.aiRecommendationSummary,
       status: status ?? this.status,
+      requiresVolunteerDelivery:
+          requiresVolunteerDelivery ?? this.requiresVolunteerDelivery,
+      deliveryFee: deliveryFee ?? this.deliveryFee,
+      assignedVolunteerId: assignedVolunteerId ?? this.assignedVolunteerId,
+      assignedVolunteerName:
+          assignedVolunteerName ?? this.assignedVolunteerName,
+      reservedNgoId: reservedNgoId ?? this.reservedNgoId,
+      reservedNgoName: reservedNgoName ?? this.reservedNgoName,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

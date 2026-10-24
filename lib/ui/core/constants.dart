@@ -45,7 +45,7 @@ class AppConstants {
       720.0; // 720 liters water footprint conserved
 }
 
-enum UserRole { donor, community, ngo, admin }
+enum UserRole { donor, community, ngo, admin, volunteer }
 
 enum DonationStatus {
   available,

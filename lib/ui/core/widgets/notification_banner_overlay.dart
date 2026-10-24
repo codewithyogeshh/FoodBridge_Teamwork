@@ -47,14 +47,25 @@ class _RealtimeNotificationOverlayState
           ),
         );
 
-    _sub = widget.repository.onNotificationStream.listen((notif) {
-      final currentRoleStr = widget.repository.currentRole.name.toLowerCase();
-      // Only show banner if the notification is targeted for current role or 'all'
-      if (notif.recipientRole == currentRoleStr ||
-          notif.recipientRole == 'all') {
-        _triggerBanner(notif);
-      }
-    });
+    _sub = widget.repository.notificationService.notifications.isNotEmpty
+        ? widget.repository.onNotificationStream.listen((notif) {
+            final currentRoleStr = widget.repository.currentRole.name
+                .toLowerCase();
+            // Only show banner if the notification is targeted for current role or 'all'
+            if (notif.recipientRole == currentRoleStr ||
+                notif.recipientRole == 'all') {
+              _triggerBanner(notif);
+            }
+          })
+        : widget.repository.onNotificationStream.listen((notif) {
+            final currentRoleStr = widget.repository.currentRole.name
+                .toLowerCase();
+            // Only show banner if the notification is targeted for current role or 'all'
+            if (notif.recipientRole == currentRoleStr ||
+                notif.recipientRole == 'all') {
+              _triggerBanner(notif);
+            }
+          });
   }
 
   void _triggerBanner(NotificationModel notif) {
