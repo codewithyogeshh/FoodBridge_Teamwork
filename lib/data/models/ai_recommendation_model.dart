@@ -52,4 +52,9 @@ class AIAllocationAnalysis {
       'AI Recommendation Notice: FoodBridge AI assists logistics routing and demand matching. '
       'AI cannot physically inspect or certify microbiological food safety. '
       'Donors and receiving NGOs must visually and thermally verify food freshness before consumption.';
+
+  @override
+  String toString() =>
+      'AIAllocationAnalysis(donationId: $donationId, urgency: ${computedUrgency.name}, '
+      'score: $urgencyScore, matches: ${matches.length})';
 }
