@@ -87,6 +87,11 @@ class NotificationService extends ChangeNotifier {
     }
   }
 
+  void clearAllNotifications() {
+    _notifications.clear();
+    notifyListeners();
+  }
+
   void _showLocalNotification(NotificationModel notif) {
     // In a real app, we'd use flutter_local_notifications here
     // For this demo, we'll simulate the system-level alert
