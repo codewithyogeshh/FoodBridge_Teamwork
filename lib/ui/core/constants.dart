@@ -38,6 +38,7 @@ class AppConstants {
     'Eggs',
     'Shellfish',
     'Mustard',
+    'Sesame',
   ];
 
   // Impact Calculations (per meal saved)
