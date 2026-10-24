@@ -21,14 +21,18 @@ class OfflineSyncService extends ChangeNotifier {
   bool _isOnline = true;
   final List<OfflineAction> _pendingQueue = [];
   DateTime? _lastSyncTime;
+  int _retryCount = 0;
+  static const int maxRetries = 3;
 
   bool get isOnline => _isOnline;
   int get pendingCount => _pendingQueue.length;
   List<OfflineAction> get pendingQueue => List.unmodifiable(_pendingQueue);
   DateTime? get lastSyncTime => _lastSyncTime;
+  int get retryCount => _retryCount;
 
   void toggleConnectivity([bool? forceStatus]) {
     _isOnline = forceStatus ?? !_isOnline;
+    _retryCount = 0; // Reset retries on connectivity change
     if (_isOnline && _pendingQueue.isNotEmpty) {
       syncNow();
     } else {
@@ -53,10 +57,21 @@ class OfflineSyncService extends ChangeNotifier {
 
   Future<void> syncNow() async {
     if (!_isOnline) return;
+    if (_retryCount >= maxRetries) {
+      debugPrint('⚠️ [SYNC] Max retries ($maxRetries) reached. Waiting for manual retry.');
+      return;
+    }
     // Simulate cloud sync processing
     await Future.delayed(const Duration(milliseconds: 600));
     _pendingQueue.clear();
+    _retryCount = 0;
     _lastSyncTime = DateTime.now();
     notifyListeners();
   }
+
+  void resetRetries() {
+    _retryCount = 0;
+    notifyListeners();
+  }
 }
+
