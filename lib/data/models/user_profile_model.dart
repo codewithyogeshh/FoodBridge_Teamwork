@@ -7,6 +7,7 @@ class UserProfileModel {
   final String phone;
   final String fullName;
   final UserRole role;
+  final String? email;
   final String? avatarUrl;
   final String? organizationName;
   final DateTime createdAt;
@@ -16,6 +17,7 @@ class UserProfileModel {
     required this.phone,
     required this.fullName,
     required this.role,
+    this.email,
     this.avatarUrl,
     this.organizationName,
     required this.createdAt,
@@ -46,6 +48,7 @@ class UserProfileModel {
       phone: json['phone'] as String? ?? '',
       fullName: json['full_name'] as String? ?? 'User',
       role: role,
+      email: json['email'] as String?,
       avatarUrl: json['avatar_url'] as String?,
       organizationName: json['organization_name'] as String?,
       createdAt: json['created_at'] != null
@@ -60,6 +63,7 @@ class UserProfileModel {
       'phone': phone,
       'full_name': fullName,
       'role': role.name,
+      'email': email,
       'avatar_url': avatarUrl,
       'organization_name': organizationName,
     };
