@@ -54,3 +54,10 @@ flutter test
 2. Open a Pull Request on GitHub against `main`.
 3. Fill out the PR template with a description and verification checklist.
 4. Wait for CI checks to pass and peer review approval.
+
+## 💡 Code of Conduct
+
+- Be respectful and inclusive in all interactions.
+- Write clean, well-documented code with meaningful commit messages.
+- Report bugs with clear steps to reproduce.
+- Help teammates debug issues and share knowledge freely.
