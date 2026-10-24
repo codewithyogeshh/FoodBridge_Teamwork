@@ -149,13 +149,14 @@ class SupabaseService {
         },
       );
 
-      // 5. Listen for direct broadcast alerts
+      // 5. Listen for direct broadcast alerts (NGO, Admin, Donor, Community)
       _realtimeChannel!.onBroadcast(
         event: 'realtime_alert',
         callback: (payload) {
           try {
-            final data = payload['payload'] as Map<String, dynamic>?;
-            if (data != null) {
+            final data =
+                (payload['payload'] as Map<String, dynamic>?) ?? payload;
+            if (data.containsKey('title')) {
               final notif = NotificationModel.fromJson(data);
               if (!_localNotifications.any((n) => n.id == notif.id)) {
                 _localNotifications.insert(0, notif);
@@ -164,6 +165,24 @@ class SupabaseService {
             }
           } catch (e) {
             debugPrint('Error parsing broadcast alert: $e');
+          }
+        },
+      );
+
+      // 6. Listen for direct broadcast new_donation events
+      _realtimeChannel!.onBroadcast(
+        event: 'new_donation',
+        callback: (payload) {
+          try {
+            final data =
+                (payload['payload'] as Map<String, dynamic>?) ?? payload;
+            if (data.containsKey('title')) {
+              final donation = DonationModel.fromJson(data);
+              _updateLocalDonationFromRealtime(donation);
+              _donationStreamController.add(donation);
+            }
+          } catch (e) {
+            debugPrint('Error parsing broadcast new_donation: $e');
           }
         },
       );
@@ -684,19 +703,101 @@ class SupabaseService {
       createdAt: DateTime.now(),
     );
 
+    final donorNotif = NotificationModel(
+      id: 'notif-dnr-${DateTime.now().millisecondsSinceEpoch}',
+      recipientRole: 'donor',
+      title: '✅ Donation Broadcast Active: ${finalCreated.title}',
+      message:
+          'Your surplus food batch (${finalCreated.quantityLabel}) is live! Regional NGOs and relief kitchens have been notified.',
+      type: 'donation_created',
+      entityId: finalCreated.id,
+      metadata: {
+        'donation_id': finalCreated.id,
+        'title': finalCreated.title,
+        'quantity_servings': finalCreated.quantityServings,
+      },
+      createdAt: DateTime.now(),
+    );
+
+    final globalNotif = NotificationModel(
+      id: 'notif-all-${DateTime.now().millisecondsSinceEpoch}',
+      recipientRole: 'all',
+      title: '🍲 New Surplus Food Alert: ${finalCreated.title}',
+      message:
+          '${finalCreated.donorName} posted ${finalCreated.quantityLabel} (${finalCreated.quantityServings} servings) of ${finalCreated.foodType}.',
+      type: 'donation_created',
+      entityId: finalCreated.id,
+      metadata: {
+        'donation_id': finalCreated.id,
+        'title': finalCreated.title,
+        'urgency_level': finalCreated.urgencyLevel.name.toUpperCase(),
+        'quantity_servings': finalCreated.quantityServings,
+        'pickup_address': finalCreated.pickupAddress,
+        'donor_name': finalCreated.donorName,
+      },
+      createdAt: DateTime.now(),
+    );
+
     _localNotifications.insert(0, ngoNotif);
     _localNotifications.insert(0, adminNotif);
+    _localNotifications.insert(0, donorNotif);
+    _localNotifications.insert(0, globalNotif);
+
     _notificationStreamController.add(ngoNotif);
     _notificationStreamController.add(adminNotif);
+    _notificationStreamController.add(donorNotif);
+    _notificationStreamController.add(globalNotif);
 
-    // Broadcast instant peer-to-peer WebSocket event
+    // Broadcast instant peer-to-peer WebSocket events across all network clients
     try {
+      // 1. Broadcast the new donation model itself
+      _realtimeChannel?.sendBroadcastMessage(
+        event: 'new_donation',
+        payload: finalCreated.toJson(),
+      );
+
+      // 2. Broadcast role-specific and global alerts
       _realtimeChannel?.sendBroadcastMessage(
         event: 'realtime_alert',
         payload: ngoNotif.toJson(),
       );
+      _realtimeChannel?.sendBroadcastMessage(
+        event: 'realtime_alert',
+        payload: adminNotif.toJson(),
+      );
+      _realtimeChannel?.sendBroadcastMessage(
+        event: 'realtime_alert',
+        payload: globalNotif.toJson(),
+      );
     } catch (e) {
       debugPrint('Realtime broadcast error: $e');
+    }
+
+    // Attempt persistent insertion into Supabase notifications table
+    try {
+      Map<String, dynamic> cleanNotif(NotificationModel n) {
+        final p = n.toJson();
+        final isUuid = RegExp(
+          r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+        ).hasMatch(n.id);
+        if (!isUuid) {
+          p.remove('id');
+        }
+        return p;
+      }
+
+      await _supabaseClient
+          .from('notifications')
+          .insert([
+            cleanNotif(ngoNotif),
+            cleanNotif(adminNotif),
+            cleanNotif(donorNotif),
+          ])
+          .timeout(const Duration(seconds: 4));
+    } catch (e) {
+      debugPrint(
+        'Supabase notifications insert notice (table might be local): $e',
+      );
     }
 
     return finalCreated;

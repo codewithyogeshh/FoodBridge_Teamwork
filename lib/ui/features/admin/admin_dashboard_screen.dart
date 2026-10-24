@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import '../../core/theme.dart';
 import '../../core/constants.dart';
 import '../../core/widgets/app_card.dart';
+import '../../core/widgets/app_badge.dart';
 import '../../../data/repositories/app_repository.dart';
 import 'ngo_verification_queue_screen.dart';
 import 'donation_management_screen.dart';
 import 'delivery_monitoring_screen.dart';
 import 'reports_settings_screen.dart';
 import '../ai_allocation/ai_allocation_screen.dart';
+import '../ngo/donation_details_screen.dart';
 import '../../core/widgets/notification_bell_button.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
@@ -221,6 +223,236 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 28),
+
+                  // Realtime Incoming Donation Feed for Central Command
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Text(
+                            '🚨 Live Incoming Donations',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: -0.4,
+                              color: AppTheme.richCharcoal,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.emeraldLight,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: 6,
+                                  height: 6,
+                                  decoration: const BoxDecoration(
+                                    color: AppTheme.forestGreen,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'REALTIME ($totalDonations)',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppTheme.forestGreen,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DonationManagementScreen(
+                                repository: repository,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'View All →',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.forestGreen,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  if (repository.donations.isEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.borderLight),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'No donations registered yet. Standing by for incoming donor batches.',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppTheme.charcoalMuted,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: repository.donations.take(3).length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final item = repository.donations[index];
+                        return AppCard(
+                          padding: const EdgeInsets.all(14),
+                          border: BorderSide(
+                            color: item.urgencyLevel == UrgencyLevel.critical
+                                ? AppTheme.statusCritical.withValues(alpha: 0.5)
+                                : AppTheme.borderLight,
+                            width: 1.2,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  StatusBadge(status: item.status),
+                                  const SizedBox(width: 8),
+                                  UrgencyBadge(level: item.urgencyLevel),
+                                  const Spacer(),
+                                  Text(
+                                    '${item.quantityServings} servings',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppTheme.forestGreen,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                item.title,
+                                style: const TextStyle(
+                                  fontSize: 14.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.richCharcoal,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                'Donor: ${item.donorName} (${item.donorPhone}) • ${item.pickupAddress}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 11.5,
+                                  color: AppTheme.charcoalMuted,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6,
+                                        ),
+                                        side: const BorderSide(
+                                          color: AppTheme.forestGreen,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DonationDetailsScreen(
+                                                  donation: item,
+                                                  repository: repository,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Inspect Details',
+                                        style: TextStyle(
+                                          fontSize: 11.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppTheme.forestGreen,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6,
+                                        ),
+                                        backgroundColor: AppTheme.forestGreen,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                AIAllocationScreen(
+                                                  repository: repository,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'AI Allocate',
+                                        style: TextStyle(
+                                          fontSize: 11.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   const SizedBox(height: 28),
 
                   // Navigation Modules

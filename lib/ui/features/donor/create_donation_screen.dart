@@ -159,6 +159,28 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
 
     if (mounted) {
       setState(() => _isAnalyzing = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.campaign_rounded, color: Colors.white, size: 22),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  '📢 "${created.title}" broadcasted live! Instant alerts dispatched to NGOs and Central Command.',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: AppTheme.forestGreen,
+          duration: const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -9,6 +9,8 @@ import '../../../data/repositories/app_repository.dart';
 import 'food_discovery_screen.dart';
 import 'pickup_tracking_screen.dart';
 import 'ngo_impact_screen.dart';
+import 'donation_details_screen.dart';
+import 'reservation_confirm_screen.dart';
 import '../../core/widgets/notification_bell_button.dart';
 
 class NGODashboardScreen extends StatelessWidget {
@@ -209,6 +211,277 @@ class NGODashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 28),
+
+                    // Available Surplus Section (Real-Time Incoming Stream)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              '🚨 Available Surplus Food',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.4,
+                                color: AppTheme.richCharcoal,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppTheme.emeraldLight,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 6,
+                                    height: 6,
+                                    decoration: const BoxDecoration(
+                                      color: AppTheme.forestGreen,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'LIVE (${available.length})',
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppTheme.forestGreen,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    FoodDiscoveryScreen(repository: repository),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'View Map →',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.forestGreen,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+
+                    if (available.isEmpty)
+                      const EmptyStateWidget(
+                        icon: Icons.check_circle_outline_rounded,
+                        title: 'No Surplus Food Unclaimed',
+                        message:
+                            'All current donations have been reserved. New donor submissions will appear here instantly!',
+                      )
+                    else
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: available.take(3).length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final item = available[index];
+                          return AppCard(
+                            border: BorderSide(
+                              color: item.urgencyLevel == UrgencyLevel.critical
+                                  ? AppTheme.statusCritical.withValues(
+                                      alpha: 0.5,
+                                    )
+                                  : AppTheme.forestGreen.withValues(alpha: 0.3),
+                              width: 1.2,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (item.imageUrl != null &&
+                                        item.imageUrl!.isNotEmpty)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          item.imageUrl!,
+                                          width: 64,
+                                          height: 64,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, _, _) => Container(
+                                            width: 64,
+                                            height: 64,
+                                            color: AppTheme.warmIvory,
+                                            child: const Icon(
+                                              Icons.fastfood_rounded,
+                                              color: AppTheme.forestGreen,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    else
+                                      Container(
+                                        width: 64,
+                                        height: 64,
+                                        decoration: BoxDecoration(
+                                          color: AppTheme.warmIvory,
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.fastfood_rounded,
+                                          color: AppTheme.forestGreen,
+                                        ),
+                                      ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  item.title,
+                                                  style: const TextStyle(
+                                                    fontSize: 14.5,
+                                                    fontWeight: FontWeight.w800,
+                                                    color:
+                                                        AppTheme.richCharcoal,
+                                                  ),
+                                                ),
+                                              ),
+                                              UrgencyBadge(
+                                                level: item.urgencyLevel,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${item.donorName} • ${item.quantityLabel} (${item.quantityServings} servings)',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: AppTheme.charcoalMuted,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            item.pickupAddress,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              color: AppTheme.charcoalMuted,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                          ),
+                                          side: const BorderSide(
+                                            color: AppTheme.forestGreen,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DonationDetailsScreen(
+                                                    donation: item,
+                                                    repository: repository,
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Inspect Batch',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppTheme.forestGreen,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                          ),
+                                          backgroundColor: AppTheme.forestGreen,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReservationConfirmScreen(
+                                                    donation: item,
+                                                    repository: repository,
+                                                  ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Claim / Reserve',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     const SizedBox(height: 28),
 
                     // Active Pickups Section
