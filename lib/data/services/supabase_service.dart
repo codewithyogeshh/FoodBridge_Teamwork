@@ -613,8 +613,14 @@ class SupabaseService {
               (item) => DonationModel.fromJson(Map<String, dynamic>.from(item)),
             )
             .toList();
-        _localDonations.clear();
-        _localDonations.addAll(results);
+        for (final item in results) {
+          final idx = _localDonations.indexWhere((d) => d.id == item.id);
+          if (idx != -1) {
+            _localDonations[idx] = item;
+          } else {
+            _localDonations.add(item);
+          }
+        }
       }
     } catch (e) {
       debugPrint('Supabase getDonations SDK notice (using REST fallback): $e');
@@ -635,8 +641,14 @@ class SupabaseService {
               .map((item) => DonationModel.fromJson(item))
               .toList();
           if (results.isNotEmpty) {
-            _localDonations.clear();
-            _localDonations.addAll(results);
+            for (final item in results) {
+              final idx = _localDonations.indexWhere((d) => d.id == item.id);
+              if (idx != -1) {
+                _localDonations[idx] = item;
+              } else {
+                _localDonations.add(item);
+              }
+            }
           }
         }
       } catch (err) {
