@@ -17,6 +17,7 @@ class AppConstants {
     'Produce & Veggies',
     'Packaged Goods',
     'Dairy & Beverages',
+    'Fruits & Juices',
   ];
 
   // Storage Requirements
