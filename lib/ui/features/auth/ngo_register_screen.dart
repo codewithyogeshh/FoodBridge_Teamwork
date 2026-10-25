@@ -8,6 +8,8 @@ import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_card.dart';
 import '../../../data/models/ngo_model.dart';
 import '../../../data/repositories/app_repository.dart';
+import 'widgets/ngo_document_upload_tile.dart';
+import 'widgets/ngo_sign_in_tab.dart';
 
 class NGORegisterScreen extends StatefulWidget {
   final AppRepository repository;
@@ -653,407 +655,43 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
   }
 
   Widget _buildDocumentUploadCard({required bool isGovtId}) {
-    final bytes = isGovtId ? _govtDocBytes : _fssaiDocBytes;
-    final isAttached = isGovtId ? _govtDocAttached : _fssaiDocAttached;
-    final isUploading = isGovtId ? _isUploadingGovtDoc : _isUploadingFssaiDoc;
-    final fileName = isGovtId ? _govtDocFileName : _fssaiDocFileName;
-    final fileSize = isGovtId ? _govtDocFileSize : _fssaiDocFileSize;
-    final title = isGovtId
-        ? 'Official $_govtIdType Proof'
-        : 'Official FSSAI Food Safety Certificate';
-    final subtitle = isGovtId
-        ? 'Upload official Aadhaar or PAN document proof'
-        : 'Upload state food safety authority certificate';
-
-    if (isUploading) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: BoxDecoration(
-          color: AppTheme.warmIvoryDark,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.emerald),
-        ),
-        child: const Row(
-          children: [
-            SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: AppTheme.forestGreen,
-              ),
-            ),
-            SizedBox(width: 14),
-            Expanded(
-              child: Text(
-                'Uploading document to Supabase secure compliance vault...',
-                style: TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.forestGreen,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (isAttached) {
-      return Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: AppTheme.emeraldLight.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.emerald, width: 1.5),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                if (bytes != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.memory(
-                      bytes,
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppTheme.forestGreen,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.verified_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  )
-                else
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.forestGreen,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.verified_rounded,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        fileName,
-                        style: const TextStyle(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w800,
-                          color: AppTheme.richCharcoal,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Vault Upload Verified • $fileSize',
-                        style: const TextStyle(
-                          fontSize: 11.5,
-                          color: AppTheme.forestGreen,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.emeraldLight,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: const Text(
-                    'ATTACHED',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: AppTheme.forestGreen,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton.icon(
-                  icon: const Icon(
-                    Icons.delete_outline_rounded,
-                    size: 16,
-                    color: AppTheme.statusCritical,
-                  ),
-                  label: const Text(
-                    'Remove',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.statusCritical,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      if (isGovtId) {
-                        _govtDocAttached = false;
-                        _govtDocBytes = null;
-                        _govtDocUrl = null;
-                        _govtDocFileName = '';
-                        _govtDocFileSize = '';
-                      } else {
-                        _fssaiDocAttached = false;
-                        _fssaiDocBytes = null;
-                        _fssaiDocUrl = null;
-                        _fssaiDocFileName = '';
-                        _fssaiDocFileSize = '';
-                      }
-                    });
-                  },
-                ),
-                const SizedBox(width: 8),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.forestGreen,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  icon: const Icon(Icons.change_circle_rounded, size: 16),
-                  label: const Text(
-                    'Change File',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-                  ),
-                  onPressed: () => _openDocumentPickerModal(isGovtId: isGovtId),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme.warmIvoryDark,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.borderColor),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.cloud_upload_rounded,
-              color: AppTheme.forestGreen,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.richCharcoal,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: AppTheme.charcoalMuted,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.forestGreen,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            icon: const Icon(Icons.upload_rounded, size: 16),
-            label: const Text(
-              'Upload',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-            ),
-            onPressed: () => _openDocumentPickerModal(isGovtId: isGovtId),
-          ),
-        ],
-      ),
+    return NGODocumentUploadTile(
+      isGovtId: isGovtId,
+      govtIdType: _govtIdType,
+      bytes: isGovtId ? _govtDocBytes : _fssaiDocBytes,
+      isAttached: isGovtId ? _govtDocAttached : _fssaiDocAttached,
+      isUploading: isGovtId ? _isUploadingGovtDoc : _isUploadingFssaiDoc,
+      fileName: isGovtId ? _govtDocFileName : _fssaiDocFileName,
+      fileSize: isGovtId ? _govtDocFileSize : _fssaiDocFileSize,
+      onUploadPressed: () => _openDocumentPickerModal(isGovtId: isGovtId),
+      onRemovePressed: () {
+        setState(() {
+          if (isGovtId) {
+            _govtDocAttached = false;
+            _govtDocBytes = null;
+            _govtDocUrl = null;
+            _govtDocFileName = '';
+            _govtDocFileSize = '';
+          } else {
+            _fssaiDocAttached = false;
+            _fssaiDocBytes = null;
+            _fssaiDocUrl = null;
+            _fssaiDocFileName = '';
+            _fssaiDocFileSize = '';
+          }
+        });
+      },
     );
   }
 
   // TAB 1: Existing NGO Sign-In (No Re-Registration Required)
   Widget _buildSignInTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppTheme.emeraldLight,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.volunteer_activism_rounded,
-              size: 28,
-              color: AppTheme.forestGreen,
-            ),
-          ),
-          const SizedBox(height: 18),
-          const Text(
-            'Sign In to Your NGO Account',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
-              color: AppTheme.richCharcoal,
-            ),
-          ),
-          const SizedBox(height: 6),
-          const Text(
-            'If your organization has already registered, enter your official phone number or 80G registration ID below. You do not need to register again.',
-            style: TextStyle(
-              fontSize: 13.5,
-              color: AppTheme.charcoalMuted,
-              height: 1.4,
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          AppCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppTextField(
-                  label: 'Official Phone Number or 80G Registration ID',
-                  hint: 'e.g. +91 9XXXXXXXXX or NGO-KA-2024-XXXX',
-                  controller: _signInQueryController,
-                  prefixIcon: Icons.badge_rounded,
-                ),
-                const SizedBox(height: 14),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.warmIvoryDark,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.borderColor),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.shield_outlined,
-                        size: 20,
-                        color: AppTheme.forestGreen,
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Your credentials are kept strictly private. Enter your registered mobile number or registration ID to access your account.',
-                          style: TextStyle(
-                            fontSize: 11.5,
-                            color: AppTheme.charcoalMuted,
-                            height: 1.35,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_signInError != null) ...[
-                  const SizedBox(height: 14),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFEF2F2),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppTheme.statusCritical),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.error_outline_rounded,
-                          color: AppTheme.statusCritical,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            _signInError!,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.statusCritical,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 20),
-                AppButton(
-                  label: 'Sign In & Verify Access',
-                  icon: Icons.arrow_forward_rounded,
-                  isLoading: _isCheckingAccount,
-                  onPressed: _signInExisting,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Center(
-            child: TextButton.icon(
-              icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
-              label: const Text(
-                'New to FoodBridge? Register Organization here',
-              ),
-              onPressed: () {
-                _tabController.animateTo(1);
-              },
-            ),
-          ),
-        ],
-      ),
+    return NGOSignInTab(
+      controller: _signInQueryController,
+      isCheckingAccount: _isCheckingAccount,
+      errorText: _signInError,
+      onSignIn: _signInExisting,
+      onSwitchToRegister: () => _tabController.animateTo(1),
     );
   }
 
