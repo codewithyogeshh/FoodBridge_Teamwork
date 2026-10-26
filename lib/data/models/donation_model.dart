@@ -71,6 +71,8 @@ class DonationModel {
   Duration get timeRemaining => safeUntil.difference(DateTime.now());
 
   bool get isExpired => DateTime.now().isAfter(safeUntil);
+  bool get isSafeToConsume => !isExpired;
+  int get remainingMinutes => timeRemaining.inMinutes > 0 ? timeRemaining.inMinutes : 0;
 
   String get formattedTimeRemaining {
     final diff = timeRemaining;
