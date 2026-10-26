@@ -31,6 +31,11 @@ class NotificationModel {
   }) : metadata = metadata ?? const {},
        createdAt = createdAt ?? DateTime.now();
 
+  bool get isUrgent =>
+      type == 'emergency_alert' ||
+      title.toLowerCase().contains('critical') ||
+      title.toLowerCase().contains('urgent');
+
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
       id: json['id']?.toString() ?? '',
