@@ -742,5 +742,22 @@ void main() {
       expect(expiredDonation.isSafeToConsume, isFalse);
       expect(expiredDonation.remainingMinutes, equals(0));
     });
+
+    test('UserProfileModel serializes vehicleType correctly in json', () {
+      final jsonMap = {
+        'id': 'vol-100',
+        'phone': '+91 9999888877',
+        'full_name': 'Anita Deshmukh',
+        'role': 'volunteer',
+        'vehicle_type': 'Motorcycle / Scooter',
+      };
+
+      final profile = UserProfileModel.fromJson(jsonMap);
+      expect(profile.vehicleType, equals('Motorcycle / Scooter'));
+      expect(profile.isVolunteer, isTrue);
+
+      final exportedJson = profile.toJson();
+      expect(exportedJson['vehicle_type'], equals('Motorcycle / Scooter'));
+    });
   });
 }
