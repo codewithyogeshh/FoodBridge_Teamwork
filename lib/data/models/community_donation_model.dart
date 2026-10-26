@@ -95,6 +95,10 @@ class CommunityDonationModel {
   String get displayDonorPhone =>
       isAnonymous ? 'Private & Encrypted' : donorPhone;
 
+  bool get isFulfilled => status == CommunityDonationStatus.distributed;
+  bool get has80GReceipt =>
+      tax80GReceiptNumber != null && tax80GReceiptNumber!.isNotEmpty;
+
   CommunityDonationModel copyWith({
     String? id,
     CommunityDonationCategory? category,
