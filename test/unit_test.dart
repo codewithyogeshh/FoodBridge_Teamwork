@@ -777,4 +777,27 @@ void main() {
       expect(loc.translate('continue_btn'), equals('Continue'));
     });
   });
+
+  group('NGOModel Helper Tests', () {
+    test('hasStorageCapacity and verification flags report correctly', () {
+      final now = DateTime.now();
+      final ngo = NGOModel(
+        id: 'ngo-pune-1',
+        organizationName: 'Pune Seva Trust',
+        registrationNumber: 'MH-PUN-2024-89',
+        contactPerson: 'Sunil Rao',
+        phone: '+91 9422001122',
+        address: 'FC Road, Pune',
+        latitude: 18.5204,
+        longitude: 73.8567,
+        verificationStatus: NGOVerificationStatus.verified,
+        capacityMealsPerDay: 150,
+        createdAt: now,
+      );
+
+      expect(ngo.isVerified, isTrue);
+      expect(ngo.isPendingVerification, isFalse);
+      expect(ngo.hasStorageCapacity, isTrue);
+    });
+  });
 }
