@@ -57,6 +57,34 @@ class UserProfileModel {
     );
   }
 
+  bool get isDonor => role == UserRole.donor;
+  bool get isVolunteer => role == UserRole.volunteer;
+  bool get isNgo => role == UserRole.ngo;
+  bool get isAdmin => role == UserRole.admin;
+  bool get isCommunity => role == UserRole.community;
+
+  UserProfileModel copyWith({
+    String? id,
+    String? phone,
+    String? fullName,
+    UserRole? role,
+    String? email,
+    String? avatarUrl,
+    String? organizationName,
+    DateTime? createdAt,
+  }) {
+    return UserProfileModel(
+      id: id ?? this.id,
+      phone: phone ?? this.phone,
+      fullName: fullName ?? this.fullName,
+      role: role ?? this.role,
+      email: email ?? this.email,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      organizationName: organizationName ?? this.organizationName,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
