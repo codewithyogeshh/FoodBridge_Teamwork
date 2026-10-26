@@ -10,6 +10,7 @@ import 'package:foodbridge/data/models/notification_model.dart';
 import 'package:foodbridge/data/services/supabase_service.dart';
 import 'package:foodbridge/data/repositories/app_repository.dart';
 import 'package:foodbridge/data/services/offline_sync_service.dart';
+import 'package:foodbridge/data/services/localization_service.dart';
 
 void main() {
   group('AIAllocationService Tests', () {
@@ -758,6 +759,22 @@ void main() {
 
       final exportedJson = profile.toJson();
       expect(exportedJson['vehicle_type'], equals('Motorcycle / Scooter'));
+    });
+  });
+
+  group('LocalizationService Tests', () {
+    test('fetches correct localized string and switches language', () {
+      final loc = LocalizationService.instance;
+      loc.setLanguage(AppLanguage.mr);
+
+      expect(loc.translate('app_title'), equals('फूडब्रिज २.०'));
+      expect(loc.translate('role_volunteer'), equals('स्वयंसेवक डिलिव्हरी रायडर'));
+
+      loc.setLanguage(AppLanguage.hi);
+      expect(loc.translate('role_volunteer'), equals('स्वयंसेवक डिलीवरी राइडर'));
+
+      loc.setLanguage(AppLanguage.en);
+      expect(loc.translate('continue_btn'), equals('Continue'));
     });
   });
 }
