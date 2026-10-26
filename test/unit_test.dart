@@ -800,4 +800,27 @@ void main() {
       expect(ngo.hasStorageCapacity, isTrue);
     });
   });
+
+  group('CommunityDonationModel Helper Tests', () {
+    test('isFulfilled and has80GReceipt reflect state accurately', () {
+      final now = DateTime.now();
+      final donation = CommunityDonationModel(
+        id: 'comm-1',
+        category: CommunityDonationCategory.books,
+        title: 'Science Textbooks (Grade 10)',
+        description: 'Complete syllabus set',
+        quantityOrAmount: '12 books',
+        donorName: 'Dr. Ramesh Kulkarni',
+        donorPhone: '+91 9823012345',
+        pickupAddress: 'Kothrud, Pune',
+        status: CommunityDonationStatus.distributed,
+        tax80GReceiptNumber: '80G-PUN-2026-0044',
+        createdAt: now,
+      );
+
+      expect(donation.isFulfilled, isTrue);
+      expect(donation.has80GReceipt, isTrue);
+      expect(donation.displayDonorName, equals('Dr. Ramesh Kulkarni'));
+    });
+  });
 }
