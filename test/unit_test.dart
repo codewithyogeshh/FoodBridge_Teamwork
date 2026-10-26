@@ -9,6 +9,7 @@ import 'package:foodbridge/data/models/user_profile_model.dart';
 import 'package:foodbridge/data/models/notification_model.dart';
 import 'package:foodbridge/data/services/supabase_service.dart';
 import 'package:foodbridge/data/repositories/app_repository.dart';
+import 'package:foodbridge/data/services/offline_sync_service.dart';
 
 void main() {
   group('AIAllocationService Tests', () {
@@ -620,5 +621,48 @@ void main() {
         repository.dispose();
       },
     );
+  });
+
+  group('OfflineSyncService Tests', () {
+    final syncService = OfflineSyncService.instance;
+
+    setUp(() {
+      syncService.clearQueue();
+      syncService.toggleConnectivity(false); // set offline for deterministic queue assertions
+    });
+
+    test('enqueueAction enqueues offline action when offline', () {
+      expect(syncService.pendingCount, equals(0));
+      expect(syncService.hasPendingActions, isFalse);
+
+      syncService.enqueueAction('OTP_VERIFIED', {'otp': '123456'});
+
+      expect(syncService.pendingCount, equals(1));
+      expect(syncService.hasPendingActions, isTrue);
+      expect(syncService.pendingQueue.first.actionType, equals('OTP_VERIFIED'));
+    });
+
+    test('enqueueAll adds multiple actions to queue', () {
+      syncService.enqueueAll([
+        {'actionType': 'CLAIM_PICKUP', 'payload': {'id': 'd-1'}},
+        {'actionType': 'THERMAL_LOG', 'payload': {'temp': 4.5}},
+      ]);
+
+      expect(syncService.pendingCount, equals(2));
+      expect(syncService.hasPendingActions, isTrue);
+      expect(syncService.pendingQueue[0].actionType, equals('CLAIM_PICKUP'));
+      expect(syncService.pendingQueue[1].actionType, equals('THERMAL_LOG'));
+    });
+
+    test('clearQueue resets pending actions and retries', () {
+      syncService.enqueueAction('SAMPLE', {});
+      expect(syncService.pendingCount, equals(1));
+
+      syncService.clearQueue();
+
+      expect(syncService.pendingCount, equals(0));
+      expect(syncService.hasPendingActions, isFalse);
+      expect(syncService.retryCount, equals(0));
+    });
   });
 }
