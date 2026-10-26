@@ -699,4 +699,48 @@ void main() {
       expect(user.email, isNull);
     });
   });
+
+  group('DonationModel Freshness & Helper Tests', () {
+    test('isSafeToConsume and remainingMinutes calculate accurately', () {
+      final now = DateTime.now();
+      final freshDonation = DonationModel(
+        id: 'don-test-fresh',
+        title: 'Fresh Bread',
+        foodType: 'Bakery & Grains',
+        quantityLabel: '20 loaves',
+        quantityServings: 20,
+        pickupAddress: 'Pune Station',
+        preparedAt: now.subtract(const Duration(minutes: 30)),
+        safeUntil: now.add(const Duration(hours: 3)),
+        status: DonationStatus.available,
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      expect(freshDonation.isExpired, isFalse);
+      expect(freshDonation.isSafeToConsume, isTrue);
+      expect(freshDonation.remainingMinutes, greaterThan(150));
+    });
+
+    test('expired donation reflects isSafeToConsume false', () {
+      final now = DateTime.now();
+      final expiredDonation = DonationModel(
+        id: 'don-test-exp',
+        title: 'Salad',
+        foodType: 'Produce & Veggies',
+        quantityLabel: '5 boxes',
+        quantityServings: 5,
+        pickupAddress: 'Shivajinagar, Pune',
+        preparedAt: now.subtract(const Duration(hours: 5)),
+        safeUntil: now.subtract(const Duration(hours: 1)),
+        status: DonationStatus.expired,
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      expect(expiredDonation.isExpired, isTrue);
+      expect(expiredDonation.isSafeToConsume, isFalse);
+      expect(expiredDonation.remainingMinutes, equals(0));
+    });
+  });
 }
