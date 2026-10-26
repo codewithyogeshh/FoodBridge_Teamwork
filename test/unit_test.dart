@@ -665,4 +665,38 @@ void main() {
       expect(syncService.retryCount, equals(0));
     });
   });
+
+  group('UserProfileModel Helper Tests', () {
+    test('role query getters reflect assigned role accurately', () {
+      final user = UserProfileModel(
+        id: 'u-1',
+        phone: '+91 9876543210',
+        fullName: 'Yogesh Chavan',
+        role: UserRole.volunteer,
+        createdAt: DateTime.now(),
+      );
+
+      expect(user.isVolunteer, isTrue);
+      expect(user.isDonor, isFalse);
+      expect(user.isNgo, isFalse);
+      expect(user.isAdmin, isFalse);
+      expect(user.isCommunity, isFalse);
+    });
+
+    test('copyWith produces updated clone without mutating original', () {
+      final user = UserProfileModel(
+        id: 'u-2',
+        phone: '+91 9876543210',
+        fullName: 'Rahul Sharma',
+        role: UserRole.donor,
+        createdAt: DateTime.now(),
+      );
+
+      final updated = user.copyWith(fullName: 'Rahul S. Sharma', email: 'rahul@example.com');
+      expect(updated.fullName, equals('Rahul S. Sharma'));
+      expect(updated.email, equals('rahul@example.com'));
+      expect(updated.phone, equals(user.phone));
+      expect(user.email, isNull);
+    });
+  });
 }
