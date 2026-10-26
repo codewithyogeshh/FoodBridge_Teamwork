@@ -10,6 +10,7 @@ class UserProfileModel {
   final String? email;
   final String? avatarUrl;
   final String? organizationName;
+  final String? vehicleType;
   final DateTime createdAt;
 
   const UserProfileModel({
@@ -20,6 +21,7 @@ class UserProfileModel {
     this.email,
     this.avatarUrl,
     this.organizationName,
+    this.vehicleType,
     required this.createdAt,
   });
 
@@ -51,6 +53,7 @@ class UserProfileModel {
       email: json['email'] as String?,
       avatarUrl: json['avatar_url'] as String?,
       organizationName: json['organization_name'] as String?,
+      vehicleType: json['vehicle_type'] as String?,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String) ?? DateTime.now()
           : DateTime.now(),
@@ -71,6 +74,7 @@ class UserProfileModel {
     String? email,
     String? avatarUrl,
     String? organizationName,
+    String? vehicleType,
     DateTime? createdAt,
   }) {
     return UserProfileModel(
@@ -81,6 +85,7 @@ class UserProfileModel {
       email: email ?? this.email,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       organizationName: organizationName ?? this.organizationName,
+      vehicleType: vehicleType ?? this.vehicleType,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -94,6 +99,7 @@ class UserProfileModel {
       'email': email,
       'avatar_url': avatarUrl,
       'organization_name': organizationName,
+      'vehicle_type': vehicleType,
     };
   }
 }
