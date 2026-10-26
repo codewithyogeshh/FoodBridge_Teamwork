@@ -4,6 +4,18 @@ import '../models/ngo_model.dart';
 import '../../ui/core/constants.dart';
 
 class AIAllocationService {
+  /// Calculates estimated CO2e greenhouse gas offset in kg for rescued meals
+  double computeCo2SavedKg(int meals) {
+    if (meals <= 0) return 0.0;
+    return meals * AppConstants.co2SavedPerMealKg;
+  }
+
+  /// Calculates estimated water footprint conserved in liters for rescued meals
+  double computeWaterSavedLiters(int meals) {
+    if (meals <= 0) return 0.0;
+    return meals * AppConstants.waterSavedPerMealL;
+  }
+
   /// Evaluates perishability and temperature dynamics
   UrgencyLevel computePerishabilityUrgency({
     required String foodType,
