@@ -823,4 +823,15 @@ void main() {
       expect(donation.displayDonorName, equals('Dr. Ramesh Kulkarni'));
     });
   });
+
+  group('AIAllocationService Environmental Metrics Tests', () {
+    final aiService = AIAllocationService();
+
+    test('computes accurate CO2 and water conservation metrics', () {
+      expect(aiService.computeCo2SavedKg(10), equals(25.0)); // 10 * 2.5 kg
+      expect(aiService.computeWaterSavedLiters(10), equals(7200.0)); // 10 * 720 L
+      expect(aiService.computeCo2SavedKg(0), equals(0.0));
+      expect(aiService.computeWaterSavedLiters(-5), equals(0.0));
+    });
+  });
 }
