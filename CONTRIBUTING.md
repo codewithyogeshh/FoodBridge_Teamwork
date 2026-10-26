@@ -38,6 +38,15 @@ Thank you for contributing to **FoodBridge Teamwork**!
   - `bugfix/<name>` for bug fixes
   - `docs/<name>` for documentation updates
 
+## 📝 Commit Conventions
+Follow Conventional Commits format:
+- `feat:` for new capabilities
+- `fix:` for bug resolutions
+- `test:` for unit and integration test additions
+- `docs:` for documentation and markdown guides
+- `perf:` for performance optimizations
+- `chore:` for dependency or tooling updates
+
 ## 🧪 Quality Gate Before Pushing
 
 Before opening a PR, ensure all 3 checks pass:
