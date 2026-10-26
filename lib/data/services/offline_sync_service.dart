@@ -26,6 +26,7 @@ class OfflineSyncService extends ChangeNotifier {
 
   bool get isOnline => _isOnline;
   int get pendingCount => _pendingQueue.length;
+  bool get hasPendingActions => _pendingQueue.isNotEmpty;
   List<OfflineAction> get pendingQueue => List.unmodifiable(_pendingQueue);
   DateTime? get lastSyncTime => _lastSyncTime;
   int get retryCount => _retryCount;
@@ -55,6 +56,26 @@ class OfflineSyncService extends ChangeNotifier {
     }
   }
 
+  void enqueueAll(List<Map<String, dynamic>> actions) {
+    final now = DateTime.now();
+    for (int i = 0; i < actions.length; i++) {
+      final item = actions[i];
+      _pendingQueue.add(
+        OfflineAction(
+          id: 'act-${now.millisecondsSinceEpoch}-$i',
+          actionType: item['actionType'] as String? ?? 'GENERIC_ACTION',
+          payload: item['payload'] as Map<String, dynamic>? ?? item,
+          recordedAt: now,
+        ),
+      );
+    }
+    if (_isOnline) {
+      syncNow();
+    } else {
+      notifyListeners();
+    }
+  }
+
   Future<void> syncNow() async {
     if (!_isOnline) return;
     if (_retryCount >= maxRetries) {
@@ -66,6 +87,12 @@ class OfflineSyncService extends ChangeNotifier {
     _pendingQueue.clear();
     _retryCount = 0;
     _lastSyncTime = DateTime.now();
+    notifyListeners();
+  }
+
+  void clearQueue() {
+    _pendingQueue.clear();
+    _retryCount = 0;
     notifyListeners();
   }
 
