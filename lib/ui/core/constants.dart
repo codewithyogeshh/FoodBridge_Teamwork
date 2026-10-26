@@ -45,6 +45,15 @@ class AppConstants {
   static const double co2SavedPerMealKg = 2.5; // 2.5 kg CO2e per meal
   static const double waterSavedPerMealL =
       720.0; // 720 liters water footprint conserved
+
+  // Animation & UI Timings
+  static const Duration fastAnimationDuration = Duration(milliseconds: 200);
+  static const Duration standardAnimationDuration = Duration(milliseconds: 350);
+  static const Duration modalAnimationDuration = Duration(milliseconds: 400);
+
+  // Network & Sync Timeouts
+  static const Duration defaultApiTimeout = Duration(seconds: 15);
+  static const Duration backgroundSyncDebounce = Duration(seconds: 2);
 }
 
 enum UserRole { donor, community, ngo, admin, volunteer }
