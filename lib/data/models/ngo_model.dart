@@ -79,6 +79,8 @@ class NGOModel {
   });
 
   bool get isVerified => verificationStatus == NGOVerificationStatus.verified;
+  bool get isPendingVerification => verificationStatus == NGOVerificationStatus.pending;
+  bool get hasStorageCapacity => capacityMealsPerDay > 0;
 
   /// Calculate distance in Kilometers from a given coordinate using Haversine formula
   double distanceTo(double lat, double lng) {
