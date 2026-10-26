@@ -834,4 +834,26 @@ void main() {
       expect(aiService.computeWaterSavedLiters(-5), equals(0.0));
     });
   });
+
+  group('NotificationModel Helper Tests', () {
+    test('isUrgent flags emergency alert and urgent keywords', () {
+      final emergencyNotif = NotificationModel(
+        id: 'n-1',
+        recipientRole: 'ngo',
+        title: 'Emergency Food Alert',
+        message: 'Surplus hot meals expiring in 45 minutes',
+        type: 'emergency_alert',
+      );
+      expect(emergencyNotif.isUrgent, isTrue);
+
+      final regularNotif = NotificationModel(
+        id: 'n-2',
+        recipientRole: 'donor',
+        title: 'Thank You for Donating',
+        message: 'Your donation reached 40 beneficiaries',
+        type: 'system',
+      );
+      expect(regularNotif.isUrgent, isFalse);
+    });
+  });
 }
