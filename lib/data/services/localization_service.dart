@@ -81,6 +81,10 @@ class LocalizationService extends ChangeNotifier {
       'live_tracking': 'लाइव ड्राइवर जीपीएस ट्रैकर',
       'ai_vision_scan': 'एआई खाद्य गुणवत्ता स्कैनर',
       'anonymous_giving': 'गुमनाम दान सक्रिय',
+      'role_volunteer': 'स्वयंसेवक डिलीवरी राइडर',
+      'accept_delivery': 'डिलीवरी स्वीकारें',
+      'delivery_fee_label': 'डिलीवरी शुल्क',
+      'otp_pickup_verify': 'ओटीपी पिकअप सत्यापन',
     },
     AppLanguage.mr: {
       'app_title': 'फूडब्रिज २.०',
