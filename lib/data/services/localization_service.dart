@@ -106,6 +106,12 @@ class LocalizationService extends ChangeNotifier {
       'live_tracking': 'थेट वाहन ट्रॅकिंग',
       'ai_vision_scan': 'एआय अन्न गुणवत्ता स्कॅनर',
       'anonymous_giving': 'अनामिक देणगी मोड',
+      'role_volunteer': 'स्वयंसेवक डिलिव्हरी रायडर',
+      'accept_delivery': 'डिलिव्हरी स्वीकारा',
+      'delivery_fee_label': 'डिलिव्हरी शुल्क',
+      'otp_pickup_verify': 'ओटीपी पिकअप पडताळणी',
+      'cooked_meals': 'तयार जेवण',
+      'fruits_juices': 'फळे आणि रस',
     },
     AppLanguage.ta: {
       'app_title': 'ஃபுட்பிரிட்ஜ் 2.0',
