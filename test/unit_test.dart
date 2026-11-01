@@ -629,7 +629,9 @@ void main() {
 
     setUp(() {
       syncService.clearQueue();
-      syncService.toggleConnectivity(false); // set offline for deterministic queue assertions
+      syncService.toggleConnectivity(
+        false,
+      ); // set offline for deterministic queue assertions
     });
 
     test('enqueueAction enqueues offline action when offline', () {
@@ -645,8 +647,14 @@ void main() {
 
     test('enqueueAll adds multiple actions to queue', () {
       syncService.enqueueAll([
-        {'actionType': 'CLAIM_PICKUP', 'payload': {'id': 'd-1'}},
-        {'actionType': 'THERMAL_LOG', 'payload': {'temp': 4.5}},
+        {
+          'actionType': 'CLAIM_PICKUP',
+          'payload': {'id': 'd-1'},
+        },
+        {
+          'actionType': 'THERMAL_LOG',
+          'payload': {'temp': 4.5},
+        },
       ]);
 
       expect(syncService.pendingCount, equals(2));
@@ -693,7 +701,10 @@ void main() {
         createdAt: DateTime.now(),
       );
 
-      final updated = user.copyWith(fullName: 'Rahul S. Sharma', email: 'rahul@example.com');
+      final updated = user.copyWith(
+        fullName: 'Rahul S. Sharma',
+        email: 'rahul@example.com',
+      );
       expect(updated.fullName, equals('Rahul S. Sharma'));
       expect(updated.email, equals('rahul@example.com'));
       expect(updated.phone, equals(user.phone));
@@ -706,11 +717,19 @@ void main() {
       final now = DateTime.now();
       final freshDonation = DonationModel(
         id: 'don-test-fresh',
+        donorName: 'Baker Store',
+        donorPhone: '+91 9876543210',
         title: 'Fresh Bread',
         foodType: 'Bakery & Grains',
         quantityLabel: '20 loaves',
         quantityServings: 20,
         pickupAddress: 'Pune Station',
+        pickupLatitude: 18.5204,
+        pickupLongitude: 73.8567,
+        pickupOtp: '1234',
+        allergens: const ['Gluten'],
+        urgencyLevel: UrgencyLevel.medium,
+        aiUrgencyScore: 65,
         preparedAt: now.subtract(const Duration(minutes: 30)),
         safeUntil: now.add(const Duration(hours: 3)),
         status: DonationStatus.available,
@@ -727,11 +746,19 @@ void main() {
       final now = DateTime.now();
       final expiredDonation = DonationModel(
         id: 'don-test-exp',
+        donorName: 'Salad Bar',
+        donorPhone: '+91 9876543210',
         title: 'Salad',
         foodType: 'Produce & Veggies',
         quantityLabel: '5 boxes',
         quantityServings: 5,
         pickupAddress: 'Shivajinagar, Pune',
+        pickupLatitude: 18.5314,
+        pickupLongitude: 73.8446,
+        pickupOtp: '5678',
+        allergens: const [],
+        urgencyLevel: UrgencyLevel.high,
+        aiUrgencyScore: 90,
         preparedAt: now.subtract(const Duration(hours: 5)),
         safeUntil: now.subtract(const Duration(hours: 1)),
         status: DonationStatus.expired,
@@ -767,14 +794,14 @@ void main() {
       final loc = LocalizationService.instance;
       loc.setLanguage(AppLanguage.mr);
 
-      expect(loc.translate('app_title'), equals('फूडब्रिज २.०'));
-      expect(loc.translate('role_volunteer'), equals('स्वयंसेवक डिलिव्हरी रायडर'));
+      expect(loc.tr('app_title'), equals('फूडब्रिज २.०'));
+      expect(loc.tr('role_volunteer'), equals('स्वयंसेवक डिलिव्हरी रायडर'));
 
       loc.setLanguage(AppLanguage.hi);
-      expect(loc.translate('role_volunteer'), equals('स्वयंसेवक डिलीवरी राइडर'));
+      expect(loc.tr('role_volunteer'), equals('स्वयंसेवक डिलीवरी राइडर'));
 
       loc.setLanguage(AppLanguage.en);
-      expect(loc.translate('continue_btn'), equals('Continue'));
+      expect(loc.tr('continue_btn'), equals('Continue'));
     });
   });
 
@@ -829,7 +856,10 @@ void main() {
 
     test('computes accurate CO2 and water conservation metrics', () {
       expect(aiService.computeCo2SavedKg(10), equals(25.0)); // 10 * 2.5 kg
-      expect(aiService.computeWaterSavedLiters(10), equals(7200.0)); // 10 * 720 L
+      expect(
+        aiService.computeWaterSavedLiters(10),
+        equals(7200.0),
+      ); // 10 * 720 L
       expect(aiService.computeCo2SavedKg(0), equals(0.0));
       expect(aiService.computeWaterSavedLiters(-5), equals(0.0));
     });

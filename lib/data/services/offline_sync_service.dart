@@ -79,7 +79,9 @@ class OfflineSyncService extends ChangeNotifier {
   Future<void> syncNow() async {
     if (!_isOnline) return;
     if (_retryCount >= maxRetries) {
-      debugPrint('⚠️ [SYNC] Max retries ($maxRetries) reached. Waiting for manual retry.');
+      debugPrint(
+        '⚠️ [SYNC] Max retries ($maxRetries) reached. Waiting for manual retry.',
+      );
       return;
     }
     // Simulate cloud sync processing
@@ -101,4 +103,3 @@ class OfflineSyncService extends ChangeNotifier {
     notifyListeners();
   }
 }
-
