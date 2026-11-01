@@ -665,17 +665,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-
-            // Description
-            Text(
-              item['description'] as String,
-              style: const TextStyle(
-                fontSize: 12.5,
-                color: Color(0xFF4B5563),
-                height: 1.45,
-              ),
-            ),
             const SizedBox(height: 12),
 
             // Perks

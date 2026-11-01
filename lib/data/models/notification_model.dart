@@ -31,10 +31,13 @@ class NotificationModel {
   }) : metadata = metadata ?? const {},
        createdAt = createdAt ?? DateTime.now();
 
-  bool get isUrgent =>
-      type == 'emergency_alert' ||
-      title.toLowerCase().contains('critical') ||
-      title.toLowerCase().contains('urgent');
+  bool get isUrgent {
+    final urgency = metadata['urgency_level']?.toString().toLowerCase();
+    return urgency == 'critical' ||
+        type == 'emergency_alert' ||
+        title.toLowerCase().contains('critical') ||
+        title.toLowerCase().contains('urgent');
+  }
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
@@ -100,11 +103,6 @@ class NotificationModel {
       isRead: isRead ?? this.isRead,
       createdAt: createdAt ?? this.createdAt,
     );
-  }
-
-  bool get isUrgent {
-    final urgency = metadata['urgency_level']?.toString().toLowerCase();
-    return urgency == 'critical' || type == 'emergency_alert';
   }
 
   UrgencyLevel get urgencyLevel {
