@@ -12,6 +12,8 @@ import 'donor_impact_dashboard_screen.dart';
 import '../../core/widgets/notification_bell_button.dart';
 import '../analytics/esg_impact_dashboard.dart';
 import '../community/community_leaderboard_screen.dart';
+import 'sos_emergency_rescue_dialog.dart';
+import 'predictive_waste_forecast_card.dart';
 
 class DonorDashboardScreen extends StatelessWidget {
   final AppRepository repository;
@@ -326,7 +328,77 @@ class DonorDashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 14),
+
+                    // LATE-NIGHT EMERGENCY SOS RESCUE BUTTON
+                    InkWell(
+                      borderRadius: BorderRadius.circular(14),
+                      onTap: () {
+                        SOSEmergencyRescueDialog.show(
+                          context,
+                          repository: repository,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEF2F2),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: const Color(0xFFFCA5A5)),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFDC2626),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.emergency_rounded,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '🚨 Late-Night Bulk SOS Rescue (100–500+ Meals)',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w800,
+                                      color: Color(0xFF991B1B),
+                                    ),
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text(
+                                    'Wedding banquet or corporate event surplus? Wake 14 nearby 24x7 relief shelters.',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Color(0xFFB91C1C),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 12,
+                              color: Color(0xFFDC2626),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // PREDICTIVE WASTE FORECAST ENGINE
+                    PredictiveWasteForecastCard(repository: repository),
+
+                    const SizedBox(height: 20),
 
                     // Active Listings Section
                     Row(

@@ -10,6 +10,7 @@ import '../../core/widgets/app_card.dart';
 import '../../../data/models/donation_model.dart';
 import '../../../data/repositories/app_repository.dart';
 import 'ai_urgency_screen.dart';
+import '../ai/food_vision_scanner_dialog.dart';
 
 class CreateDonationScreen extends StatefulWidget {
   final AppRepository repository;
@@ -237,7 +238,100 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                     height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+
+                // GEMINI AI SCANNER HERO BANNER
+                InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    FoodVisionScannerDialog.show(
+                      context,
+                      onResultApplied: (result) {
+                        setState(() {
+                          _titleController.text = result.title;
+                          _servingsController.text = result.estimatedServings.toString();
+                          _quantityController.text = '${result.estimatedServings} portions';
+                          _selectedFoodType = result.foodType;
+                          _selectedStorage = result.storageRecommendation.contains('warm') || result.storageRecommendation.contains('60')
+                              ? 'Hot Insulated (> 60°C)'
+                              : result.storageRecommendation.contains('Cool')
+                                  ? 'Ambient Safe (< 25°C)'
+                                  : 'Refrigerated (< 4°C)';
+                          _selectedAllergens.clear();
+                          _selectedAllergens.addAll(result.allergens);
+                          if (result.capturedImageBytes != null) {
+                            _selectedImageBytes = result.capturedImageBytes;
+                          }
+                        });
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF0F392B), Color(0xFF1E5B45)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF0F392B).withValues(alpha: 0.25),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF34D399).withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.auto_awesome_rounded,
+                            color: Color(0xFF34D399),
+                            size: 26,
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '✨ AI Gemini Vision Food Scanner',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                'Take a quick photo — AI detects dish name, portions & freshness automatically!',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 11,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white70,
+                          size: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

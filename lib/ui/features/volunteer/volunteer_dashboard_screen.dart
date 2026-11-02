@@ -31,6 +31,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
   bool _isOnline = true;
   final _otpController = TextEditingController();
   bool _isProcessing = false;
+  double _currentDistanceToDonorMeters = 340.0;
 
   @override
   void initState() {
@@ -76,6 +77,32 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
             child: const Text('Log Out'),
           ),
         ],
+      ),
+    );
+  }
+
+    void _acceptBatchedDelivery(DonationModel d1, DonationModel d2) async {
+    setState(() => _isProcessing = true);
+    final user = widget.repository.currentUser;
+    await widget.repository.acceptVolunteerDelivery(
+      donationId: d1.id,
+      volunteerId: user.id,
+      volunteerName: user.fullName,
+    );
+    await widget.repository.acceptVolunteerDelivery(
+      donationId: d2.id,
+      volunteerId: user.id,
+      volunteerName: user.fullName,
+    );
+    if (!mounted) return;
+    setState(() => _isProcessing = false);
+    _tabController.animateTo(1);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          '⚡ २-स्टॉप बॅच डिलिव्हरी स्वीकारली! दुप्पट फी (₹५५) लागू झाली.',
+        ),
+        backgroundColor: AppTheme.forestGreen,
       ),
     );
   }
@@ -388,6 +415,12 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
         ),
         const SizedBox(height: 16),
 
+        // SMART MULTI-STOP BATCH CARD (COMBINED PICKUPS)
+        if (available.length >= 2) ...[
+          _buildMultiStopBatchCard(available[0], available[1]),
+          const SizedBox(height: 16),
+        ],
+
         if (available.isEmpty)
           Container(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
@@ -639,6 +672,186 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
     );
   }
 
+
+  Widget _buildMultiStopBatchCard(DonationModel d1, DonationModel d2) {
+    final totalServings = d1.quantityServings + d2.quantityServings;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFEF3C7), Color(0xFFFFFBEB)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF59E0B), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD97706),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.alt_route_rounded, size: 14, color: Colors.white),
+                    SizedBox(width: 4),
+                    Text(
+                      '⚡ SMART 2-STOP BATCH ROUTE',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF047857),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  'EARN ₹55 (2x FEE)',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Two nearby donors are going to the same shelter region. Save 40% travel time by picking up both together!',
+            style: TextStyle(fontSize: 12, color: Color(0xFF78350F), fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFFDE68A)),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.looks_one_rounded, size: 18, color: Color(0xFFD97706)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Stop 1: ${d1.donorName} (${d1.title})',
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      '${d1.quantityServings} meals',
+                      style: const TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('│', style: TextStyle(color: Color(0xFFD1D5DB))),
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.looks_two_rounded, size: 18, color: Color(0xFFD97706)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Stop 2: ${d2.donorName} (${d2.title})',
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      '${d2.quantityServings} meals',
+                      style: const TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('│', style: TextStyle(color: Color(0xFFD1D5DB))),
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on_rounded, size: 18, color: Color(0xFF047857)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Drop: ${d1.reservedNgoName ?? "Anandwan Rehabilitation & Shelter"}',
+                        style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12, color: Color(0xFF047857)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      'Total $totalServings meals',
+                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF047857)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD97706),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 0,
+              ),
+              icon: const Icon(Icons.electric_moped_rounded, size: 18),
+              label: const Text(
+                'Accept Batched Route (Collect ₹55)',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+              ),
+              onPressed: () => _acceptBatchedDelivery(d1, d2),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildActiveTab(List<DonationModel> active) {
     if (active.isEmpty) {
       return Center(
@@ -748,14 +961,93 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
+
+                          // GEOFENCE SECURITY BADGE
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: _currentDistanceToDonorMeters <= 50
+                                  ? const Color(0xFFECFDF5)
+                                  : const Color(0xFFFEF3C7),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: _currentDistanceToDonorMeters <= 50
+                                    ? AppTheme.forestGreen
+                                    : const Color(0xFFD97706),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  _currentDistanceToDonorMeters <= 50
+                                      ? Icons.verified_user_rounded
+                                      : Icons.fmd_bad_rounded,
+                                  color: _currentDistanceToDonorMeters <= 50
+                                      ? AppTheme.forestGreen
+                                      : const Color(0xFFD97706),
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _currentDistanceToDonorMeters <= 50
+                                            ? 'GEOFENCE UNLOCKED (${_currentDistanceToDonorMeters.toInt()}m)'
+                                            : 'GEOFENCE LOCKED (${_currentDistanceToDonorMeters.toInt()}m away)',
+                                        style: TextStyle(
+                                          fontSize: 10.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: _currentDistanceToDonorMeters <= 50
+                                              ? AppTheme.forestGreen
+                                              : const Color(0xFFD97706),
+                                        ),
+                                      ),
+                                      Text(
+                                        _currentDistanceToDonorMeters <= 50
+                                            ? 'Verified at premises. Handover OTP enabled.'
+                                            : 'Must be within 50m of donor to verify OTP.',
+                                        style: const TextStyle(
+                                          fontSize: 9.5,
+                                          color: AppTheme.charcoalMuted,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    minimumSize: const Size(50, 26),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _currentDistanceToDonorMeters =
+                                          _currentDistanceToDonorMeters <= 50 ? 340.0 : 18.0;
+                                    });
+                                  },
+                                  child: Text(
+                                    _currentDistanceToDonorMeters <= 50 ? 'Reset GPS' : 'Simulate GPS',
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+
                           Row(
                             children: [
                               Expanded(
                                 child: TextField(
                                   controller: _otpController,
                                   keyboardType: TextInputType.number,
+                                  enabled: _currentDistanceToDonorMeters <= 50,
                                   decoration: InputDecoration(
-                                    hintText: 'Enter 4-digit Donor OTP',
+                                    hintText: _currentDistanceToDonorMeters <= 50
+                                        ? 'Enter 4-digit Donor OTP'
+                                        : 'Locked until within 50m',
                                     isDense: true,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),

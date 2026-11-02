@@ -22,6 +22,7 @@ import '../../features/analytics/esg_impact_dashboard.dart';
 import '../../features/community/community_leaderboard_screen.dart';
 import '../../features/admin/supabase_console_screen.dart';
 import '../../features/admin/reports_settings_screen.dart';
+import '../../features/logistics/whatsapp_dispatch_dialog.dart';
 
 class MainNavigationShell extends StatefulWidget {
   final AppRepository repository;
@@ -538,6 +539,23 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                       ),
                     ),
                   );
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.chat_rounded,
+                  color: Color(0xFF16A34A),
+                ),
+                title: const Text(
+                  'WhatsApp & SMS Dispatch Bot',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                subtitle: const Text('Real-time courier alerts & WhatsApp webhooks'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                onTap: () {
+                  Navigator.pop(context);
+                  WhatsAppDispatchDialog.show(context);
                 },
               ),
               ListTile(

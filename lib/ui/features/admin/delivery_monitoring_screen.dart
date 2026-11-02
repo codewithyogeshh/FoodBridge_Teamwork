@@ -3,6 +3,7 @@ import '../../core/theme.dart';
 import '../../core/widgets/app_card.dart';
 import '../../core/widgets/map_preview_widget.dart';
 import '../../../data/repositories/app_repository.dart';
+import '../logistics/whatsapp_dispatch_dialog.dart';
 
 class DeliveryMonitoringScreen extends StatelessWidget {
   final AppRepository repository;
@@ -18,7 +19,17 @@ class DeliveryMonitoringScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(title: const Text('Live Delivery & Transit Ops')),
+          appBar: AppBar(
+            title: const Text('Live Delivery & Transit Ops'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.chat_rounded, color: Color(0xFF16A34A)),
+                tooltip: 'WhatsApp & SMS Dispatch Bot',
+                onPressed: () => WhatsAppDispatchDialog.show(context),
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
