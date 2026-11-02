@@ -165,6 +165,8 @@ class AppRepository extends ChangeNotifier {
   // Getters
   UserRole get currentRole => _currentRole;
   UserProfileModel get currentUser => _currentUser;
+  Stream<NotificationModel> get notificationStream =>
+      _supabaseService.notificationStream;
   List<DonationModel> get donations => List.unmodifiable(_donations);
   List<NGOModel> get ngos => List.unmodifiable(_ngos);
   List<NotificationModel> get notifications {
@@ -727,6 +729,17 @@ class AppRepository extends ChangeNotifier {
       availableNGOs: _ngos,
     );
   }
+
+  /// Triggers full Supabase backend diagnostic & connection testing
+  Future<SupabaseDiagnosticReport> runSupabaseDiagnostics() =>
+      _supabaseService.runDiagnostics();
+
+  /// Broadcasts a live real-time test ping over WebSocket channel
+  Future<bool> sendRealtimeTestPing(String message) =>
+      _supabaseService.sendTestBroadcast(
+        message: message,
+        senderRole: _currentRole.name,
+      );
 
   /// Looks up an existing registered NGO by phone number or registration number
   NGOModel? findNGOByPhoneOrReg(String query) {

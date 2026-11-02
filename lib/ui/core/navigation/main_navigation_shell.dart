@@ -18,6 +18,10 @@ import '../../features/admin/delivery_monitoring_screen.dart';
 import '../../features/ai_allocation/ai_allocation_screen.dart';
 import '../../features/auth/verification_status_screen.dart';
 import '../../features/volunteer/volunteer_dashboard_screen.dart';
+import '../../features/analytics/esg_impact_dashboard.dart';
+import '../../features/community/community_leaderboard_screen.dart';
+import '../../features/admin/supabase_console_screen.dart';
+import '../../features/admin/reports_settings_screen.dart';
 
 class MainNavigationShell extends StatefulWidget {
   final AppRepository repository;
@@ -267,173 +271,342 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     return Drawer(
       backgroundColor: AppTheme.warmIvory,
       child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              color: AppTheme.forestGreen,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.eco_rounded,
-                      color: AppTheme.forestGreen,
-                      size: 26,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // MODERN HEADER WITH APP LOGO & BRANDING
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AppTheme.forestGreen, Color(0xFF047857)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    AppConstants.appName,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
+                ),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(
+                        'assets/images/app_logo.png',
+                        fit: BoxFit.cover,
+                        errorBuilder: (ctx, err, stack) => const Icon(
+                          Icons.eco_rounded,
+                          color: AppTheme.forestGreen,
+                          size: 28,
+                        ),
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Active Role: ${currentRole.name.toUpperCase()}',
-                    style: const TextStyle(
-                      color: AppTheme.limeLight,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                    const SizedBox(height: 12),
+                    const Text(
+                      AppConstants.appName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'ACTIVE: ${currentRole.name.toUpperCase()}',
+                        style: const TextStyle(
+                          color: AppTheme.limeLight,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 18, 20, 8),
-              child: Text(
-                'SWITCH ACTIVE ROLE (HACKATHON DEMO)',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
+
+              // ROLE SWITCHER
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 16, 20, 6),
+                child: Text(
+                  'SWITCH ACTIVE ROLE (DEMO & TESTING)',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: AppTheme.charcoalMuted,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.storefront_rounded,
+                  color: AppTheme.forestGreen,
+                ),
+                title: const Text('Food Donor (Grand Orchid Banquet)'),
+                selected: currentRole == UserRole.donor,
+                selectedTileColor: AppTheme.emeraldLight,
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onChangeRole(UserRole.donor);
+                  setState(() => _currentNavIndex = 0);
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.card_giftcard_rounded,
+                  color: Color(0xFF0284C7),
+                ),
+                title: const Text('Community Giver (Clothes, Books, 80G Funds)'),
+                selected: currentRole == UserRole.community,
+                selectedTileColor: AppTheme.emeraldLight,
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onChangeRole(UserRole.community);
+                  setState(() => _currentNavIndex = 0);
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.soup_kitchen_rounded,
+                  color: AppTheme.forestGreen,
+                ),
+                title: const Text('NGO Rescuer (Hope Care Foundation)'),
+                selected: currentRole == UserRole.ngo,
+                selectedTileColor: AppTheme.emeraldLight,
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onChangeRole(UserRole.ngo);
+                  setState(() => _currentNavIndex = 0);
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.delivery_dining_rounded,
+                  color: Color(0xFFEA580C),
+                ),
+                title: const Text('Volunteer Courier (₹20-₹30 / Trip)'),
+                selected: currentRole == UserRole.volunteer,
+                selectedTileColor: AppTheme.emeraldLight,
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onChangeRole(UserRole.volunteer);
+                  setState(() => _currentNavIndex = 0);
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.security_rounded,
+                  color: AppTheme.forestGreen,
+                ),
+                title: const Text('Platform Administrator'),
+                selected: currentRole == UserRole.admin,
+                selectedTileColor: AppTheme.emeraldLight,
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onChangeRole(UserRole.admin);
+                  setState(() => _currentNavIndex = 0);
+                },
+              ),
+
+              const Divider(height: 24),
+
+              // NEW PRODUCTION FEATURES: IMPACT & TRANSPARENCY
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 4, 20, 6),
+                child: Text(
+                  'IMPACT & ADVANCED REPORTING',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: AppTheme.charcoalMuted,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.eco_rounded,
+                  color: AppTheme.forestGreen,
+                ),
+                title: const Text(
+                  'ESG Carbon & Impact Hub',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                subtitle: const Text('Verified CO2, Water & CSR Audit Certificate'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => ESGImpactDashboardScreen(
+                        repository: widget.repository,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.emoji_events_rounded,
+                  color: Color(0xFFD97706),
+                ),
+                title: const Text(
+                  'Community Impact Leaderboard',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                subtitle: const Text('Top Donors, Couriers & Rescue Kitchens'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => CommunityLeaderboardScreen(
+                        repository: widget.repository,
+                      ),
+                    ),
+                  );
+                },
+              ),
+
+              const Divider(height: 24),
+
+              // SYSTEM & BACKEND
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 4, 20, 6),
+                child: Text(
+                  'BACKEND & SYSTEM OPERATIONS',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: AppTheme.charcoalMuted,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.terminal_rounded,
+                  color: Color(0xFF0284C7),
+                ),
+                title: const Text(
+                  'Supabase Real-Time Console',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                subtitle: const Text('PostgreSQL health, WS ping & Concurrency RPC'),
+                trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => SupabaseConsoleScreen(
+                        repository: widget.repository,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.tune_rounded,
                   color: AppTheme.charcoalMuted,
-                  letterSpacing: 0.6,
                 ),
+                title: const Text('Reports & System Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => ReportsSettingsScreen(
+                        repository: widget.repository,
+                      ),
+                    ),
+                  );
+                },
               ),
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.storefront_rounded,
-                color: AppTheme.forestGreen,
+
+              const Divider(height: 24),
+
+              // SESSION MANAGEMENT
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.replay_rounded,
+                  color: AppTheme.charcoalMuted,
+                ),
+                title: const Text('Restart Welcome & Onboarding'),
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onResetOnboarding();
+                },
               ),
-              title: const Text('Food Donor (Grand Orchid Banquet)'),
-              selected: currentRole == UserRole.donor,
-              selectedTileColor: AppTheme.emeraldLight,
-              onTap: () {
-                Navigator.pop(context);
-                widget.onChangeRole(UserRole.donor);
-                setState(() => _currentNavIndex = 0);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.card_giftcard_rounded,
-                color: Color(0xFF0284C7),
-              ),
-              title: const Text('Community Giver (Clothes, Books, 80G Funds)'),
-              selected: currentRole == UserRole.community,
-              selectedTileColor: AppTheme.emeraldLight,
-              onTap: () {
-                Navigator.pop(context);
-                widget.onChangeRole(UserRole.community);
-                setState(() => _currentNavIndex = 0);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.soup_kitchen_rounded,
-                color: AppTheme.forestGreen,
-              ),
-              title: const Text('NGO Rescuer (Hope Care Foundation)'),
-              selected: currentRole == UserRole.ngo,
-              selectedTileColor: AppTheme.emeraldLight,
-              onTap: () {
-                Navigator.pop(context);
-                widget.onChangeRole(UserRole.ngo);
-                setState(() => _currentNavIndex = 0);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.delivery_dining_rounded,
-                color: Color(0xFFEA580C),
-              ),
-              title: const Text('Volunteer Courier (₹20-₹30 / Trip)'),
-              selected: currentRole == UserRole.volunteer,
-              selectedTileColor: AppTheme.emeraldLight,
-              onTap: () {
-                Navigator.pop(context);
-                widget.onChangeRole(UserRole.volunteer);
-                setState(() => _currentNavIndex = 0);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.security_rounded,
-                color: AppTheme.forestGreen,
-              ),
-              title: const Text('Platform Administrator'),
-              selected: currentRole == UserRole.admin,
-              selectedTileColor: AppTheme.emeraldLight,
-              onTap: () {
-                Navigator.pop(context);
-                widget.onChangeRole(UserRole.admin);
-                setState(() => _currentNavIndex = 0);
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.replay_rounded,
-                color: AppTheme.charcoalMuted,
-              ),
-              title: const Text('Restart Welcome & Onboarding'),
-              onTap: () {
-                Navigator.pop(context);
-                widget.onResetOnboarding();
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.logout_rounded,
-                color: AppTheme.statusCritical,
-              ),
-              title: const Text(
-                'Log Out of FoodBridge',
-                style: TextStyle(
+              ListTile(
+                dense: true,
+                leading: const Icon(
+                  Icons.logout_rounded,
                   color: AppTheme.statusCritical,
-                  fontWeight: FontWeight.w700,
+                ),
+                title: const Text(
+                  'Log Out of FoodBridge',
+                  style: TextStyle(
+                    color: AppTheme.statusCritical,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  widget.onLogout();
+                },
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  ' • \nSupabase PostgreSQL + Real-Time OTP & Verification Gate',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppTheme.charcoalLight,
+                    height: 1.4,
+                  ),
                 ),
               ),
-              onTap: () {
-                Navigator.pop(context);
-                widget.onLogout();
-              },
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                '${AppConstants.appName} • ${AppConstants.appVersion}\nSupabase PostgreSQL + Real-Time OTP & Verification Gate',
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: AppTheme.charcoalLight,
-                  height: 1.4,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

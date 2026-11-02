@@ -218,30 +218,59 @@ class NGOVerifiedBadge extends StatelessWidget {
   }
 }
 
+enum AppBadgeVariant { primary, success, warning, critical, neutral }
+
 class AppBadge extends StatelessWidget {
   final String label;
-  final Color color;
-  final Color bgColor;
+  final Color? color;
+  final Color? bgColor;
+  final AppBadgeVariant? variant;
 
   const AppBadge({
     super.key,
     required this.label,
-    required this.color,
-    required this.bgColor,
+    this.color,
+    this.bgColor,
+    this.variant,
   });
 
   @override
   Widget build(BuildContext context) {
+    Color effectiveFg = color ?? AppTheme.forestGreen;
+    Color effectiveBg = bgColor ?? AppTheme.emeraldLight;
+
+    if (variant != null) {
+      switch (variant!) {
+        case AppBadgeVariant.success:
+        case AppBadgeVariant.primary:
+          effectiveFg = AppTheme.forestGreen;
+          effectiveBg = AppTheme.emeraldLight;
+          break;
+        case AppBadgeVariant.warning:
+          effectiveFg = AppTheme.statusHigh;
+          effectiveBg = AppTheme.statusHighBg;
+          break;
+        case AppBadgeVariant.critical:
+          effectiveFg = AppTheme.statusCritical;
+          effectiveBg = AppTheme.statusCriticalBg;
+          break;
+        case AppBadgeVariant.neutral:
+          effectiveFg = AppTheme.charcoalMuted;
+          effectiveBg = const Color(0xFFF3F4F6);
+          break;
+      }
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: bgColor,
+        color: effectiveBg,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: color,
+          color: effectiveFg,
           fontSize: 10,
           fontWeight: FontWeight.w800,
           letterSpacing: 0.3,

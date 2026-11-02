@@ -108,11 +108,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 ),
                               ],
                             ),
-                            child: Icon(
-                              page['icon'] as IconData,
-                              size: 64,
-                              color: const Color(0xFFD1E8DD),
-                            ),
+                            child: index == 0
+                                ? Center(
+                                    child: Image.asset(
+                                      'assets/images/app_logo.png',
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (ctx, err, stack) => Icon(
+                                        page['icon'] as IconData,
+                                        size: 64,
+                                        color: const Color(0xFFD1E8DD),
+                                      ),
+                                    ),
+                                  )
+                                : Icon(
+                                    page['icon'] as IconData,
+                                    size: 64,
+                                    color: const Color(0xFFD1E8DD),
+                                  ),
                           ),
                           const SizedBox(height: 36),
                           Container(

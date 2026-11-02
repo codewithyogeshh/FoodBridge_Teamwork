@@ -12,6 +12,8 @@ import 'ngo_impact_screen.dart';
 import 'donation_details_screen.dart';
 import 'reservation_confirm_screen.dart';
 import '../../core/widgets/notification_bell_button.dart';
+import '../analytics/esg_impact_dashboard.dart';
+import '../community/community_leaderboard_screen.dart';
 
 class NGODashboardScreen extends StatelessWidget {
   final AppRepository repository;
@@ -212,6 +214,89 @@ class NGODashboardScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 28),
+
+                    const SizedBox(height: 14),
+                    // Quick Action Hub for ESG & Leaderboard
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ESGImpactDashboardScreen(repository: repository),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: AppTheme.emeraldLight,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppTheme.forestGreen.withValues(alpha: 0.2)),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.workspace_premium_rounded, color: AppTheme.forestGreen, size: 20),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('ESG Certificate', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
+                                        Text('Municipal Audit', style: TextStyle(fontSize: 9.5, color: AppTheme.forestGreen)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CommunityLeaderboardScreen(repository: repository),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFEF3C7),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: const Color(0xFFD97706).withValues(alpha: 0.2)),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(Icons.emoji_events_rounded, color: Color(0xFFD97706), size: 20),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Leaderboard', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
+                                        Text('Top Kitchens', style: TextStyle(fontSize: 9.5, color: Color(0xFFD97706))),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
 
                     // Available Surplus Section (Real-Time Incoming Stream)
                     Row(

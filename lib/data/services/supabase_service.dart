@@ -10,6 +10,34 @@ import '../models/user_profile_model.dart';
 import '../../ui/core/constants.dart';
 import '../mock/seed_data.dart';
 
+/// Comprehensive Supabase backend diagnostic & health report model
+class SupabaseDiagnosticReport {
+  final bool restConnected;
+  final int restLatencyMs;
+  final bool realtimeSubscribed;
+  final Map<String, bool> tableStatus;
+  final Map<String, bool> schemaColumns;
+  final Map<String, bool> rpcFunctions;
+  final DateTime timestamp;
+  final String statusSummary;
+
+  const SupabaseDiagnosticReport({
+    required this.restConnected,
+    required this.restLatencyMs,
+    required this.realtimeSubscribed,
+    required this.tableStatus,
+    required this.schemaColumns,
+    required this.rpcFunctions,
+    required this.timestamp,
+    required this.statusSummary,
+  });
+
+  bool get isHealthy =>
+      restConnected &&
+      realtimeSubscribed &&
+      tableStatus.values.every((v) => v);
+}
+
 /// Direct Supabase REST & WebSocket Realtime Client with resilient offline/online synchronization
 class SupabaseService {
   final http.Client _client;
@@ -25,6 +53,8 @@ class SupabaseService {
   final StreamController<NGOModel> _ngoStreamController =
       StreamController<NGOModel>.broadcast();
   supa.RealtimeChannel? _realtimeChannel;
+  bool _isRealtimeConnected = false;
+  bool get isRealtimeConnected => _isRealtimeConnected;
 
   // In-memory fallback caches to ensure ultra-fast responsive UI & offline support
   final List<DonationModel> _localDonations = [];
@@ -188,10 +218,20 @@ class SupabaseService {
         },
       );
 
+      // 7. Listen for diagnostic test ping
+      _realtimeChannel!.onBroadcast(
+        event: 'test_ping',
+        callback: (payload) {
+          debugPrint('📡 Realtime test ping received: $payload');
+        },
+      );
+
       _realtimeChannel!.subscribe((status, [error]) {
         if (status == supa.RealtimeSubscribeStatus.subscribed) {
+          _isRealtimeConnected = true;
           debugPrint('🟢 Supabase Realtime connected and active!');
         } else if (error != null) {
+          _isRealtimeConnected = false;
           debugPrint(
             '🟡 Supabase Realtime subscription status: $status ($error)',
           );
@@ -1173,6 +1213,142 @@ class SupabaseService {
     if (idx != -1) {
       _localNGOs[idx] = _localNGOs[idx].copyWith(verificationStatus: status);
     }
+  }
+
+  /// Performs comprehensive health check on Supabase REST, Tables, Columns & Realtime
+  Future<SupabaseDiagnosticReport> runDiagnostics() async {
+    final stopwatch = Stopwatch()..start();
+    bool restOk = false;
+    int latency = 0;
+    final Map<String, bool> tables = {
+      'donations': false,
+      'ngos': false,
+      'community_donations': false,
+      'notifications': false,
+    };
+    final Map<String, bool> columns = {
+      'assigned_volunteer_id': false,
+      'delivery_fee': false,
+      'requires_volunteer_delivery': false,
+    };
+    final Map<String, bool> rpcs = {
+      'reserve_donation_atomic': false,
+      'verify_pickup_otp': false,
+    };
+
+    try {
+      // 1. Ping REST base endpoint
+      final pingRes = await _client
+          .get(Uri.parse('$_baseUrl/rest/v1/'), headers: _headers)
+          .timeout(const Duration(seconds: 4));
+      stopwatch.stop();
+      latency = stopwatch.elapsedMilliseconds;
+      restOk = pingRes.statusCode == 200 || pingRes.statusCode == 404;
+
+      // 2. Check each table with limit 1
+      for (final table in tables.keys) {
+        try {
+          final tRes = await _client
+              .get(
+                Uri.parse('$_baseUrl/rest/v1/$table?limit=1'),
+                headers: _headers,
+              )
+              .timeout(const Duration(seconds: 3));
+          if (tRes.statusCode == 200) {
+            tables[table] = true;
+            if (table == 'donations' && tRes.body.isNotEmpty) {
+              columns['assigned_volunteer_id'] = tRes.body.contains(
+                'assigned_volunteer_id',
+              );
+              columns['delivery_fee'] = tRes.body.contains('delivery_fee');
+              columns['requires_volunteer_delivery'] = tRes.body.contains(
+                'requires_volunteer_delivery',
+              );
+            }
+          }
+        } catch (_) {}
+      }
+
+      // 3. Check RPC availability
+      try {
+        final rpcRes = await _client
+            .post(
+              Uri.parse('$_baseUrl/rest/v1/rpc/reserve_donation_atomic'),
+              headers: _headers,
+              body: jsonEncode({
+                'p_donation_id': 'health-check',
+                'p_ngo_id': 'hc',
+                'p_ngo_name': 'hc',
+              }),
+            )
+            .timeout(const Duration(seconds: 3));
+        if (rpcRes.statusCode == 200 ||
+            rpcRes.body.contains('Donation not found')) {
+          rpcs['reserve_donation_atomic'] = true;
+        }
+      } catch (_) {}
+
+      try {
+        final otpRes = await _client
+            .post(
+              Uri.parse('$_baseUrl/rest/v1/rpc/verify_pickup_otp'),
+              headers: _headers,
+              body: jsonEncode({
+                'p_donation_id': 'health-check',
+                'p_entered_otp': '000000',
+                'p_ngo_id': 'hc',
+              }),
+            )
+            .timeout(const Duration(seconds: 3));
+        if (otpRes.statusCode == 200 ||
+            otpRes.body.contains('Donation record not found')) {
+          rpcs['verify_pickup_otp'] = true;
+        }
+      } catch (_) {}
+    } catch (_) {
+      stopwatch.stop();
+      latency = stopwatch.elapsedMilliseconds;
+    }
+
+    final bool realtimeOk = _isRealtimeConnected || _realtimeChannel != null;
+
+    final summary = restOk
+        ? 'REST Connected (${latency}ms) • Realtime: ${realtimeOk ? "Active" : "Connecting"} • Tables: ${tables.values.where((v) => v).length}/${tables.length} verified'
+        : 'Running in Local Offline Resilient Cache Mode';
+
+    return SupabaseDiagnosticReport(
+      restConnected: restOk,
+      restLatencyMs: latency,
+      realtimeSubscribed: realtimeOk,
+      tableStatus: tables,
+      schemaColumns: columns,
+      rpcFunctions: rpcs,
+      timestamp: DateTime.now(),
+      statusSummary: summary,
+    );
+  }
+
+  /// Sends an instant test broadcast over WebSocket to verify end-to-end realtime event pipeline
+  Future<bool> sendTestBroadcast({
+    required String message,
+    required String senderRole,
+  }) async {
+    try {
+      if (_realtimeChannel != null) {
+        await _realtimeChannel!.sendBroadcastMessage(
+          event: 'test_ping',
+          payload: {
+            'message': message,
+            'sender_role': senderRole,
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        );
+        return true;
+      }
+    } catch (e) {
+      debugPrint('Realtime test broadcast notice: $e');
+    }
+    return false;
   }
 
   void dispose() {
