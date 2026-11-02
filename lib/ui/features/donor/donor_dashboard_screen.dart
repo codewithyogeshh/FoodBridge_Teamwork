@@ -259,27 +259,54 @@ class DonorDashboardScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ESGImpactDashboardScreen(repository: repository),
+                                      ESGImpactDashboardScreen(
+                                        repository: repository,
+                                      ),
                                 ),
                               );
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppTheme.emeraldLight,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: AppTheme.forestGreen.withValues(alpha: 0.2)),
+                                border: Border.all(
+                                  color: AppTheme.forestGreen.withValues(
+                                    alpha: 0.2,
+                                  ),
+                                ),
                               ),
                               child: const Row(
                                 children: [
-                                  Icon(Icons.workspace_premium_rounded, color: AppTheme.forestGreen, size: 20),
+                                  Icon(
+                                    Icons.workspace_premium_rounded,
+                                    color: AppTheme.forestGreen,
+                                    size: 20,
+                                  ),
                                   SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('ESG Certificate', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
-                                        Text('CSR Audit Ready', style: TextStyle(fontSize: 9.5, color: AppTheme.forestGreen)),
+                                        Text(
+                                          'ESG Certificate',
+                                          style: TextStyle(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppTheme.richCharcoal,
+                                          ),
+                                        ),
+                                        Text(
+                                          'CSR Audit Ready',
+                                          style: TextStyle(
+                                            fontSize: 9.5,
+                                            color: AppTheme.forestGreen,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -297,27 +324,54 @@ class DonorDashboardScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      CommunityLeaderboardScreen(repository: repository),
+                                      CommunityLeaderboardScreen(
+                                        repository: repository,
+                                      ),
                                 ),
                               );
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xFFFEF3C7),
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: const Color(0xFFD97706).withValues(alpha: 0.2)),
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFFD97706,
+                                  ).withValues(alpha: 0.2),
+                                ),
                               ),
                               child: const Row(
                                 children: [
-                                  Icon(Icons.emoji_events_rounded, color: Color(0xFFD97706), size: 20),
+                                  Icon(
+                                    Icons.emoji_events_rounded,
+                                    color: Color(0xFFD97706),
+                                    size: 20,
+                                  ),
                                   SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('Leaderboard', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
-                                        Text('City Heroes #1', style: TextStyle(fontSize: 9.5, color: Color(0xFFD97706))),
+                                        Text(
+                                          'Leaderboard',
+                                          style: TextStyle(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppTheme.richCharcoal,
+                                          ),
+                                        ),
+                                        Text(
+                                          'City Heroes #1',
+                                          style: TextStyle(
+                                            fontSize: 9.5,
+                                            color: Color(0xFFD97706),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -340,7 +394,10 @@ class DonorDashboardScreen extends StatelessWidget {
                         );
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFEF2F2),
                           borderRadius: BorderRadius.circular(14),

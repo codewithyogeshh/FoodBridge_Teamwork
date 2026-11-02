@@ -383,7 +383,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.card_giftcard_rounded,
                   color: Color(0xFF0284C7),
                 ),
-                title: const Text('Community Giver (Clothes, Books, 80G Funds)'),
+                title: const Text(
+                  'Community Giver (Clothes, Books, 80G Funds)',
+                ),
                 selected: currentRole == UserRole.community,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -463,7 +465,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   'ESG Carbon & Impact Hub',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text('Verified CO2, Water & CSR Audit Certificate'),
+                subtitle: const Text(
+                  'Verified CO2, Water & CSR Audit Certificate',
+                ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -527,16 +531,17 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   'Supabase Real-Time Console',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text('PostgreSQL health, WS ping & Concurrency RPC'),
+                subtitle: const Text(
+                  'PostgreSQL health, WS ping & Concurrency RPC',
+                ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => SupabaseConsoleScreen(
-                        repository: widget.repository,
-                      ),
+                      builder: (ctx) =>
+                          SupabaseConsoleScreen(repository: widget.repository),
                     ),
                   );
                 },
@@ -551,7 +556,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   'WhatsApp & SMS Dispatch Bot',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text('Real-time courier alerts & WhatsApp webhooks'),
+                subtitle: const Text(
+                  'Real-time courier alerts & WhatsApp webhooks',
+                ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -570,9 +577,8 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) => ReportsSettingsScreen(
-                        repository: widget.repository,
-                      ),
+                      builder: (ctx) =>
+                          ReportsSettingsScreen(repository: widget.repository),
                     ),
                   );
                 },

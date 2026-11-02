@@ -42,9 +42,15 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
           unselectedLabelColor: AppTheme.charcoalMuted,
           indicatorColor: AppTheme.forestGreen,
           indicatorWeight: 3,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+          labelStyle: const TextStyle(
+            fontWeight: FontWeight.w800,
+            fontSize: 13,
+          ),
           tabs: const [
-            Tab(text: 'Top Donors', icon: Icon(Icons.storefront_rounded, size: 20)),
+            Tab(
+              text: 'Top Donors',
+              icon: Icon(Icons.storefront_rounded, size: 20),
+            ),
             Tab(
               text: 'Hero Couriers',
               icon: Icon(Icons.delivery_dining_rounded, size: 20),
@@ -77,14 +83,20 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
                   Row(
                     children: [
                       ChoiceChip(
-                        label: const Text('All Time', style: TextStyle(fontSize: 11)),
+                        label: const Text(
+                          'All Time',
+                          style: TextStyle(fontSize: 11),
+                        ),
                         selected: !_isMonthly,
                         selectedColor: AppTheme.emeraldLight,
                         onSelected: (val) => setState(() => _isMonthly = false),
                       ),
                       const SizedBox(width: 6),
                       ChoiceChip(
-                        label: const Text('This Month', style: TextStyle(fontSize: 11)),
+                        label: const Text(
+                          'This Month',
+                          style: TextStyle(fontSize: 11),
+                        ),
                         selected: _isMonthly,
                         selectedColor: AppTheme.emeraldLight,
                         onSelected: (val) => setState(() => _isMonthly = true),
@@ -472,7 +484,11 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.emoji_events_rounded, color: Color(0xFFFBBF24), size: 20),
+              Icon(
+                Icons.emoji_events_rounded,
+                color: Color(0xFFFBBF24),
+                size: 20,
+              ),
               SizedBox(width: 6),
               Text(
                 'COMMUNITY HEROES PODIUM',
@@ -515,7 +531,11 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
       children: [
         // CROWN / MEDAL
         if (rank == 1)
-          const Icon(Icons.military_tech_rounded, color: Color(0xFFFBBF24), size: 26)
+          const Icon(
+            Icons.military_tech_rounded,
+            color: Color(0xFFFBBF24),
+            size: 26,
+          )
         else
           Icon(
             rank == 2 ? Icons.looks_two_rounded : Icons.looks_3_rounded,
@@ -571,7 +591,11 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
               ),
               const SizedBox(height: 2),
               Text(
-                rank == 1 ? 'GOLD' : rank == 2 ? 'SILVER' : 'BRONZE',
+                rank == 1
+                    ? 'GOLD'
+                    : rank == 2
+                    ? 'SILVER'
+                    : 'BRONZE',
                 style: const TextStyle(
                   fontSize: 8.5,
                   fontWeight: FontWeight.w800,
@@ -588,10 +612,26 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
 
   Widget _buildBadgesBanner() {
     final badges = [
-      {'title': 'Zero Waste', 'icon': Icons.eco_rounded, 'color': AppTheme.forestGreen},
-      {'title': 'Lightning', 'icon': Icons.flash_on_rounded, 'color': const Color(0xFFD97706)},
-      {'title': 'FSSAI Safe', 'icon': Icons.security_rounded, 'color': const Color(0xFF0284C7)},
-      {'title': '80G Star', 'icon': Icons.volunteer_activism_rounded, 'color': const Color(0xFF9333EA)},
+      {
+        'title': 'Zero Waste',
+        'icon': Icons.eco_rounded,
+        'color': AppTheme.forestGreen,
+      },
+      {
+        'title': 'Lightning',
+        'icon': Icons.flash_on_rounded,
+        'color': const Color(0xFFD97706),
+      },
+      {
+        'title': 'FSSAI Safe',
+        'icon': Icons.security_rounded,
+        'color': const Color(0xFF0284C7),
+      },
+      {
+        'title': '80G Star',
+        'icon': Icons.volunteer_activism_rounded,
+        'color': const Color(0xFF9333EA),
+      },
     ];
 
     return Container(

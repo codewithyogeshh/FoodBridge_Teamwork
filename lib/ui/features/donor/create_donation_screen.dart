@@ -249,14 +249,18 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                       onResultApplied: (result) {
                         setState(() {
                           _titleController.text = result.title;
-                          _servingsController.text = result.estimatedServings.toString();
-                          _quantityController.text = '${result.estimatedServings} portions';
+                          _servingsController.text = result.estimatedServings
+                              .toString();
+                          _quantityController.text =
+                              '${result.estimatedServings} portions';
                           _selectedFoodType = result.foodType;
-                          _selectedStorage = result.storageRecommendation.contains('warm') || result.storageRecommendation.contains('60')
+                          _selectedStorage =
+                              result.storageRecommendation.contains('warm') ||
+                                  result.storageRecommendation.contains('60')
                               ? 'Hot Insulated (> 60°C)'
                               : result.storageRecommendation.contains('Cool')
-                                  ? 'Ambient Safe (< 25°C)'
-                                  : 'Refrigerated (< 4°C)';
+                              ? 'Ambient Safe (< 25°C)'
+                              : 'Refrigerated (< 4°C)';
                           _selectedAllergens.clear();
                           _selectedAllergens.addAll(result.allergens);
                           if (result.capturedImageBytes != null) {
@@ -277,7 +281,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF0F392B).withValues(alpha: 0.25),
+                          color: const Color(
+                            0xFF0F392B,
+                          ).withValues(alpha: 0.25),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -288,7 +294,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF34D399).withValues(alpha: 0.2),
+                            color: const Color(
+                              0xFF34D399,
+                            ).withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(

@@ -71,7 +71,8 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
         urgencyScore: 92,
         freshnessScore: 94,
         safeHours: 'Safe for 3.5 hours',
-        storageRecommendation: 'Keep warm (>60°C) in insulated thermal container',
+        storageRecommendation:
+            'Keep warm (>60°C) in insulated thermal container',
         allergens: ['Dairy (Paneer)', 'Gluten (Wheat)'],
       ),
     },
@@ -181,7 +182,8 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
           capturedImageBytes: _customImageBytes,
         );
       } else {
-        _analysisResult = _presets[_selectedPreset]['result'] as FoodVisionResult;
+        _analysisResult =
+            _presets[_selectedPreset]['result'] as FoodVisionResult;
       }
     });
   }
@@ -258,8 +260,19 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                         ),
                         side: const BorderSide(color: AppTheme.forestGreen),
                       ),
-                      icon: const Icon(Icons.camera_alt_rounded, size: 18, color: AppTheme.forestGreen),
-                      label: const Text('Live Camera', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.forestGreen)),
+                      icon: const Icon(
+                        Icons.camera_alt_rounded,
+                        size: 18,
+                        color: AppTheme.forestGreen,
+                      ),
+                      label: const Text(
+                        'Live Camera',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.forestGreen,
+                        ),
+                      ),
                       onPressed: () => _capturePhoto(ImageSource.camera),
                     ),
                   ),
@@ -273,8 +286,19 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                         ),
                         side: const BorderSide(color: AppTheme.charcoalLight),
                       ),
-                      icon: const Icon(Icons.photo_library_rounded, size: 18, color: AppTheme.charcoalMuted),
-                      label: const Text('Pick Gallery', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.charcoalMuted)),
+                      icon: const Icon(
+                        Icons.photo_library_rounded,
+                        size: 18,
+                        color: AppTheme.charcoalMuted,
+                      ),
+                      label: const Text(
+                        'Pick Gallery',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.charcoalMuted,
+                        ),
+                      ),
                       onPressed: () => _capturePhoto(ImageSource.gallery),
                     ),
                   ),
@@ -297,19 +321,28 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                 child: Row(
                   children: List.generate(_presets.length, (i) {
                     final p = _presets[i];
-                    final isSel = _customImageBytes == null && _selectedPreset == i;
+                    final isSel =
+                        _customImageBytes == null && _selectedPreset == i;
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ChoiceChip(
                         label: Row(
                           children: [
-                            Icon(p['icon'] as IconData, size: 14, color: isSel ? AppTheme.forestGreen : AppTheme.charcoalMuted),
+                            Icon(
+                              p['icon'] as IconData,
+                              size: 14,
+                              color: isSel
+                                  ? AppTheme.forestGreen
+                                  : AppTheme.charcoalMuted,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               (p['name'] as String).split(' ').first,
                               style: TextStyle(
                                 fontSize: 11,
-                                fontWeight: isSel ? FontWeight.w800 : FontWeight.w600,
+                                fontWeight: isSel
+                                    ? FontWeight.w800
+                                    : FontWeight.w600,
                               ),
                             ),
                           ],
@@ -371,7 +404,10 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                           const SizedBox(height: 2),
                           const Text(
                             'Thermal & Volumetric Chamber Active',
-                            style: TextStyle(fontSize: 9.5, color: Colors.white60),
+                            style: TextStyle(
+                              fontSize: 9.5,
+                              color: Colors.white60,
+                            ),
                           ),
                         ],
                       ),
@@ -381,16 +417,30 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                       top: 10,
                       left: 10,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.black54,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.crop_free_rounded, color: Color(0xFF34D399), size: 12),
+                            Icon(
+                              Icons.crop_free_rounded,
+                              color: Color(0xFF34D399),
+                              size: 12,
+                            ),
                             SizedBox(width: 4),
-                            Text('GEMINI VISION SENSOR', style: TextStyle(fontSize: 8.5, color: Color(0xFF34D399), fontWeight: FontWeight.w800)),
+                            Text(
+                              'GEMINI VISION SENSOR',
+                              style: TextStyle(
+                                fontSize: 8.5,
+                                color: Color(0xFF34D399),
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -411,7 +461,9 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                                 color: const Color(0xFF34D399),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF34D399).withValues(alpha: 0.8),
+                                    color: const Color(
+                                      0xFF34D399,
+                                    ).withValues(alpha: 0.8),
                                     blurRadius: 8,
                                     spreadRadius: 2,
                                   ),
@@ -429,9 +481,19 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              CircularProgressIndicator(color: AppTheme.forestGreen, strokeWidth: 2.5),
+                              CircularProgressIndicator(
+                                color: AppTheme.forestGreen,
+                                strokeWidth: 2.5,
+                              ),
                               SizedBox(height: 8),
-                              Text('Gemini 1.5 Flash Analyzing Freshness...', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
+                              Text(
+                                'Gemini 1.5 Flash Analyzing Freshness...',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -445,7 +507,8 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                 AppButton(
                   label: 'Scan & Evaluate Freshness Score',
                   icon: Icons.search_rounded,
-                  onPressed: () => _runAnalysis(isCustomImage: _customImageBytes != null),
+                  onPressed: () =>
+                      _runAnalysis(isCustomImage: _customImageBytes != null),
                 ),
 
               // ANALYSIS RESULT CARD WITH FRESHNESS SCORE
@@ -467,7 +530,11 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                             children: [
                               Row(
                                 children: [
-                                  const Icon(Icons.verified_rounded, color: Color(0xFF16A34A), size: 16),
+                                  const Icon(
+                                    Icons.verified_rounded,
+                                    color: Color(0xFF16A34A),
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Freshness: ${_analysisResult!.freshnessScore}/100 (Safe)',
@@ -480,7 +547,10 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                                 ],
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 7,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFDC2626),
                                   borderRadius: BorderRadius.circular(6),
@@ -505,7 +575,9 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                               value: _analysisResult!.freshnessScore / 100.0,
                               minHeight: 5,
                               backgroundColor: Colors.grey.shade200,
-                              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF16A34A)),
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                Color(0xFF16A34A),
+                              ),
                             ),
                           ),
                           const Divider(height: 14),

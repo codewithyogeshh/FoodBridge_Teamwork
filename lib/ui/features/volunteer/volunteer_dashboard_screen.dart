@@ -81,7 +81,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
     );
   }
 
-    void _acceptBatchedDelivery(DonationModel d1, DonationModel d2) async {
+  void _acceptBatchedDelivery(DonationModel d1, DonationModel d2) async {
     setState(() => _isProcessing = true);
     final user = widget.repository.currentUser;
     await widget.repository.acceptVolunteerDelivery(
@@ -672,7 +672,6 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
     );
   }
 
-
   Widget _buildMultiStopBatchCard(DonationModel d1, DonationModel d2) {
     final totalServings = d1.quantityServings + d2.quantityServings;
 
@@ -700,7 +699,10 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFD97706),
                   borderRadius: BorderRadius.circular(20),
@@ -708,7 +710,11 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.alt_route_rounded, size: 14, color: Colors.white),
+                    Icon(
+                      Icons.alt_route_rounded,
+                      size: 14,
+                      color: Colors.white,
+                    ),
                     SizedBox(width: 4),
                     Text(
                       '⚡ SMART 2-STOP BATCH ROUTE',
@@ -743,7 +749,11 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
           const SizedBox(height: 10),
           const Text(
             'Two nearby donors are going to the same shelter region. Save 40% travel time by picking up both together!',
-            style: TextStyle(fontSize: 12, color: Color(0xFF78350F), fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(0xFF78350F),
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 12),
           Container(
@@ -757,19 +767,29 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.looks_one_rounded, size: 18, color: Color(0xFFD97706)),
+                    const Icon(
+                      Icons.looks_one_rounded,
+                      size: 18,
+                      color: Color(0xFFD97706),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Stop 1: ${d1.donorName} (${d1.title})',
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       '${d1.quantityServings} meals',
-                      style: const TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF6B7280),
+                      ),
                     ),
                   ],
                 ),
@@ -777,24 +797,37 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   padding: EdgeInsets.only(left: 8.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('│', style: TextStyle(color: Color(0xFFD1D5DB))),
+                    child: Text(
+                      '│',
+                      style: TextStyle(color: Color(0xFFD1D5DB)),
+                    ),
                   ),
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.looks_two_rounded, size: 18, color: Color(0xFFD97706)),
+                    const Icon(
+                      Icons.looks_two_rounded,
+                      size: 18,
+                      color: Color(0xFFD97706),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Stop 2: ${d2.donorName} (${d2.title})',
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       '${d2.quantityServings} meals',
-                      style: const TextStyle(fontSize: 11, color: Color(0xFF6B7280)),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF6B7280),
+                      ),
                     ),
                   ],
                 ),
@@ -802,24 +835,39 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   padding: EdgeInsets.only(left: 8.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('│', style: TextStyle(color: Color(0xFFD1D5DB))),
+                    child: Text(
+                      '│',
+                      style: TextStyle(color: Color(0xFFD1D5DB)),
+                    ),
                   ),
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_rounded, size: 18, color: Color(0xFF047857)),
+                    const Icon(
+                      Icons.location_on_rounded,
+                      size: 18,
+                      color: Color(0xFF047857),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Drop: ${d1.reservedNgoName ?? "Anandwan Rehabilitation & Shelter"}',
-                        style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12, color: Color(0xFF047857)),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 12,
+                          color: Color(0xFF047857),
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       'Total $totalServings meals',
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF047857)),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF047857),
+                      ),
                     ),
                   ],
                 ),
@@ -990,7 +1038,8 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         _currentDistanceToDonorMeters <= 50
@@ -999,7 +1048,9 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                         style: TextStyle(
                                           fontSize: 10.5,
                                           fontWeight: FontWeight.w800,
-                                          color: _currentDistanceToDonorMeters <= 50
+                                          color:
+                                              _currentDistanceToDonorMeters <=
+                                                  50
                                               ? AppTheme.forestGreen
                                               : const Color(0xFFD97706),
                                         ),
@@ -1018,18 +1069,28 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                 ),
                                 TextButton(
                                   style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
                                     minimumSize: const Size(50, 26),
                                   ),
                                   onPressed: () {
                                     setState(() {
                                       _currentDistanceToDonorMeters =
-                                          _currentDistanceToDonorMeters <= 50 ? 340.0 : 18.0;
+                                          _currentDistanceToDonorMeters <= 50
+                                          ? 340.0
+                                          : 18.0;
                                     });
                                   },
                                   child: Text(
-                                    _currentDistanceToDonorMeters <= 50 ? 'Reset GPS' : 'Simulate GPS',
-                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+                                    _currentDistanceToDonorMeters <= 50
+                                        ? 'Reset GPS'
+                                        : 'Simulate GPS',
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1045,7 +1106,8 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                   keyboardType: TextInputType.number,
                                   enabled: _currentDistanceToDonorMeters <= 50,
                                   decoration: InputDecoration(
-                                    hintText: _currentDistanceToDonorMeters <= 50
+                                    hintText:
+                                        _currentDistanceToDonorMeters <= 50
                                         ? 'Enter 4-digit Donor OTP'
                                         : 'Locked until within 50m',
                                     isDense: true,

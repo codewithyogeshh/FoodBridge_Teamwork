@@ -41,7 +41,8 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
   late Animation<double> _sirenAnimation;
 
   final _foodDescController = TextEditingController(
-    text: 'Full Wedding Feast: Shahi Paneer, Jeera Rice, Dal Makhani & 150 Naans',
+    text:
+        'Full Wedding Feast: Shahi Paneer, Jeera Rice, Dal Makhani & 150 Naans',
   );
   int _selectedPortions = 300;
   bool _isBroadcasting = false;
@@ -77,7 +78,8 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
       id: 'sos-${now.millisecondsSinceEpoch}',
       donorName: donor.organizationName ?? donor.fullName,
       donorPhone: donor.phone,
-      title: '🚨 MASS SOS: ${_foodDescController.text.trim()} ($_selectedPortions portions)',
+      title:
+          '🚨 MASS SOS: ${_foodDescController.text.trim()} ($_selectedPortions portions)',
       foodType: 'Cooked Meals',
       quantityLabel: '$_selectedPortions Plates (Wedding Banquet)',
       quantityServings: _selectedPortions,
@@ -88,7 +90,8 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
       pickupAddress: 'Grand Orchid Convention Hall, MG Road Corridor',
       pickupLatitude: 12.9716,
       pickupLongitude: 77.5946,
-      pickupInstructions: 'Enter Gate 2 Banquet Kitchen. Security notified for immediate courier access.',
+      pickupInstructions:
+          'Enter Gate 2 Banquet Kitchen. Security notified for immediate courier access.',
       pickupOtp: '${(1000 + (now.millisecondsSinceEpoch % 9000))}',
       urgencyLevel: UrgencyLevel.critical,
       aiUrgencyScore: 99,
@@ -154,7 +157,9 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          const Color(0xFF991B1B).withValues(alpha: _sirenAnimation.value),
+                          const Color(
+                            0xFF991B1B,
+                          ).withValues(alpha: _sirenAnimation.value),
                           const Color(0xFFDC2626),
                         ],
                         begin: Alignment.topLeft,
@@ -163,7 +168,9 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFDC2626).withValues(alpha: 0.4 * _sirenAnimation.value),
+                          color: const Color(
+                            0xFFDC2626,
+                          ).withValues(alpha: 0.4 * _sirenAnimation.value),
                           blurRadius: 14,
                           spreadRadius: 2,
                         ),
@@ -236,12 +243,15 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                           '$count Plates',
                           style: TextStyle(
                             fontSize: 11.5,
-                            fontWeight: isSel ? FontWeight.w800 : FontWeight.w600,
+                            fontWeight: isSel
+                                ? FontWeight.w800
+                                : FontWeight.w600,
                           ),
                         ),
                         selected: isSel,
                         selectedColor: const Color(0xFFFFE4E6),
-                        onSelected: (val) => setState(() => _selectedPortions = count),
+                        onSelected: (val) =>
+                            setState(() => _selectedPortions = count),
                       ),
                     ),
                   );
@@ -265,7 +275,9 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                 style: const TextStyle(fontSize: 12),
                 decoration: InputDecoration(
                   hintText: 'Enter banquet feast details...',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   contentPadding: const EdgeInsets.all(10),
                 ),
               ),
@@ -281,12 +293,20 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.radar_rounded, color: Color(0xFFDC2626), size: 18),
+                    Icon(
+                      Icons.radar_rounded,
+                      color: Color(0xFFDC2626),
+                      size: 18,
+                    ),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         '10 km Radius Radar Blast: Bypasses standard queues to wake on-call couriers and emergency shelter drivers.',
-                        style: TextStyle(fontSize: 10.5, color: Color(0xFF991B1B), height: 1.3),
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          color: Color(0xFF991B1B),
+                          height: 1.3,
+                        ),
                       ),
                     ),
                   ],
@@ -301,7 +321,9 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel'),
@@ -315,22 +337,32 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                         backgroundColor: const Color(0xFFDC2626),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       icon: _isBroadcasting
                           ? const SizedBox(
                               width: 16,
                               height: 16,
-                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
                             )
                           : const Icon(Icons.campaign_rounded, size: 20),
                       label: Text(
                         _isBroadcasting
                             ? 'Broadcasting SOS...'
                             : 'Broadcast 10km SOS',
-                        style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13,
+                        ),
                       ),
-                      onPressed: _isBroadcasting ? null : _triggerEmergencyBlast,
+                      onPressed: _isBroadcasting
+                          ? null
+                          : _triggerEmergencyBlast,
                     ),
                   ),
                 ],
@@ -342,4 +374,3 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
     );
   }
 }
-

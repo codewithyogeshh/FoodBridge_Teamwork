@@ -237,28 +237,54 @@ class AdminDashboardScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    SupabaseConsoleScreen(repository: repository),
+                                builder: (context) => SupabaseConsoleScreen(
+                                  repository: repository,
+                                ),
                               ),
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFEFF6FF),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: const Color(0xFF3B82F6).withValues(alpha: 0.2)),
+                              border: Border.all(
+                                color: const Color(
+                                  0xFF3B82F6,
+                                ).withValues(alpha: 0.2),
+                              ),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.terminal_rounded, color: Color(0xFF2563EB), size: 18),
+                                Icon(
+                                  Icons.terminal_rounded,
+                                  color: Color(0xFF2563EB),
+                                  size: 18,
+                                ),
                                 SizedBox(width: 6),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('Supabase Console', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
-                                      Text('Realtime & Logs', style: TextStyle(fontSize: 9, color: Color(0xFF2563EB))),
+                                      Text(
+                                        'Supabase Console',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w800,
+                                          color: AppTheme.richCharcoal,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Realtime & Logs',
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: Color(0xFF2563EB),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -275,28 +301,54 @@ class AdminDashboardScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ESGImpactDashboardScreen(repository: repository),
+                                builder: (context) => ESGImpactDashboardScreen(
+                                  repository: repository,
+                                ),
                               ),
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: AppTheme.emeraldLight,
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppTheme.forestGreen.withValues(alpha: 0.2)),
+                              border: Border.all(
+                                color: AppTheme.forestGreen.withValues(
+                                  alpha: 0.2,
+                                ),
+                              ),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.eco_rounded, color: AppTheme.forestGreen, size: 18),
+                                Icon(
+                                  Icons.eco_rounded,
+                                  color: AppTheme.forestGreen,
+                                  size: 18,
+                                ),
                                 SizedBox(width: 6),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('ESG Carbon Hub', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
-                                      Text('CSR Audits', style: TextStyle(fontSize: 9, color: AppTheme.forestGreen)),
+                                      Text(
+                                        'ESG Carbon Hub',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w800,
+                                          color: AppTheme.richCharcoal,
+                                        ),
+                                      ),
+                                      Text(
+                                        'CSR Audits',
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: AppTheme.forestGreen,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -314,27 +366,54 @@ class AdminDashboardScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    CommunityLeaderboardScreen(repository: repository),
+                                    CommunityLeaderboardScreen(
+                                      repository: repository,
+                                    ),
                               ),
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFFEF3C7),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: const Color(0xFFD97706).withValues(alpha: 0.2)),
+                              border: Border.all(
+                                color: const Color(
+                                  0xFFD97706,
+                                ).withValues(alpha: 0.2),
+                              ),
                             ),
                             child: const Row(
                               children: [
-                                Icon(Icons.emoji_events_rounded, color: Color(0xFFD97706), size: 18),
+                                Icon(
+                                  Icons.emoji_events_rounded,
+                                  color: Color(0xFFD97706),
+                                  size: 18,
+                                ),
                                 SizedBox(width: 6),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('Leaderboard', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.richCharcoal)),
-                                      Text('Heroes', style: TextStyle(fontSize: 9, color: Color(0xFFD97706))),
+                                      Text(
+                                        'Leaderboard',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w800,
+                                          color: AppTheme.richCharcoal,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Heroes',
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: Color(0xFFD97706),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

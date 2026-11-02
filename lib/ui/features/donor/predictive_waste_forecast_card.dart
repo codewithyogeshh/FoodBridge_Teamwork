@@ -18,7 +18,8 @@ class _PredictiveWasteForecastCardState
 
   @override
   Widget build(BuildContext context) {
-    final org = widget.repository.currentUser.organizationName ?? 'Your Kitchen';
+    final org =
+        widget.repository.currentUser.organizationName ?? 'Your Kitchen';
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -120,17 +121,37 @@ class _PredictiveWasteForecastCardState
               children: [
                 Column(
                   children: [
-                    Text('Forecasted Surplus', style: TextStyle(fontSize: 10, color: Colors.white60)),
+                    Text(
+                      'Forecasted Surplus',
+                      style: TextStyle(fontSize: 10, color: Colors.white60),
+                    ),
                     SizedBox(height: 2),
-                    Text('~40 Portions', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white)),
+                    Text(
+                      '~40 Portions',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
                 Text('•', style: TextStyle(color: Colors.white38)),
                 Column(
                   children: [
-                    Text('Peak Expiry Window', style: TextStyle(fontSize: 10, color: Colors.white60)),
+                    Text(
+                      'Peak Expiry Window',
+                      style: TextStyle(fontSize: 10, color: Colors.white60),
+                    ),
                     SizedBox(height: 2),
-                    Text('10:30 PM - 11:00 PM', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Color(0xFFFBBF24))),
+                    Text(
+                      '10:30 PM - 11:00 PM',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFFFBBF24),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -147,7 +168,11 @@ class _PredictiveWasteForecastCardState
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.check_circle_rounded, color: Color(0xFF34D399), size: 18),
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: Color(0xFF34D399),
+                    size: 18,
+                  ),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -183,4 +208,3 @@ class _PredictiveWasteForecastCardState
     );
   }
 }
-

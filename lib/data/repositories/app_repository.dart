@@ -735,11 +735,8 @@ class AppRepository extends ChangeNotifier {
       _supabaseService.runDiagnostics();
 
   /// Broadcasts a live real-time test ping over WebSocket channel
-  Future<bool> sendRealtimeTestPing(String message) =>
-      _supabaseService.sendTestBroadcast(
-        message: message,
-        senderRole: _currentRole.name,
-      );
+  Future<bool> sendRealtimeTestPing(String message) => _supabaseService
+      .sendTestBroadcast(message: message, senderRole: _currentRole.name);
 
   /// Looks up an existing registered NGO by phone number or registration number
   NGOModel? findNGOByPhoneOrReg(String query) {

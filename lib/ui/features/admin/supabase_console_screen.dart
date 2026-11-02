@@ -32,9 +32,7 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
     _runHealthCheck();
 
     // Listen to real-time notifications to log them live
-    _notifSub = widget.repository.notificationStream.listen((
-      n,
-    ) {
+    _notifSub = widget.repository.notificationStream.listen((n) {
       if (mounted) {
         setState(() {
           _eventLogs.insert(
@@ -252,8 +250,9 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: (isOnline ? const Color(0xFF064E3B) : const Color(0xFF78350F))
-                .withValues(alpha: 0.25),
+            color:
+                (isOnline ? const Color(0xFF064E3B) : const Color(0xFF78350F))
+                    .withValues(alpha: 0.25),
             blurRadius: 14,
             offset: const Offset(0, 5),
           ),
@@ -277,10 +276,11 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: (isOnline
-                                  ? const Color(0xFF34D399)
-                                  : const Color(0xFFFBBF24))
-                              .withValues(alpha: 0.8),
+                          color:
+                              (isOnline
+                                      ? const Color(0xFF34D399)
+                                      : const Color(0xFFFBBF24))
+                                  .withValues(alpha: 0.8),
                           blurRadius: 6,
                           spreadRadius: 2,
                         ),
@@ -400,7 +400,9 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(
-                    ok ? Icons.check_circle_rounded : Icons.sync_problem_rounded,
+                    ok
+                        ? Icons.check_circle_rounded
+                        : Icons.sync_problem_rounded,
                     color: ok ? AppTheme.forestGreen : AppTheme.sunflowerGold,
                     size: 18,
                   ),
@@ -580,8 +582,8 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
                       color: isErr
                           ? const Color(0xFFF87171)
                           : isEvent
-                              ? const Color(0xFF38BDF8)
-                              : const Color(0xFF4ADE80),
+                          ? const Color(0xFF38BDF8)
+                          : const Color(0xFF4ADE80),
                     ),
                   ),
                 );

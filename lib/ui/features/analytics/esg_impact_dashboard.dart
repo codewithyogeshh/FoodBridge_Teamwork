@@ -28,13 +28,15 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
     switch (_activeFilter) {
       case ESGTimeFilter.last7Days:
         final sevenDaysAgo = now.subtract(const Duration(days: 7));
-        final filtered =
-            all.where((d) => d.createdAt.isAfter(sevenDaysAgo)).toList();
+        final filtered = all
+            .where((d) => d.createdAt.isAfter(sevenDaysAgo))
+            .toList();
         return filtered.isNotEmpty ? filtered : all;
       case ESGTimeFilter.thisMonth:
         final thirtyDaysAgo = now.subtract(const Duration(days: 30));
-        final filtered =
-            all.where((d) => d.createdAt.isAfter(thirtyDaysAgo)).toList();
+        final filtered = all
+            .where((d) => d.createdAt.isAfter(thirtyDaysAgo))
+            .toList();
         return filtered.isNotEmpty ? filtered : all;
       case ESGTimeFilter.allTime:
         return all;
@@ -220,7 +222,10 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                       children: [
                         const Text(
                           'City Net-Zero Diversion Target',
-                          style: TextStyle(fontSize: 10.5, color: Colors.white70),
+                          style: TextStyle(
+                            fontSize: 10.5,
+                            color: Colors.white70,
+                          ),
                         ),
                         Text(
                           '${(progress * 100).toInt()}% Achieved',
@@ -533,8 +538,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
   ) {
     final certId =
         'CERT-ESG-${DateTime.now().year}-${(servings * 7 + 1042).toString().padLeft(5, '0')}';
-    final certHash =
-        'sha256:8f4b${servings}a91d${(co2e * 10).toInt()}e4198c21';
+    final certHash = 'sha256:8f4b${servings}a91d${(co2e * 10).toInt()}e4198c21';
 
     showDialog(
       context: context,
@@ -601,7 +605,10 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                   children: [
                     const Text(
                       'Presented to Authorized Contributor',
-                      style: TextStyle(fontSize: 10, color: AppTheme.charcoalMuted),
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppTheme.charcoalMuted,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -690,7 +697,10 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(fontSize: 10.5, color: AppTheme.charcoalMuted),
+            style: const TextStyle(
+              fontSize: 10.5,
+              color: AppTheme.charcoalMuted,
+            ),
           ),
           const SizedBox(width: 8),
           Flexible(

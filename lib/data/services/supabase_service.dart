@@ -33,9 +33,7 @@ class SupabaseDiagnosticReport {
   });
 
   bool get isHealthy =>
-      restConnected &&
-      realtimeSubscribed &&
-      tableStatus.values.every((v) => v);
+      restConnected && realtimeSubscribed && tableStatus.values.every((v) => v);
 }
 
 /// Direct Supabase REST & WebSocket Realtime Client with resilient offline/online synchronization
