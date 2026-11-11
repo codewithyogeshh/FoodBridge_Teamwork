@@ -54,12 +54,10 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
           children: [
             Icon(Icons.logout_rounded, color: AppTheme.statusCritical),
             SizedBox(width: 10),
-            Text('Log Out of Volunteer Hub?'),
+            Text('Log Out?'),
           ],
         ),
-        content: const Text(
-          'Are you sure you want to end your current session and return to the login screen?',
-        ),
+        content: const Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -84,27 +82,38 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
   void _acceptBatchedDelivery(DonationModel d1, DonationModel d2) async {
     setState(() => _isProcessing = true);
     final user = widget.repository.currentUser;
-    await widget.repository.acceptVolunteerDelivery(
+    final s1 = await widget.repository.acceptVolunteerDelivery(
       donationId: d1.id,
       volunteerId: user.id,
       volunteerName: user.fullName,
     );
-    await widget.repository.acceptVolunteerDelivery(
+    final s2 = await widget.repository.acceptVolunteerDelivery(
       donationId: d2.id,
       volunteerId: user.id,
       volunteerName: user.fullName,
     );
     if (!mounted) return;
     setState(() => _isProcessing = false);
-    _tabController.animateTo(1);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          '⚡ २-स्टॉप बॅच डिलिव्हरी स्वीकारली! दुप्पट फी (₹५५) लागू झाली.',
+    if (s1 || s2) {
+      _tabController.animateTo(1);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            s1 && s2
+                ? '2-Stop route accepted! Earn ₹55 for both pickups.'
+                : 'Pickup accepted! Go to pickup shop.',
+          ),
+          backgroundColor: AppTheme.forestGreen,
         ),
-        backgroundColor: AppTheme.forestGreen,
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not accept route. Orders may have expired.'),
+          backgroundColor: AppTheme.statusCritical,
+        ),
+      );
+    }
   }
 
   void _acceptDelivery(DonationModel donation) async {
@@ -123,20 +132,37 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'डिलिव्हरी स्वीकारली! Proceed to ${donation.donorName} for pickup.',
+            'Trip accepted! Go to ${donation.donorName} for pickup.',
           ),
           backgroundColor: AppTheme.forestGreen,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not accept this trip right now.'),
+          backgroundColor: AppTheme.statusCritical,
         ),
       );
     }
   }
 
   void _verifyPickup(DonationModel donation) async {
+    if (_currentDistanceToDonorMeters > 50) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Go within 50m of the shop before entering the PIN.'),
+          backgroundColor: AppTheme.statusCritical,
+        ),
+      );
+      return;
+    }
+
     final otp = _otpController.text.trim();
     if (otp.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter 4-digit pickup OTP from donor.'),
+          content: Text('Please enter the 4-digit pickup PIN from the donor.'),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -156,9 +182,16 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Pickup Verified! Now deliver to ${donation.reservedNgoName ?? "NGO Shelter"}.',
+            'Pickup confirmed! Now deliver to ${donation.reservedNgoName ?? "NGO Kitchen"}.',
           ),
           backgroundColor: AppTheme.forestGreen,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wrong PIN. Check the donor PIN and try again.'),
+          backgroundColor: AppTheme.statusCritical,
         ),
       );
     }
@@ -188,12 +221,12 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 size: 28,
               ),
               SizedBox(width: 10),
-              Text('Delivery Completed!'),
+              Text('Delivery Complete!'),
             ],
           ),
           content: Text(
-            'Great job! The surplus food was safely handed over to ${donation.reservedNgoName ?? "NGO Kitchen"}.\n\n'
-            '₹${fee.toStringAsFixed(0)} delivery fee has been credited to your Volunteer Earnings wallet!',
+            'Great job! Food handed over to ${donation.reservedNgoName ?? "NGO Kitchen"}.\n\n'
+            '₹${fee.toStringAsFixed(0)} added to your earnings!',
             style: const TextStyle(fontSize: 13.5, height: 1.4),
           ),
           actions: [
@@ -206,7 +239,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 Navigator.pop(ctx);
                 _tabController.animateTo(2);
               },
-              child: const Text('View Earnings'),
+              child: const Text('See Earnings'),
             ),
           ],
         ),
@@ -230,22 +263,9 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    const Text(
-                      'Volunteer Courier Desk',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const AppBadge(
-                      label: 'HERO',
-                      color: AppTheme.forestGreen,
-                      bgColor: Color(0xFFECFDF5),
-                    ),
-                  ],
+                const Text(
+                  'Delivery Helper',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
                 ),
                 Text(
                   widget.repository.currentUser.fullName,
@@ -284,7 +304,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Available'),
+                      const Text('Jobs'),
                       if (available.isNotEmpty) ...[
                         const SizedBox(width: 6),
                         Container(
@@ -313,7 +333,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Active'),
+                      const Text('My Trip'),
                       if (active.isNotEmpty) ...[
                         const SizedBox(width: 6),
                         Container(
@@ -338,7 +358,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                     ],
                   ),
                 ),
-                const Tab(text: 'Earnings & Impact'),
+                const Tab(text: 'Earnings'),
               ],
             ),
           ),
@@ -386,8 +406,8 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   children: [
                     Text(
                       _isOnline
-                          ? 'Duty Status: Online (Ready for Pickups)'
-                          : 'Duty Status: Paused',
+                          ? 'Online • Ready for Pickups'
+                          : 'Offline • Paused',
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
@@ -395,7 +415,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                       ),
                     ),
                     const Text(
-                      'NGOs lacking vehicles request FoodBridge volunteers. Delivery fee (₹20-₹30) paid per trip.',
+                      'Earn ₹20–₹30 per trip delivering food for NGOs.',
                       style: TextStyle(
                         fontSize: 11.5,
                         color: AppTheme.charcoalMuted,
@@ -438,7 +458,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 ),
                 SizedBox(height: 12),
                 Text(
-                  'No Deliveries Needing Volunteers Right Now',
+                  'No Delivery Jobs Right Now',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -447,7 +467,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 ),
                 SizedBox(height: 6),
                 Text(
-                  'When an NGO without vehicles claims food, it will appear here instantly with guaranteed courier earnings (₹20–₹30).',
+                  'New pickup jobs will show up here when an NGO needs a helper (₹20–₹30).',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12, color: AppTheme.charcoalMuted),
                 ),
@@ -500,7 +520,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                       Row(
                         children: [
                           Text(
-                            '${d.foodType} • ${d.quantityLabel}',
+                            '${d.foodType} • ${d.quantityServings} plates',
                             style: const TextStyle(
                               fontSize: 12,
                               color: AppTheme.charcoalMuted,
@@ -509,8 +529,8 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                           const SizedBox(width: 8),
                           AppBadge(
                             label: d.status == DonationStatus.reserved
-                                ? 'NGO RESERVED'
-                                : 'FRESH POSTING',
+                                ? 'NGO BOOKED'
+                                : 'NEW',
                             color: d.status == DonationStatus.reserved
                                 ? const Color(0xFFEA580C)
                                 : AppTheme.forestGreen,
@@ -536,7 +556,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   child: Column(
                     children: [
                       const Text(
-                        'EARNINGS',
+                        'PAY',
                         style: TextStyle(
                           fontSize: 9,
                           fontWeight: FontWeight.w800,
@@ -591,7 +611,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                       Row(
                         children: [
                           const Text(
-                            'Donor Pickup: ',
+                            'Pick Up: ',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -614,7 +634,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                       Row(
                         children: [
                           const Text(
-                            'NGO Drop-off: ',
+                            'Drop Off: ',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -623,8 +643,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                           ),
                           Expanded(
                             child: Text(
-                              d.reservedNgoName ??
-                                  'Nearest Verified Shelter (Auto-matched)',
+                              d.reservedNgoName ?? 'Nearest Verified NGO',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
@@ -650,7 +669,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               children: [
                 Expanded(
                   child: Text(
-                    'Safe Window: ${d.formattedTimeRemaining}',
+                    'Best Before: ${d.formattedTimeRemaining}',
                     style: const TextStyle(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
@@ -659,7 +678,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   ),
                 ),
                 AppButton(
-                  label: 'Accept Delivery (₹${fee.toStringAsFixed(0)})',
+                  label: 'Accept Trip (₹${fee.toStringAsFixed(0)})',
                   icon: Icons.two_wheeler_rounded,
                   isLoading: _isProcessing,
                   onPressed: () => _acceptDelivery(d),
@@ -717,7 +736,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                     ),
                     SizedBox(width: 4),
                     Text(
-                      '⚡ SMART 2-STOP BATCH ROUTE',
+                      '2-STOP ROUTE',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 11,
@@ -736,7 +755,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  'EARN ₹55 (2x FEE)',
+                  'EARN ₹55',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 11,
@@ -748,7 +767,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
           ),
           const SizedBox(height: 10),
           const Text(
-            'Two nearby donors are going to the same shelter region. Save 40% travel time by picking up both together!',
+            'Two nearby pickups going to the same NGO. Pick up both and earn double!',
             style: TextStyle(
               fontSize: 12,
               color: Color(0xFF78350F),
@@ -851,7 +870,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Drop: ${d1.reservedNgoName ?? "Anandwan Rehabilitation & Shelter"}',
+                        'Drop: ${d1.reservedNgoName ?? "Nearest Verified NGO"}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 12,
@@ -862,7 +881,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                       ),
                     ),
                     Text(
-                      'Total $totalServings meals',
+                      'Total $totalServings plates',
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
@@ -889,7 +908,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               ),
               icon: const Icon(Icons.electric_moped_rounded, size: 18),
               label: const Text(
-                'Accept Batched Route (Collect ₹55)',
+                'Accept Both Pickups (Earn ₹55)',
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13),
               ),
               onPressed: () => _acceptBatchedDelivery(d1, d2),
@@ -915,18 +934,18 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               ),
               const SizedBox(height: 14),
               const Text(
-                'No Active Deliveries',
+                'No Active Trip',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 6),
               const Text(
-                'Accept a delivery from the "Available" tab to begin pickup and earn delivery fees.',
+                'Pick a job from the "Jobs" tab to start delivery and earn ₹20–₹30.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12.5, color: AppTheme.charcoalMuted),
               ),
               const SizedBox(height: 16),
               AppButton(
-                label: 'View Available Deliveries',
+                label: 'See Jobs',
                 icon: Icons.explore_rounded,
                 onPressed: () => _tabController.animateTo(0),
               ),
@@ -939,6 +958,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
     final d = active.first;
     final fee = d.deliveryFee > 0 ? d.deliveryFee : 25.0;
     final isPickedUp = d.status == DonationStatus.pickupVerified;
+    final withinRange = _currentDistanceToDonorMeters <= 50;
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -974,7 +994,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                           ),
                         ),
                         Text(
-                          'Guaranteed Payout: ₹${fee.toStringAsFixed(0)} upon drop-off',
+                          'Pay: ₹${fee.toStringAsFixed(0)} after delivery',
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -985,7 +1005,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                     ),
                   ),
                   AppBadge(
-                    label: isPickedUp ? 'IN TRANSIT' : 'PICKUP READY',
+                    label: isPickedUp ? 'ON THE WAY' : 'AT SHOP',
                     color: isPickedUp
                         ? const Color(0xFF0284C7)
                         : const Color(0xFFD97706),
@@ -1000,7 +1020,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               // Stepper Flow
               _buildStepItem(
                 step: 1,
-                title: 'Step 1: Pick Up from Donor',
+                title: 'Step 1: Pick Up Food',
                 subtitle: '${d.donorName} • ${d.pickupAddress}',
                 isDone: isPickedUp,
                 isActive: !isPickedUp,
@@ -1010,16 +1030,16 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                         children: [
                           const SizedBox(height: 8),
 
-                          // GEOFENCE SECURITY BADGE
+                          // SHOP DISTANCE CHECK BADGE
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: _currentDistanceToDonorMeters <= 50
+                              color: withinRange
                                   ? const Color(0xFFECFDF5)
                                   : const Color(0xFFFEF3C7),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: _currentDistanceToDonorMeters <= 50
+                                color: withinRange
                                     ? AppTheme.forestGreen
                                     : const Color(0xFFD97706),
                               ),
@@ -1027,10 +1047,10 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                             child: Row(
                               children: [
                                 Icon(
-                                  _currentDistanceToDonorMeters <= 50
+                                  withinRange
                                       ? Icons.verified_user_rounded
                                       : Icons.fmd_bad_rounded,
-                                  color: _currentDistanceToDonorMeters <= 50
+                                  color: withinRange
                                       ? AppTheme.forestGreen
                                       : const Color(0xFFD97706),
                                   size: 18,
@@ -1042,23 +1062,21 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _currentDistanceToDonorMeters <= 50
-                                            ? 'GEOFENCE UNLOCKED (${_currentDistanceToDonorMeters.toInt()}m)'
-                                            : 'GEOFENCE LOCKED (${_currentDistanceToDonorMeters.toInt()}m away)',
+                                        withinRange
+                                            ? 'AT PICKUP SHOP (${_currentDistanceToDonorMeters.toInt()}m)'
+                                            : 'REACH SHOP FIRST (${_currentDistanceToDonorMeters.toInt()}m away)',
                                         style: TextStyle(
                                           fontSize: 10.5,
                                           fontWeight: FontWeight.w800,
-                                          color:
-                                              _currentDistanceToDonorMeters <=
-                                                  50
+                                          color: withinRange
                                               ? AppTheme.forestGreen
                                               : const Color(0xFFD97706),
                                         ),
                                       ),
                                       Text(
-                                        _currentDistanceToDonorMeters <= 50
-                                            ? 'Verified at premises. Handover OTP enabled.'
-                                            : 'Must be within 50m of donor to verify OTP.',
+                                        withinRange
+                                            ? 'Location matched. Enter the 4-digit PIN below.'
+                                            : 'Must be within 50m of shop to enter pickup PIN.',
                                         style: const TextStyle(
                                           fontSize: 9.5,
                                           color: AppTheme.charcoalMuted,
@@ -1078,15 +1096,13 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                   onPressed: () {
                                     setState(() {
                                       _currentDistanceToDonorMeters =
-                                          _currentDistanceToDonorMeters <= 50
-                                          ? 340.0
-                                          : 18.0;
+                                          withinRange ? 340.0 : 18.0;
                                     });
                                   },
                                   child: Text(
-                                    _currentDistanceToDonorMeters <= 50
-                                        ? 'Reset GPS'
-                                        : 'Simulate GPS',
+                                    withinRange
+                                        ? 'Reset Demo'
+                                        : 'Demo: Reach Shop',
                                     style: const TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w700,
@@ -1104,12 +1120,11 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                 child: TextField(
                                   controller: _otpController,
                                   keyboardType: TextInputType.number,
-                                  enabled: _currentDistanceToDonorMeters <= 50,
+                                  enabled: withinRange,
                                   decoration: InputDecoration(
-                                    hintText:
-                                        _currentDistanceToDonorMeters <= 50
-                                        ? 'Enter 4-digit Donor OTP'
-                                        : 'Locked until within 50m',
+                                    hintText: withinRange
+                                        ? 'Enter 4-digit PIN'
+                                        : 'Reach shop (within 50m)',
                                     isDense: true,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -1127,16 +1142,16 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                                   backgroundColor: AppTheme.forestGreen,
                                   foregroundColor: Colors.white,
                                 ),
-                                onPressed: _isProcessing
+                                onPressed: (_isProcessing || !withinRange)
                                     ? null
                                     : () => _verifyPickup(d),
-                                child: const Text('Verify Pickup'),
+                                child: const Text('Verify'),
                               ),
                             ],
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Donor Demo OTP: ${d.pickupOtp}',
+                            'Demo Pickup PIN: ${d.pickupOtp}',
                             style: const TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalMuted,
@@ -1150,9 +1165,8 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
               const SizedBox(height: 14),
               _buildStepItem(
                 step: 2,
-                title: 'Step 2: Deliver to NGO Kitchen',
-                subtitle:
-                    'Destination: ${d.reservedNgoName ?? "Shelter Kitchen"}',
+                title: 'Step 2: Deliver to NGO',
+                subtitle: 'Drop at: ${d.reservedNgoName ?? "NGO Kitchen"}',
                 isDone: false,
                 isActive: isPickedUp,
                 action: isPickedUp
@@ -1160,7 +1174,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                         padding: const EdgeInsets.only(top: 10),
                         child: AppButton(
                           label:
-                              'Confirm Handover & Collect ₹${fee.toStringAsFixed(0)}',
+                              'Mark Delivered & Earn ₹${fee.toStringAsFixed(0)}',
                           icon: Icons.check_circle_rounded,
                           isLoading: _isProcessing,
                           onPressed: () => _completeDelivery(d),
@@ -1338,7 +1352,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                     ),
                     const SizedBox(height: 2),
                     const Text(
-                      'Zero Food Waste Hero',
+                      'Completed trips',
                       style: TextStyle(fontSize: 10, color: Color(0xFF1E40AF)),
                     ),
                   ],
@@ -1350,7 +1364,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
         const SizedBox(height: 20),
 
         const Text(
-          'Completed Delivery Trips',
+          'Past Deliveries',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w800,
@@ -1376,12 +1390,12 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Past Trips will show here',
+                  'Your completed trips will show here',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Every completed delivery earns ₹20-₹30 paid by NGOs that don\'t have their own fleet.',
+                  'Earn ₹20–₹30 for each completed food delivery.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 11.5,
@@ -1461,7 +1475,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Switch Platform Role',
+              'Switch Role',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 14),
@@ -1470,7 +1484,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 Icons.storefront_rounded,
                 color: AppTheme.forestGreen,
               ),
-              title: const Text('Food Donor (Restaurants & Caterers)'),
+              title: const Text('Food Donor (Hotels & Kitchens)'),
               onTap: () {
                 Navigator.pop(ctx);
                 widget.onSwitchRole(UserRole.donor);
@@ -1481,7 +1495,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 Icons.volunteer_activism_rounded,
                 color: Color(0xFFD97706),
               ),
-              title: const Text('Community Giver (Donate Clothes / Funds)'),
+              title: const Text('Community Giver'),
               onTap: () {
                 Navigator.pop(ctx);
                 widget.onSwitchRole(UserRole.community);
@@ -1492,7 +1506,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 Icons.soup_kitchen_rounded,
                 color: Color(0xFF0D9488),
               ),
-              title: const Text('Verified NGO (Shelter Kitchen)'),
+              title: const Text('NGO Kitchen'),
               onTap: () {
                 Navigator.pop(ctx);
                 widget.onSwitchRole(UserRole.ngo);
@@ -1503,7 +1517,7 @@ class _VolunteerDashboardScreenState extends State<VolunteerDashboardScreen>
                 Icons.admin_panel_settings_rounded,
                 color: Color(0xFF4F46E5),
               ),
-              title: const Text('Platform Administrator'),
+              title: const Text('Admin'),
               onTap: () {
                 Navigator.pop(ctx);
                 widget.onSwitchRole(UserRole.admin);

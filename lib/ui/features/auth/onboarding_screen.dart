@@ -20,22 +20,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'icon': Icons.restaurant_menu_rounded,
       'title': 'Bridge Surplus Meals to Real Community Impact',
       'description':
-          'Commercial banquets, bakeries, and kitchens list surplus food within seconds. Eliminate waste while feeding vulnerable populations.',
-      'tag': 'ZERO HUNGER',
+          'Hotels, kitchens, and events can post extra food in seconds so nothing goes to waste.',
+      'tag': 'SHARE FOOD',
     },
     {
       'icon': Icons.auto_awesome_rounded,
-      'title': 'Signature AI Intelligent Urgency Routing',
+      'title': 'Quick Smart Food Matching',
       'description':
-          'Our AI engine evaluates food thermal sensitivity, travel corridors, and kitchen capacities to recommend the ideal recipient instantly.',
-      'tag': 'SMART ALLOCATION',
+          'Food is matched quickly to the nearest verified NGO that needs it most.',
+      'tag': 'FAST MATCHING',
     },
     {
       'icon': Icons.qr_code_scanner_rounded,
-      'title': 'Cryptographic OTP & Atomic Reservation Locks',
+      'title': 'Safe Pickup with 6-Digit PIN',
       'description':
-          'Guarantee food is reserved by only one verified NGO at a time. Verified handoff via one-time digital passcode and live tracking.',
-      'tag': 'CHAIN OF CUSTODY',
+          'Only one NGO can book an order at a time. Hand over food safely using a 6-digit pickup PIN.',
+      'tag': 'SAFE PICKUP',
     },
   ];
 

@@ -61,7 +61,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           navItems = const [
             BottomNavigationBarItem(
               icon: Icon(Icons.dashboard_rounded),
-              label: 'Dashboard',
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add_circle_outline_rounded),
@@ -69,11 +69,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.auto_awesome_rounded),
-              label: 'AI Allocation',
+              label: 'Best NGO',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.analytics_outlined),
-              label: 'Impact Ledger',
+              label: 'Impact',
             ),
           ];
 
@@ -105,15 +105,15 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           navItems = const [
             BottomNavigationBarItem(
               icon: Icon(Icons.volunteer_activism_rounded),
-              label: 'Giving Hub',
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add_box_rounded),
-              label: 'Donate Now',
+              label: 'Donate',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.receipt_long_rounded),
-              label: 'Impact & 80G',
+              label: 'My Impact',
             ),
           ];
 
@@ -146,7 +146,21 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   (n) => n.id == widget.lastRegisteredNgo!.id,
                   orElse: () => widget.lastRegisteredNgo!,
                 )
-              : widget.repository.ngos.first;
+              : (widget.repository.ngos.isNotEmpty
+                    ? widget.repository.ngos.first
+                    : NGOModel(
+                        id: 'ngo-1',
+                        organizationName: 'Hope Care Kitchen',
+                        registrationNumber: 'REG-VERIFIED',
+                        contactPerson: widget.repository.currentUser.fullName,
+                        phone: widget.repository.currentUser.phone,
+                        address: 'Pune',
+                        latitude: 18.5204,
+                        longitude: 73.8567,
+                        verificationStatus: NGOVerificationStatus.verified,
+                        capacityMealsPerDay: 200,
+                        createdAt: DateTime.now(),
+                      ));
 
           if (!activeNgo.isVerified) {
             // Unverified NGO cannot access food rescue listings
@@ -165,19 +179,19 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           navItems = const [
             BottomNavigationBarItem(
               icon: Icon(Icons.dashboard_rounded),
-              label: 'Rescue Hub',
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.travel_explore_rounded),
-              label: 'Discover Food',
+              label: 'Find Food',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.auto_awesome_rounded),
-              label: 'AI Matching',
+              label: 'Best Match',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.analytics_outlined),
-              label: 'Analytics',
+              label: 'Impact',
             ),
           ];
 
@@ -214,19 +228,19 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           navItems = const [
             BottomNavigationBarItem(
               icon: Icon(Icons.admin_panel_settings_rounded),
-              label: 'Admin Desk',
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.verified_user_rounded),
-              label: 'NGO Queue',
+              label: 'Verify NGO',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map_rounded),
-              label: 'Live Deliveries',
+              label: 'Deliveries',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.auto_awesome_rounded),
-              label: 'AI Engine',
+              label: 'Best Match',
             ),
           ];
 
@@ -353,7 +367,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
               const Padding(
                 padding: EdgeInsets.fromLTRB(20, 16, 20, 6),
                 child: Text(
-                  'SWITCH ACTIVE ROLE (DEMO & TESTING)',
+                  'SWITCH ROLE',
                   style: TextStyle(
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
@@ -368,7 +382,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.storefront_rounded,
                   color: AppTheme.forestGreen,
                 ),
-                title: const Text('Food Donor (Grand Orchid Banquet)'),
+                title: const Text('Food Donor (Hotels & Caterers)'),
                 selected: currentRole == UserRole.donor,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -383,9 +397,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.card_giftcard_rounded,
                   color: Color(0xFF0284C7),
                 ),
-                title: const Text(
-                  'Community Giver (Clothes, Books, 80G Funds)',
-                ),
+                title: const Text('Community Giver (Clothes, Books, Funds)'),
                 selected: currentRole == UserRole.community,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -400,7 +412,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.soup_kitchen_rounded,
                   color: AppTheme.forestGreen,
                 ),
-                title: const Text('NGO Rescuer (Hope Care Foundation)'),
+                title: const Text('NGO Kitchen (Hope Care)'),
                 selected: currentRole == UserRole.ngo,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -415,7 +427,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.delivery_dining_rounded,
                   color: Color(0xFFEA580C),
                 ),
-                title: const Text('Volunteer Courier (₹20-₹30 / Trip)'),
+                title: const Text('Delivery Helper (₹20–₹30 / Trip)'),
                 selected: currentRole == UserRole.volunteer,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -430,7 +442,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.security_rounded,
                   color: AppTheme.forestGreen,
                 ),
-                title: const Text('Platform Administrator'),
+                title: const Text('Admin'),
                 selected: currentRole == UserRole.admin,
                 selectedTileColor: AppTheme.emeraldLight,
                 onTap: () {
@@ -442,11 +454,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
               const Divider(height: 24),
 
-              // NEW PRODUCTION FEATURES: IMPACT & TRANSPARENCY
+              // IMPACT & REPORTS
               const Padding(
                 padding: EdgeInsets.fromLTRB(20, 4, 20, 6),
                 child: Text(
-                  'IMPACT & ADVANCED REPORTING',
+                  'IMPACT & REPORTS',
                   style: TextStyle(
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
@@ -462,12 +474,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   color: AppTheme.forestGreen,
                 ),
                 title: const Text(
-                  'ESG Carbon & Impact Hub',
+                  'ESG Impact & Certificate',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text(
-                  'Verified CO2, Water & CSR Audit Certificate',
-                ),
+                subtitle: const Text('CO2 saved, meals & CSR certificate'),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -488,10 +498,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   color: Color(0xFFD97706),
                 ),
                 title: const Text(
-                  'Community Impact Leaderboard',
+                  'Top Contributors',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text('Top Donors, Couriers & Rescue Kitchens'),
+                subtitle: const Text('Top donors, helpers & NGOs'),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -508,11 +518,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
               const Divider(height: 24),
 
-              // SYSTEM & BACKEND
+              // SYSTEM & ALERTS
               const Padding(
                 padding: EdgeInsets.fromLTRB(20, 4, 20, 6),
                 child: Text(
-                  'BACKEND & SYSTEM OPERATIONS',
+                  'SYSTEM & ALERTS',
                   style: TextStyle(
                     fontSize: 10.5,
                     fontWeight: FontWeight.w800,
@@ -528,12 +538,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   color: Color(0xFF0284C7),
                 ),
                 title: const Text(
-                  'Supabase Real-Time Console',
+                  'Server & Sync Status',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text(
-                  'PostgreSQL health, WS ping & Concurrency RPC',
-                ),
+                subtitle: const Text('Database & live sync check'),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -553,12 +561,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   color: Color(0xFF16A34A),
                 ),
                 title: const Text(
-                  'WhatsApp & SMS Dispatch Bot',
+                  'WhatsApp & SMS Alerts',
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
-                subtitle: const Text(
-                  'Real-time courier alerts & WhatsApp webhooks',
-                ),
+                subtitle: const Text('Instant pickup alerts for helpers'),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 12),
                 onTap: () {
                   Navigator.pop(context);
@@ -571,7 +577,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.tune_rounded,
                   color: AppTheme.charcoalMuted,
                 ),
-                title: const Text('Reports & System Settings'),
+                title: const Text('Reports & Settings'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -593,7 +599,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   Icons.replay_rounded,
                   color: AppTheme.charcoalMuted,
                 ),
-                title: const Text('Restart Welcome & Onboarding'),
+                title: const Text('Restart Welcome Tour'),
                 onTap: () {
                   Navigator.pop(context);
                   widget.onResetOnboarding();
@@ -606,7 +612,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                   color: AppTheme.statusCritical,
                 ),
                 title: const Text(
-                  'Log Out of FoodBridge',
+                  'Log Out',
                   style: TextStyle(
                     color: AppTheme.statusCritical,
                     fontWeight: FontWeight.w700,
@@ -618,11 +624,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
                 },
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(20),
+              const Padding(
+                padding: EdgeInsets.all(20),
                 child: Text(
-                  ' • \nSupabase PostgreSQL + Real-Time OTP & Verification Gate',
-                  style: const TextStyle(
+                  'FoodBridge 2.0 • Simple Food Sharing',
+                  style: TextStyle(
                     fontSize: 11,
                     color: AppTheme.charcoalLight,
                     height: 1.4,

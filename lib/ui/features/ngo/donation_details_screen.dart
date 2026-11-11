@@ -21,11 +21,12 @@ class DonationDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAvailable = donation.status == DonationStatus.available;
+    final isAvailable =
+        donation.status == DonationStatus.available && donation.isSafeToConsume;
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Donation Details')),
+      appBar: AppBar(title: const Text('Food Details')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -122,7 +123,7 @@ class DonationDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Portions Available',
+                            'Food Quantity',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalMuted,
@@ -131,7 +132,7 @@ class DonationDetailsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${donation.quantityServings} Portions',
+                            '${donation.quantityServings} Plates',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
@@ -157,7 +158,7 @@ class DonationDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Safe Window',
+                            'Best Before',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalMuted,
@@ -177,7 +178,7 @@ class DonationDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Prep: ${donation.foodType}',
+                            'Type: ${donation.foodType}',
                             style: const TextStyle(
                               fontSize: 11,
                               color: AppTheme.richCharcoal,
@@ -205,7 +206,7 @@ class DonationDetailsScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Thermal & Handling Protocol',
+                          'Storage',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -216,8 +217,7 @@ class DonationDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      donation.storageRequirements ??
-                          'Ambient Food-Safe Storage',
+                      donation.storageRequirements ?? 'Keep Clean & Covered',
                       style: const TextStyle(
                         fontSize: 13,
                         color: AppTheme.richCharcoal,
@@ -226,7 +226,7 @@ class DonationDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     const Text(
-                      'Allergens Declared by Donor:',
+                      'Allergies:',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -236,7 +236,7 @@ class DonationDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 6),
                     if (donation.allergens.isEmpty)
                       const Text(
-                        'None reported by commercial kitchen.',
+                        'None listed',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
@@ -287,7 +287,7 @@ class DonationDetailsScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Pickup Location & Gate Access',
+                          'Pickup Place',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -308,7 +308,7 @@ class DonationDetailsScreen extends StatelessWidget {
                     if (donation.pickupInstructions != null) ...[
                       const SizedBox(height: 6),
                       Text(
-                        'Gate Note: ${donation.pickupInstructions}',
+                        'Note: ${donation.pickupInstructions}',
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
@@ -319,7 +319,7 @@ class DonationDetailsScreen extends StatelessWidget {
                     MapPreviewWidget(
                       height: 160,
                       locationTitle: donation.pickupAddress,
-                      subtitle: 'Donor Kitchen Pickup Bay',
+                      subtitle: 'Pickup Location',
                     ),
                   ],
                 ),
@@ -329,8 +329,8 @@ class DonationDetailsScreen extends StatelessWidget {
               // Action button (Reserve if available)
               if (isAvailable)
                 AppButton(
-                  label: 'Reserve This Food Batch (Atomic Lock)',
-                  icon: Icons.lock_clock_rounded,
+                  label: 'Book This Food',
+                  icon: Icons.check_circle_outline_rounded,
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -352,11 +352,16 @@ class DonationDetailsScreen extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'This food batch is currently ${donation.status.dbValue}',
-                      style: const TextStyle(
+                      donation.isExpired
+                          ? 'This food order has expired and cannot be booked.'
+                          : 'This food order is already booked (${donation.status.dbValue.toLowerCase()}).',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: AppTheme.charcoalMuted,
+                        color: donation.isExpired
+                            ? AppTheme.statusCritical
+                            : AppTheme.charcoalMuted,
                       ),
                     ),
                   ),

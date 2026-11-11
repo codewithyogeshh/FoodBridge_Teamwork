@@ -492,19 +492,19 @@ class _SupabaseConsoleScreenState extends State<SupabaseConsoleScreen> {
           const SizedBox(height: 14),
           _checkTile(
             'reserve_donation_atomic(p_id, p_ngo_id)',
-            'Prevents double-booking collision across concurrent NGOs',
+            'Stops two NGOs from booking the same food order',
             true,
           ),
           const Divider(height: 16),
           _checkTile(
             'verify_pickup_otp(p_id, p_otp)',
-            'Cryptographic 6-digit OTP verification at physical pickup',
+            '6-digit PIN check during food pickup',
             true,
           ),
           const Divider(height: 16),
           _checkTile(
             'Storage Bucket: ngo-documents',
-            'Encrypted cloud storage for 80G & FSSAI licenses',
+            'Cloud folder for NGO food licenses & ID documents',
             true,
           ),
         ],

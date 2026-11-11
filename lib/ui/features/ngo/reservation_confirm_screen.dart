@@ -3,6 +3,7 @@ import '../../core/theme.dart';
 import '../../core/widgets/app_button.dart';
 import '../../core/widgets/app_card.dart';
 import '../../../data/models/donation_model.dart';
+import '../../../data/models/ngo_model.dart';
 import '../../../data/repositories/app_repository.dart';
 import 'pickup_tracking_screen.dart';
 
@@ -25,16 +26,39 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
   bool _isLocking = false;
   String? _statusMessage;
 
+  NGOModel _resolveCurrentNgo() {
+    if (widget.repository.lastRegisteredNgo != null) {
+      return widget.repository.lastRegisteredNgo!;
+    }
+    if (widget.repository.verifiedNGOs.isNotEmpty) {
+      return widget.repository.verifiedNGOs.first;
+    }
+    if (widget.repository.ngos.isNotEmpty) {
+      return widget.repository.ngos.first;
+    }
+    return NGOModel(
+      id: 'ngo-1',
+      organizationName:
+          widget.repository.currentUser.organizationName ?? 'Hope Care Kitchen',
+      registrationNumber: 'NGO-VERIFIED',
+      contactPerson: widget.repository.currentUser.fullName,
+      phone: widget.repository.currentUser.phone,
+      address: 'Pune',
+      latitude: 18.5204,
+      longitude: 73.8567,
+      verificationStatus: NGOVerificationStatus.verified,
+      capacityMealsPerDay: 200,
+      createdAt: DateTime.now(),
+    );
+  }
+
   void _confirmLock() async {
     setState(() {
       _isLocking = true;
-      _statusMessage = 'Executing PostgreSQL atomic lock...';
+      _statusMessage = 'Booking food for your NGO...';
     });
 
-    final currentNgo = widget.repository.verifiedNGOs.isNotEmpty
-        ? widget.repository.verifiedNGOs.first
-        : widget.repository.ngos.first;
-
+    final currentNgo = _resolveCurrentNgo();
     final distanceKm = currentNgo.distanceTo(
       widget.donation.pickupLatitude,
       widget.donation.pickupLongitude,
@@ -69,24 +93,22 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                   size: 26,
                 ),
                 SizedBox(width: 10),
-                Text('Reservation Locked!'),
+                Text('Food Booked!'),
               ],
             ),
             content: Text(
               hasOwnVolunteers
-                  ? 'Atomic lock acquired on donation #${widget.donation.id.substring(0, 8)}.\n\n'
-                        'Mode: NGO Self-Pickup Fleet (₹0 Delivery Fee).\n'
-                        'No other organization can reserve this batch. Please dispatch your vehicle/volunteers before safe window ends.'
-                  : 'Atomic lock acquired on donation #${widget.donation.id.substring(0, 8)}.\n\n'
-                        'Mode: FoodBridge Volunteer Courier Assigned!\n'
-                        'Distance: ${distanceKm.toStringAsFixed(1)} km\n'
-                        'Affordable Delivery Fee: ₹${deliveryFee.toStringAsFixed(0)} (payable to volunteer courier on drop-off).\n\n'
-                        'A community volunteer has been alerted to pick up the batch from donor and deliver to your kitchen.',
+                  ? '${widget.donation.title} is booked for ${currentNgo.organizationName}.\n\n'
+                        'Pickup: Your NGO team (₹0 fee).\n'
+                        'Please pick up the food before time runs out.'
+                  : '${widget.donation.title} is booked for ${currentNgo.organizationName}.\n\n'
+                        'A delivery helper is requested (${distanceKm.toStringAsFixed(1)} km).\n'
+                        'Delivery fee: ₹${deliveryFee.toStringAsFixed(0)} (pay helper on drop-off).',
               style: const TextStyle(fontSize: 13, height: 1.4),
             ),
             actions: [
               AppButton(
-                label: 'Track Pickup Route Now',
+                label: 'Go to Pickup Map',
                 icon: Icons.navigation_rounded,
                 onPressed: () {
                   Navigator.pop(ctx);
@@ -107,7 +129,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['message'] ?? 'Failed to lock reservation'),
+            content: Text(result['message'] ?? 'Could not book this food'),
             backgroundColor: AppTheme.statusCritical,
           ),
         );
@@ -117,9 +139,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentNgo = widget.repository.verifiedNGOs.isNotEmpty
-        ? widget.repository.verifiedNGOs.first
-        : widget.repository.ngos.first;
+    final currentNgo = _resolveCurrentNgo();
     final distanceKm = currentNgo.distanceTo(
       widget.donation.pickupLatitude,
       widget.donation.pickupLongitude,
@@ -129,7 +149,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Confirm Food Reservation')),
+      appBar: AppBar(title: const Text('Confirm Booking')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -137,7 +157,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Confirm Batch Commitment',
+                'Ready to Book?',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
@@ -147,7 +167,7 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
               ),
               const SizedBox(height: 6),
               const Text(
-                'Once locked, this surplus batch is committed exclusively to your organization to prevent food waste and double-dispatch.',
+                'Once confirmed, this food is saved only for your NGO.',
                 style: TextStyle(
                   fontSize: 13,
                   color: AppTheme.charcoalMuted,
@@ -182,32 +202,32 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
                     const Divider(color: AppTheme.borderColor),
                     const SizedBox(height: 10),
                     _buildRow(
-                      'Portions Committed',
-                      '${widget.donation.quantityServings} Meals',
+                      'Plates',
+                      '${widget.donation.quantityServings} Plates',
                     ),
                     _buildRow(
-                      'Pickup Deadline',
+                      'Pick Up Within',
                       widget.donation.formattedTimeRemaining,
                     ),
                     _buildRow('Pickup Address', widget.donation.pickupAddress),
                     _buildRow(
-                      'Handling Condition',
-                      widget.donation.storageRequirements ?? 'Standard Safe',
+                      'Storage',
+                      widget.donation.storageRequirements ?? 'Keep Clean',
                     ),
                     _buildRow(
-                      'Pickup Fleet',
+                      'Pickup By',
                       hasOwnVolunteers
-                          ? 'NGO Volunteers (Self-Pickup • ₹0)'
-                          : 'FoodBridge Volunteer Courier',
+                          ? 'Your NGO Team (Free)'
+                          : 'Delivery Helper',
                     ),
                     if (!hasOwnVolunteers) ...[
                       _buildRow(
-                        'Route Distance',
+                        'Distance',
                         '${distanceKm.toStringAsFixed(1)} km',
                       ),
                       _buildRow(
-                        'Affordable Delivery Fee',
-                        '₹${deliveryFee.toStringAsFixed(0)} (Payable on drop-off)',
+                        'Delivery Fee',
+                        '₹${deliveryFee.toStringAsFixed(0)} (Pay on delivery)',
                       ),
                     ],
                   ],
@@ -215,55 +235,39 @@ class _ReservationConfirmScreenState extends State<ReservationConfirmScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Atomic Locking Technical Guarantee Box
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: AppTheme.emeraldLight.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: AppTheme.emerald),
                 ),
                 child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
-                      Icons.lock_clock_rounded,
+                      Icons.lock_outline_rounded,
                       color: AppTheme.forestGreen,
-                      size: 22,
+                      size: 20,
                     ),
-                    SizedBox(width: 12),
+                    SizedBox(width: 10),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Atomic Locking Active',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.forestGreen,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Uses row-level PostgreSQL transaction locking (SELECT FOR UPDATE). Prevents race conditions and multiple reservations across concurrent NGO requests.',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.richCharcoal,
-                              height: 1.35,
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        'Booked only for your NGO — no other group can take this order.',
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.richCharcoal,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 24),
 
               // Confirm button
               AppButton(
-                label: 'Confirm & Lock Reservation Now',
+                label: 'Confirm Booking',
                 icon: Icons.check_circle_outline_rounded,
                 isLoading: _isLocking,
                 onPressed: _confirmLock,

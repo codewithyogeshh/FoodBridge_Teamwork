@@ -18,7 +18,7 @@ class NGOImpactScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(title: const Text('NGO Rescue Analytics')),
+          appBar: AppBar(title: const Text('Meals & Impact')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -38,7 +38,7 @@ class NGOImpactScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'NGO FOOD RESCUE FOOTPRINT',
+                          'YOUR IMPACT',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
@@ -57,7 +57,7 @@ class NGOImpactScreen extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'Community Portions Rescued & Served',
+                          'Plates Shared with People',
                           style: TextStyle(fontSize: 13, color: Colors.white70),
                         ),
                         const SizedBox(height: 18),
@@ -66,9 +66,9 @@ class NGOImpactScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildHeroStat('12.3 Tons', 'CO2e Diverted'),
-                            _buildHeroStat('184 Hours', 'Transit Vol. Log'),
-                            _buildHeroStat('100%', 'Safe Handoff Rate'),
+                            _buildHeroStat('12.3 Tons', 'Carbon Saved'),
+                            _buildHeroStat('184 Hours', 'Helper Hours'),
+                            _buildHeroStat('100%', 'Safe Pickups'),
                           ],
                         ),
                       ],
@@ -78,7 +78,7 @@ class NGOImpactScreen extends StatelessWidget {
 
                   // Beneficiary Demographics
                   const Text(
-                    'Beneficiary Distribution Breakdown',
+                    'Who Received the Food',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
@@ -90,23 +90,23 @@ class NGOImpactScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         _buildDemographicBar(
-                          label: 'Orphanages & Children Shelters',
+                          label: 'Children Shelters',
                           percentage: 0.45,
-                          count: '2,214 meals (45%)',
+                          count: '2,214 plates (45%)',
                           color: AppTheme.forestGreen,
                         ),
                         const SizedBox(height: 14),
                         _buildDemographicBar(
-                          label: 'Night Shelters & Community Diners',
+                          label: 'Night Shelters',
                           percentage: 0.35,
-                          count: '1,722 meals (35%)',
+                          count: '1,722 plates (35%)',
                           color: AppTheme.emerald,
                         ),
                         const SizedBox(height: 14),
                         _buildDemographicBar(
-                          label: 'Senior Care & Day Centers',
+                          label: 'Old Age Homes',
                           percentage: 0.20,
-                          count: '984 meals (20%)',
+                          count: '984 plates (20%)',
                           color: AppTheme.restrainedLime,
                         ),
                       ],
@@ -114,12 +114,12 @@ class NGOImpactScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
-                  // Rescued Batches List
+                  // Completed Pickups List
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Verified Rescues Ledger',
+                        'Completed Pickups',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
@@ -127,7 +127,7 @@ class NGOImpactScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${completed.length} batches',
+                        '${completed.length} done',
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,

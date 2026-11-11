@@ -37,7 +37,7 @@ class _NGOVerificationQueueScreenState
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(title: const Text('NGO Verification Queue')),
+          appBar: AppBar(title: const Text('Verify NGOs')),
           body: SafeArea(
             child: Column(
               children: [
@@ -51,7 +51,7 @@ class _NGOVerificationQueueScreenState
                   child: Row(
                     children: [
                       ChoiceChip(
-                        label: Text('All Organizations (${allNGOs.length})'),
+                        label: Text('All (${allNGOs.length})'),
                         selected: !_filterPendingOnly,
                         selectedColor: AppTheme.emeraldLight,
                         onSelected: (val) {
@@ -61,7 +61,7 @@ class _NGOVerificationQueueScreenState
                       const SizedBox(width: 8),
                       ChoiceChip(
                         label: Text(
-                          'Pending Review (${widget.repository.pendingNGOs.length})',
+                          'Waiting (${widget.repository.pendingNGOs.length})',
                         ),
                         selected: _filterPendingOnly,
                         selectedColor: const Color(0xFFFEF3C7),
@@ -79,9 +79,9 @@ class _NGOVerificationQueueScreenState
                   child: list.isEmpty
                       ? const EmptyStateWidget(
                           icon: Icons.task_alt_rounded,
-                          title: 'Verification Queue Clear',
+                          title: 'All NGOs Checked',
                           message:
-                              'All submitted NGO applications have been audited and resolved.',
+                              'No new NGO applications are waiting right now.',
                         )
                       : ListView.separated(
                           padding: const EdgeInsets.all(20),

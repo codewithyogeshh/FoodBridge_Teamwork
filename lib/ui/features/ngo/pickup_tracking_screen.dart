@@ -22,7 +22,7 @@ class PickupTrackingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Active Pickup Tracking')),
+      appBar: AppBar(title: const Text('Pickup Map')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -39,7 +39,7 @@ class PickupTrackingScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Pickup from: ${donation.donorName}',
+                'Pick up from: ${donation.donorName}',
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -54,13 +54,13 @@ class PickupTrackingScreen extends StatelessWidget {
               MapPreviewWidget(
                 height: 240,
                 locationTitle: donation.pickupAddress,
-                subtitle: 'Transit Route Active (ETA: 11 mins • 1.8 km)',
+                subtitle: 'On the way • About 11 mins (1.8 km)',
                 showRoute: true,
-                destinationTitle: 'Donor Kitchen Bay',
+                destinationTitle: 'Pickup Point',
               ),
               const SizedBox(height: 18),
 
-              // Turn-by-turn & Bay Directions
+              // Directions
               AppCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +74,7 @@ class PickupTrackingScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Route & Bay Access Directive',
+                          'Pickup Directions',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -91,13 +91,13 @@ class PickupTrackingScreen extends StatelessWidget {
                     _buildRouteInstruction(
                       icon: Icons.straight_rounded,
                       instruction:
-                          'Continue straight past Mayo Hall intersection (1.1 km)',
+                          'Go straight past Mayo Hall junction (1.1 km)',
                     ),
                     _buildRouteInstruction(
                       icon: Icons.door_sliding_rounded,
                       instruction:
                           donation.pickupInstructions ??
-                          'Enter via Service Gate 3 at rear. Thermal insulated food pans provided for transfer.',
+                          'Ask at the main counter or service gate for food pickup.',
                       isHighlight: true,
                     ),
                   ],
@@ -157,7 +157,7 @@ class PickupTrackingScreen extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Dialing donor kitchen at ${donation.donorPhone}...',
+                              'Calling ${donation.donorName} (${donation.donorPhone})...',
                             ),
                           ),
                         );
@@ -170,7 +170,7 @@ class PickupTrackingScreen extends StatelessWidget {
 
               // Action button to verify pickup
               AppButton(
-                label: 'Arrived at Donor Bay • Verify Hand-Off',
+                label: 'Arrived • Enter PIN',
                 icon: Icons.qr_code_scanner_rounded,
                 variant: AppButtonVariant.primary,
                 onPressed: () {

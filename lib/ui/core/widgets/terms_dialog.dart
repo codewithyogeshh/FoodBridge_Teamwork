@@ -67,7 +67,7 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'FoodBridge Terms & Food Safety Charter',
+                        'Food Safety & App Rules',
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w800,
@@ -76,7 +76,7 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                         ),
                       ),
                       Text(
-                        'Mandatory compliance agreement before entering network',
+                        'Please read and agree before continuing',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
@@ -99,37 +99,30 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                   children: [
                     _buildSection(
                       icon: Icons.shield_outlined,
-                      title: '1. Good Samaritan Protection Act',
+                      title: '1. Share Only Fresh Food',
                       body:
-                          'All commercial surplus food is donated in good faith to alleviate hunger. Under the Good Samaritan Food Donation provisions, donors and verified non-profits are shielded from civil and criminal liability when handling wholesome food.',
+                          'Donors share extra food in good faith to help people in need. Make sure food is clean, fresh, and safe to eat.',
                     ),
                     const SizedBox(height: 12),
                     _buildSection(
                       icon: Icons.thermostat_rounded,
-                      title: '2. Cold-Chain & Thermal Preservation',
+                      title: '2. Keep Food Hot or Cold',
                       body:
-                          'Receiving NGOs agree to maintain safe transit temperatures. Cooked hot meals must be held above 60°C and distributed within safe consumption windows. Chilled dairy and perishables must remain under 4°C.',
+                          'NGOs and helpers must store food properly and serve cooked meals before the Best Before time.',
                     ),
                     const SizedBox(height: 12),
                     _buildSection(
                       icon: Icons.auto_awesome_rounded,
-                      title: '3. AI Routing & Mandatory Physical Inspection',
+                      title: '3. Always Check Before Serving',
                       body:
-                          'FoodBridge AI assists logistics dispatch and urgency scoring based on timestamp decay. AI DOES NOT certify microbiological or chemical food safety. Authorized handlers must perform sensory (smell/visual) inspection before recipient distribution.',
+                          'App estimates help pick the fastest match, but NGOs and helpers must always check food freshness by smell and look before serving.',
                     ),
                     const SizedBox(height: 12),
                     _buildSection(
                       icon: Icons.money_off_rounded,
-                      title: '4. Strictly Zero Commercial Resale',
+                      title: '4. Always Free of Cost',
                       body:
-                          'Food rescued through FoodBridge 2.0 must be distributed strictly free of cost to vulnerable populations, shelters, and community kitchens. Commercial re-sale or monetization is strictly prohibited and results in immediate permanent ban and legal referral.',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildSection(
-                      icon: Icons.verified_user_outlined,
-                      title: '5. Government Identity & Verification Trust',
-                      body:
-                          'To ensure zero fraud and trusted chain-of-custody, non-profits must upload verifiable government identity (Aadhaar/PAN) and FSSAI credentials. Unverified entities cannot claim or transport food donations.',
+                          'Food shared on FoodBridge must be given free to shelters and people in need. Selling donated food is strictly not allowed.',
                     ),
                   ],
                 ),
@@ -154,7 +147,7 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                     ),
                     const Expanded(
                       child: Text(
-                        'I accept the FoodBridge Terms of Service, Privacy Policy, and Anti-Resale clauses.',
+                        'I accept the Terms of Service & Privacy Policy.',
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
@@ -182,7 +175,7 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                     ),
                     const Expanded(
                       child: Text(
-                        'I acknowledge the Food Safety Charter: physical inspection is required before consumption.',
+                        'I agree to check food freshness before serving.',
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w600,
@@ -209,14 +202,14 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
                       ),
                     ),
                     onPressed: widget.onDeclined,
-                    child: const Text('Decline & Exit'),
+                    child: const Text('Cancel'),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   flex: 2,
                   child: AppButton(
-                    label: 'I Agree & Enter FoodBridge',
+                    label: 'I Agree & Continue',
                     icon: Icons.check_rounded,
                     onPressed: _canProceed ? widget.onAccepted : null,
                   ),

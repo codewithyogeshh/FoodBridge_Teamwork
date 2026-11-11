@@ -773,6 +773,12 @@ class SupabaseService {
     // Local atomic check
     final index = _localDonations.indexWhere((d) => d.id == donationId);
     if (index != -1) {
+      if (!_localDonations[index].isSafeToConsume) {
+        return {'success': false, 'message': 'This food order has expired.'};
+      }
+      if (!_localDonations[index].isSafeToConsume) {
+        return {'success': false, 'message': 'This food order has expired.'};
+      }
       if (_localDonations[index].status == DonationStatus.available) {
         _localDonations[index] = _localDonations[index].copyWith(
           status: DonationStatus.reserved,

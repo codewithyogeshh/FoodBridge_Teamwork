@@ -70,7 +70,8 @@ class DonationModel {
   /// Time remaining before food reaches safe consumption threshold
   Duration get timeRemaining => safeUntil.difference(DateTime.now());
 
-  bool get isExpired => DateTime.now().isAfter(safeUntil);
+  bool get isExpired =>
+      status == DonationStatus.expired || DateTime.now().isAfter(safeUntil);
   bool get isSafeToConsume => !isExpired;
   int get remainingMinutes =>
       timeRemaining.inMinutes > 0 ? timeRemaining.inMinutes : 0;

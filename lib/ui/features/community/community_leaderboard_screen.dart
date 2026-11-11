@@ -35,7 +35,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
       appBar: AppBar(
-        title: const Text('Community Heroes Leaderboard'),
+        title: const Text('Top Helpers'),
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppTheme.forestGreen,
@@ -52,11 +52,11 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
               icon: Icon(Icons.storefront_rounded, size: 20),
             ),
             Tab(
-              text: 'Hero Couriers',
+              text: 'Top Volunteers',
               icon: Icon(Icons.delivery_dining_rounded, size: 20),
             ),
             Tab(
-              text: 'Relief Kitchens',
+              text: 'NGO Kitchens',
               icon: Icon(Icons.soup_kitchen_rounded, size: 20),
             ),
           ],
@@ -73,7 +73,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Rankings & Verified Impact',
+                    'Rankings',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w800,
@@ -170,8 +170,8 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
 
     return _buildLeaderboardView(
       items: donors,
-      podiumTitle: 'Top Food Rescuers',
-      scoreLabel: 'Meals Rescued',
+      podiumTitle: 'Top Donors',
+      scoreLabel: 'Meals Shared',
     );
   }
 
@@ -183,7 +183,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
         'type': 'Electric Scooter',
         'score': _isMonthly ? '28 Trips' : '94 Deliveries',
         'co2': 'Avg. 22 min',
-        'badge': 'Lightning Courier',
+        'badge': 'Fastest Rider',
       },
       {
         'rank': 2,
@@ -191,7 +191,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
         'type': 'Motorcycle',
         'score': _isMonthly ? '22 Trips' : '76 Deliveries',
         'co2': 'Avg. 25 min',
-        'badge': 'Rapid Responder',
+        'badge': 'Quick Helper',
       },
       {
         'rank': 3,
@@ -199,22 +199,22 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
         'type': 'Bicycle',
         'score': _isMonthly ? '18 Trips' : '58 Deliveries',
         'co2': 'Avg. 29 min',
-        'badge': 'Eco Hero',
+        'badge': 'Eco Rider',
       },
       {
         'rank': 4,
         'name': 'Arun Verma',
         'type': 'Compact Car',
         'score': _isMonthly ? '12 Trips' : '42 Deliveries',
-        'co2': 'Bulk Dispatch',
-        'badge': 'Heavy Courier',
+        'co2': 'Bulk Pickups',
+        'badge': 'Big Load Helper',
       },
     ];
 
     return _buildLeaderboardView(
       items: couriers,
-      podiumTitle: 'Hero Couriers',
-      scoreLabel: 'Deliveries Completed',
+      podiumTitle: 'Top Volunteers',
+      scoreLabel: 'Trips Completed',
     );
   }
 
@@ -223,33 +223,33 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
       {
         'rank': 1,
         'name': 'Hope Care Foundation Kitchen',
-        'type': 'Verified Shelter Kitchen',
+        'type': 'Verified NGO Kitchen',
         'score': _isMonthly ? '520 Portions' : '2,100 Portions',
-        'co2': '100% Safe Intake',
-        'badge': 'FSSAI Certified',
+        'co2': '100% Safe Food',
+        'badge': 'FSSAI Verified',
       },
       {
         'rank': 2,
         'name': 'Annam Child & Elder Relief Trust',
-        'type': 'Registered Charity Trust',
+        'type': 'Registered NGO Trust',
         'score': _isMonthly ? '410 Portions' : '1,680 Portions',
-        'co2': 'Cold Chain Verified',
-        'badge': 'Master Distributor',
+        'co2': 'Fresh Food Checked',
+        'badge': 'Top NGO',
       },
       {
         'rank': 3,
         'name': 'Akshaya Seva Community Kitchen',
-        'type': 'Community Food Pantry',
+        'type': 'Community Kitchen',
         'score': _isMonthly ? '290 Portions' : '1,120 Portions',
-        'co2': 'Rapid Turnaround',
-        'badge': 'Community Lifeline',
+        'co2': 'Fast Service',
+        'badge': 'Local Helper',
       },
     ];
 
     return _buildLeaderboardView(
       items: kitchens,
-      podiumTitle: 'Top Relief Kitchens',
-      scoreLabel: 'Servings Distributed',
+      podiumTitle: 'Top NGOs',
+      scoreLabel: 'Meals Served',
     );
   }
 
@@ -277,7 +277,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
 
           // REMAINING LEADERBOARD RANKS
           const Text(
-            'Complete Community Rankings',
+            'All Rankings',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w800,
@@ -431,7 +431,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Unlock Monthly Hero Recognition',
+                        'Monthly Hero Awards',
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w800,
@@ -439,7 +439,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
                         ),
                       ),
                       Text(
-                        'Top 3 donors and couriers receive official CSR and sustainability badges displayed on city relief directories.',
+                        'Top 3 donors and volunteers get special badges on the community board.',
                         style: TextStyle(
                           fontSize: 10.5,
                           color: AppTheme.charcoalMuted,
@@ -491,7 +491,7 @@ class _CommunityLeaderboardScreenState extends State<CommunityLeaderboardScreen>
               ),
               SizedBox(width: 6),
               Text(
-                'COMMUNITY HEROES PODIUM',
+                'TOP 3 HEROES',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w900,

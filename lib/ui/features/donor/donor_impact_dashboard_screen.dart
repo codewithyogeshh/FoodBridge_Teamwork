@@ -23,7 +23,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(title: const Text('Impact & Environmental Ledger')),
+          appBar: AppBar(title: const Text('Your Impact')),
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -54,7 +54,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
-                                'VERIFIED IMPACT LEDGER',
+                                'TOTAL MEALS SHARED',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
@@ -82,7 +82,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'Total Meals Rescued & Redistributed',
+                          'Meals Shared with People in Need',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -96,17 +96,17 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _buildHeroMetric(
-                              label: 'CO2e Offset',
+                              label: 'CO2 Saved',
                               value: '$co2 kg',
                               icon: Icons.cloud_done_rounded,
                             ),
                             _buildHeroMetric(
-                              label: 'Water Conserved',
+                              label: 'Water Saved',
                               value: '$water kL',
                               icon: Icons.water_drop_rounded,
                             ),
                             _buildHeroMetric(
-                              label: 'Active NGOs',
+                              label: 'Partner NGOs',
                               value: '${repository.verifiedNGOs.length}',
                               icon: Icons.handshake_rounded,
                             ),
@@ -119,7 +119,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
 
                   // Monthly Trend Visualizer
                   const Text(
-                    'Monthly Surplus Reduction Trajectory',
+                    'Monthly Meals Shared',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
@@ -136,7 +136,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'Meals Diverted from Landfills',
+                              'Meals Saved per Month',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
@@ -153,7 +153,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Text(
-                                '+32.4% vs last month',
+                                '+32% this month',
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
@@ -190,12 +190,12 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
-                  // Chronological History List
+                  // Past Donations List
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Donation History Log',
+                        'Past Donations',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
@@ -204,7 +204,7 @@ class DonorImpactDashboardScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${donations.length} records',
+                        '${donations.length} orders',
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,

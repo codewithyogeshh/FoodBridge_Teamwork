@@ -233,7 +233,7 @@ class _MapPreviewWidgetState extends State<MapPreviewWidget>
                     ),
                     SizedBox(width: 5),
                     Text(
-                      'Live GPS Ground Grid',
+                      'Live Map',
                       style: TextStyle(
                         color: AppTheme.richCharcoal,
                         fontSize: 10,

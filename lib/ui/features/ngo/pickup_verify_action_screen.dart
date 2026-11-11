@@ -57,9 +57,13 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
   void _verifyCode(String enteredOtp) async {
     setState(() => _isVerifying = true);
 
-    final ngoId = widget.repository.verifiedNGOs.isNotEmpty
-        ? widget.repository.verifiedNGOs.first.id
-        : widget.repository.ngos.first.id;
+    final ngoId =
+        widget.repository.lastRegisteredNgo?.id ??
+        (widget.repository.verifiedNGOs.isNotEmpty
+            ? widget.repository.verifiedNGOs.first.id
+            : (widget.repository.ngos.isNotEmpty
+                  ? widget.repository.ngos.first.id
+                  : 'ngo-1'));
 
     final result = await widget.repository.verifyPickup(
       donationId: widget.donation.id,
@@ -82,17 +86,17 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
               children: [
                 Icon(Icons.verified_rounded, color: AppTheme.emerald, size: 26),
                 SizedBox(width: 10),
-                Text('Pickup Authenticated!'),
+                Text('Pickup Verified!'),
               ],
             ),
             content: const Text(
-              'One-time hand-off verified. Custody transferred to your NGO team.\n\n'
-              'Proceed to deliver meals to community beneficiaries and log the distribution count.',
+              'Food pickup confirmed.\n\n'
+              'Please deliver the meals safely and mark complete after sharing.',
               style: TextStyle(fontSize: 13, height: 1.4),
             ),
             actions: [
               AppButton(
-                label: 'Proceed to Delivery Confirmation',
+                label: 'Confirm Delivery Next',
                 icon: Icons.check_circle_outline_rounded,
                 onPressed: () {
                   Navigator.pop(ctx);
@@ -113,7 +117,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(result['message'] ?? 'Invalid OTP code'),
+            content: Text(result['message'] ?? 'Wrong PIN. Try again.'),
             backgroundColor: AppTheme.statusCritical,
           ),
         );
@@ -125,7 +129,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Verify Hand-Off')),
+      appBar: AppBar(title: const Text('Verify Pickup')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -142,7 +146,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
               ),
               const SizedBox(height: 4),
               Text(
-                'Pickup from ${widget.donation.donorName} (${widget.donation.quantityLabel})',
+                'Pick up from ${widget.donation.donorName} (${widget.donation.quantityServings} plates)',
                 style: const TextStyle(
                   fontSize: 12.5,
                   fontWeight: FontWeight.w600,
@@ -170,7 +174,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         children: [
                           Icon(Icons.qr_code_scanner_rounded, size: 16),
                           SizedBox(width: 6),
-                          Text('Scan Donor QR'),
+                          Text('Scan QR'),
                         ],
                       ),
                     ),
@@ -192,7 +196,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         children: [
                           Icon(Icons.pin_rounded, size: 16),
                           SizedBox(width: 6),
-                          Text('Enter 4-Digit OTP'),
+                          Text('Enter PIN'),
                         ],
                       ),
                     ),
@@ -266,7 +270,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                 const SizedBox(height: 16),
                 const Center(
                   child: Text(
-                    'Point camera at donor phone screen to scan passcode',
+                    'Scan the QR code shown on the donor phone',
                     style: TextStyle(
                       fontSize: 12.5,
                       color: AppTheme.charcoalMuted,
@@ -275,20 +279,19 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                 ),
                 const SizedBox(height: 24),
                 AppButton(
-                  label:
-                      'Simulate Camera Scan (Code: ${widget.donation.pickupOtp})',
+                  label: 'Demo Scan (PIN: ${widget.donation.pickupOtp})',
                   icon: Icons.camera_alt_rounded,
                   isLoading: _isVerifying,
                   onPressed: () => _verifyCode(widget.donation.pickupOtp),
                 ),
               ] else ...[
-                // Manual OTP Form
+                // Manual PIN Form
                 AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Enter 4-Digit Hand-Off Code',
+                        'Enter 4-Digit Pickup PIN',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -297,7 +300,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                       ),
                       const SizedBox(height: 6),
                       const Text(
-                        'Ask the donor for their 4-digit pickup code displayed on their active listing.',
+                        'Ask the donor for their 4-digit pickup PIN.',
                         style: TextStyle(
                           fontSize: 12.5,
                           color: AppTheme.charcoalMuted,
@@ -342,7 +345,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                         child: TextButton.icon(
                           icon: const Icon(Icons.flash_on_rounded, size: 16),
                           label: Text(
-                            'Autofill Donor Code: ${widget.donation.pickupOtp}',
+                            'Auto-fill PIN: ${widget.donation.pickupOtp}',
                           ),
                           onPressed: () {
                             final code = widget.donation.pickupOtp;
@@ -354,7 +357,7 @@ class _PickupVerifyActionScreenState extends State<PickupVerifyActionScreen>
                       ),
                       const SizedBox(height: 16),
                       AppButton(
-                        label: 'Submit Code for Verification',
+                        label: 'Verify & Pick Up Food',
                         icon: Icons.check_circle_outline_rounded,
                         isLoading: _isVerifying,
                         onPressed: () {

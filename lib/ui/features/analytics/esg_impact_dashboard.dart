@@ -72,11 +72,11 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
       appBar: AppBar(
-        title: const Text('ESG Carbon & Sustainability Center'),
+        title: const Text('Impact & CO2 Report'),
         actions: [
           IconButton(
             icon: const Icon(Icons.workspace_premium_rounded),
-            tooltip: 'View Official Certificate',
+            tooltip: 'View Certificate',
             onPressed: () => _showCertificateDialog(
               context,
               co2eSavedKg,
@@ -87,7 +87,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.download_rounded),
-            tooltip: 'Export ESG Annual Report',
+            tooltip: 'Download Report',
             onPressed: () => _showExportDialog(
               context,
               co2eSavedKg,
@@ -104,12 +104,12 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TIME HORIZON FILTER BAR
+              // TIME FILTER BAR
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Environmental Audit Horizon',
+                    'Time Period',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
@@ -173,7 +173,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                               ),
                               SizedBox(width: 4),
                               Text(
-                                'GRI 306 & GHG PROTOCOL COMPLIANT',
+                                'VERIFIED ENVIRONMENTAL IMPACT',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
@@ -192,7 +192,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Total Carbon Emissions Abated',
+                      'CO2 Emissions Saved',
                       style: TextStyle(fontSize: 13, color: Colors.white70),
                     ),
                     const SizedBox(height: 4),
@@ -207,7 +207,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Equivalent to taking ${(co2eSavedKg / 400).toStringAsFixed(1)} gasoline cars off roads for 1 month, or planting ${(co2eSavedKg / 22).round()} urban trees.',
+                      'Equal to taking ${(co2eSavedKg / 400).toStringAsFixed(1)} cars off the road for 1 month, or planting ${(co2eSavedKg / 22).round()} trees.',
                       style: const TextStyle(
                         fontSize: 11,
                         color: Colors.white70,
@@ -221,14 +221,14 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'City Net-Zero Diversion Target',
+                          'City Goal (5,000 kg CO2)',
                           style: TextStyle(
                             fontSize: 10.5,
                             color: Colors.white70,
                           ),
                         ),
                         Text(
-                          '${(progress * 100).toInt()}% Achieved',
+                          '${(progress * 100).toInt()}% Done',
                           style: const TextStyle(
                             fontSize: 10.5,
                             fontWeight: FontWeight.w800,
@@ -256,7 +256,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
 
               // 4 KEY ESG PILLARS
               const Text(
-                'Environmental Sustainability Breakdown',
+                'Impact Details',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -274,7 +274,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                       title: 'Water Saved',
                       value:
                           '${(waterSavedLiters / 1000).toStringAsFixed(0)} kL',
-                      subtitle: 'Agricultural lifecycle',
+                      subtitle: 'Used to grow food',
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -282,9 +282,9 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     child: _buildMetricTile(
                       icon: Icons.delete_sweep_rounded,
                       iconColor: const Color(0xFFD97706),
-                      title: 'Landfill Diverted',
+                      title: 'Food Saved',
                       value: '${totalFoodKg.toStringAsFixed(0)} kg',
-                      subtitle: 'Zero edible waste',
+                      subtitle: 'Kept out of waste',
                     ),
                   ),
                 ],
@@ -296,9 +296,9 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     child: _buildMetricTile(
                       icon: Icons.air_rounded,
                       iconColor: const Color(0xFF10B981),
-                      title: 'Methane (CH₄)',
+                      title: 'Harmful Gas Stopped',
                       value: '${methanePreventedKg.toStringAsFixed(1)} kg',
-                      subtitle: 'Decomposition halted',
+                      subtitle: 'Methane (CH₄) blocked',
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -306,9 +306,9 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     child: _buildMetricTile(
                       icon: Icons.currency_rupee_rounded,
                       iconColor: AppTheme.forestGreen,
-                      title: 'Value Rescued',
+                      title: 'Food Value',
                       value: '₹${economicValueInr ~/ 1000}k',
-                      subtitle: '$totalServings Meals Saved',
+                      subtitle: '$totalServings Meals Shared',
                     ),
                   ),
                 ],
@@ -346,7 +346,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Verified Impact Certificate',
+                            'Impact Certificate',
                             style: TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.w800,
@@ -355,7 +355,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                           ),
                           const SizedBox(height: 2),
                           const Text(
-                            'Tamper-proof digital certificate with cryptographic audit seal for CSR filings.',
+                            'Verified digital certificate for your food sharing impact.',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalMuted,
@@ -372,7 +372,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                               totalServings,
                             ),
                             child: const Text(
-                              'View Certificate & QR Hash →',
+                              'View Certificate →',
                               style: TextStyle(
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.w800,
@@ -414,7 +414,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Section 135 CSR Compliance (Companies Act)',
+                                'Company CSR Support',
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w800,
@@ -422,7 +422,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                                 ),
                               ),
                               Text(
-                                'Auditable corporate social responsibility expenditure',
+                                'Ready for yearly company sustainability reports',
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: AppTheme.charcoalMuted,
@@ -435,7 +435,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'All food rescue activities on FoodBridge 2.0 generate tamper-proof digital logs verifiable by independent CSR auditors. Schedule VII Item (i) Eradicating Hunger, Poverty and Malnutrition compliance certified.',
+                      'All food shared through FoodBridge creates verified records for CSR reporting and food-safety tracking.',
                       style: TextStyle(
                         fontSize: 11,
                         color: AppTheme.charcoalMuted,
@@ -444,7 +444,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     ),
                     const SizedBox(height: 14),
                     AppButton(
-                      label: 'Export Statutory CSR & ESG Report',
+                      label: 'Download Impact Report',
                       icon: Icons.picture_as_pdf_rounded,
                       onPressed: () => _showExportDialog(
                         context,
@@ -566,7 +566,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'FoodBridge 2.0 Network',
+                'FoodBridge 2.0',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
@@ -576,7 +576,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
               ),
               const SizedBox(height: 4),
               const Text(
-                'VERIFIED ESG FOOD DIVERSION CERTIFICATE',
+                'VERIFIED FOOD IMPACT CERTIFICATE',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w900,
@@ -587,7 +587,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
               ),
               const SizedBox(height: 8),
               AppBadge(
-                label: 'FSSAI & GHG PROTOCOL AUDITED',
+                label: 'VERIFIED BY FOODBRIDGE',
                 variant: AppBadgeVariant.success,
               ),
               const SizedBox(height: 14),
@@ -604,7 +604,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                 child: Column(
                   children: [
                     const Text(
-                      'Presented to Authorized Contributor',
+                      'Awarded To',
                       style: TextStyle(
                         fontSize: 10,
                         color: AppTheme.charcoalMuted,
@@ -623,24 +623,14 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                     ),
                     const Divider(height: 16),
                     _certRow('Certificate ID', certId),
-                    _certRow('Total Meals Rescued', '$servings Portions'),
+                    _certRow('Meals Shared', '$servings Portions'),
+                    _certRow('CO2 Saved', '${co2e.toStringAsFixed(1)} kg'),
                     _certRow(
-                      'Carbon Abated (CO₂e)',
-                      '${co2e.toStringAsFixed(1)} kg',
-                    ),
-                    _certRow(
-                      'Water Conserved',
+                      'Water Saved',
                       '${(water / 1000).toStringAsFixed(0)} kL',
                     ),
-                    _certRow(
-                      'Municipal Landfill Saved',
-                      '${foodKg.toStringAsFixed(0)} kg',
-                    ),
-                    _certRow(
-                      'Audit Verification Hash',
-                      certHash,
-                      isMonospace: true,
-                    ),
+                    _certRow('Food Saved', '${foodKg.toStringAsFixed(0)} kg'),
+                    _certRow('Digital Check ID', certHash, isMonospace: true),
                   ],
                 ),
               ),
@@ -662,13 +652,13 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
                         foregroundColor: Colors.white,
                       ),
                       icon: const Icon(Icons.share_rounded, size: 16),
-                      label: const Text('Share Card'),
+                      label: const Text('Share'),
                       onPressed: () {
                         Navigator.pop(ctx);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'Certificate $certId verified & ready for social share!',
+                              'Certificate $certId ready to share!',
                             ),
                             backgroundColor: AppTheme.forestGreen,
                           ),
@@ -735,7 +725,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
           children: [
             Icon(Icons.workspace_premium_rounded, color: AppTheme.forestGreen),
             SizedBox(width: 8),
-            Text('Export ESG Statutory Report', style: TextStyle(fontSize: 16)),
+            Text('Download Impact Report', style: TextStyle(fontSize: 16)),
           ],
         ),
         content: Column(
@@ -743,7 +733,7 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Your annual ESG impact summary has been formatted according to the GHG Protocol Corporate Standard & GRI 306 (Waste).',
+              'Your yearly food-sharing impact summary is ready to download.',
               style: TextStyle(fontSize: 12, color: AppTheme.charcoalMuted),
             ),
             const SizedBox(height: 12),
@@ -757,21 +747,17 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
               child: Column(
                 children: [
                   _row(
-                    'Audited Entity',
+                    'Organization',
                     widget.repository.currentUser.organizationName ??
                         widget.repository.currentUser.fullName,
                   ),
-                  _row('Total CO2e Abated', '${co2e.toStringAsFixed(1)} kg'),
+                  _row('CO2 Saved', '${co2e.toStringAsFixed(1)} kg'),
                   _row(
-                    'Freshwater Saved',
+                    'Water Saved',
                     '${(water / 1000).toStringAsFixed(0)} kL',
                   ),
-                  _row(
-                    'Direct Landfill Diversion',
-                    '${foodKg.toStringAsFixed(0)} kg',
-                  ),
-                  _row('Economic Value Saved', '₹$economicValue'),
-                  _row('GRI Standard Index', 'GRI 306-4 Waste Diverted'),
+                  _row('Food Saved', '${foodKg.toStringAsFixed(0)} kg'),
+                  _row('Food Value', '₹$economicValue'),
                 ],
               ),
             ),
@@ -788,14 +774,12 @@ class _ESGImpactDashboardScreenState extends State<ESGImpactDashboardScreen> {
               foregroundColor: Colors.white,
             ),
             icon: const Icon(Icons.download_rounded, size: 16),
-            label: const Text('Download CSV & PDF'),
+            label: const Text('Download PDF & CSV'),
             onPressed: () {
               Navigator.pop(ctx);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text(
-                    'ESG_Audit_Report_2026.pdf & .csv downloaded! Ready for corporate CSR filing.',
-                  ),
+                  content: Text('Impact Report downloaded!'),
                   backgroundColor: AppTheme.forestGreen,
                 ),
               );

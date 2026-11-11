@@ -35,7 +35,7 @@ class NotificationBellButton extends StatelessWidget {
                 color: iconColor ?? AppTheme.richCharcoal,
                 size: 22,
               ),
-              tooltip: 'Live Alerts & Dispatch ($unreadCount unread)',
+              tooltip: 'Alerts ($unreadCount unread)',
               onPressed: () {
                 NotificationCenterSheet.show(
                   context,

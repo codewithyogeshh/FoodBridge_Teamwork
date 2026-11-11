@@ -41,7 +41,7 @@ class NGOSignInTab extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           const Text(
-            'Sign In to Your NGO Account',
+            'NGO Sign In',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -51,7 +51,7 @@ class NGOSignInTab extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            'If your organization has already registered, enter your official phone number or 80G registration ID below. You do not need to register again.',
+            'Already registered? Enter your phone number or NGO registration ID.',
             style: TextStyle(
               fontSize: 13.5,
               color: AppTheme.charcoalMuted,
@@ -65,39 +65,10 @@ class NGOSignInTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppTextField(
-                  label: 'Official Phone Number or 80G Registration ID',
+                  label: 'Phone Number or Registration ID',
                   hint: 'e.g. +91 9XXXXXXXXX or NGO-KA-2024-XXXX',
                   controller: controller,
                   prefixIcon: Icons.badge_rounded,
-                ),
-                const SizedBox(height: 14),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.warmIvoryDark,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.borderColor),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.shield_outlined,
-                        size: 20,
-                        color: AppTheme.forestGreen,
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Your credentials are kept strictly private. Enter your registered mobile number or registration ID to access your account.',
-                          style: TextStyle(
-                            fontSize: 11.5,
-                            color: AppTheme.charcoalMuted,
-                            height: 1.35,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
                 if (errorText != null) ...[
                   const SizedBox(height: 14),
@@ -132,7 +103,7 @@ class NGOSignInTab extends StatelessWidget {
                 ],
                 const SizedBox(height: 20),
                 AppButton(
-                  label: 'Sign In & Verify Access',
+                  label: 'Sign In',
                   icon: Icons.arrow_forward_rounded,
                   isLoading: isCheckingAccount,
                   onPressed: onSignIn,
@@ -144,9 +115,7 @@ class NGOSignInTab extends StatelessWidget {
           Center(
             child: TextButton.icon(
               icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
-              label: const Text(
-                'New to FoodBridge? Register Organization here',
-              ),
+              label: const Text('New NGO? Register here'),
               onPressed: onSwitchToRegister,
             ),
           ),

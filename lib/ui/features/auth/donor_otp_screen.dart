@@ -285,7 +285,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
               ),
               const SizedBox(height: 6),
               const Text(
-                'Enter your mobile number to receive a real-time verification passcode. Once verified, you will enter FoodBridge.',
+                'Enter your phone number to get a 6-digit login code.',
                 style: TextStyle(
                   fontSize: 14,
                   color: AppTheme.charcoalMuted,
@@ -295,7 +295,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
               const SizedBox(height: 24),
               if (!_otpSent) ...[
                 AppTextField(
-                  label: 'Mobile Number',
+                  label: 'Phone Number',
                   hint: 'e.g. +91 98860 12345',
                   controller: _phoneController,
                   prefixIcon: Icons.phone_rounded,
@@ -319,7 +319,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'A 6-digit real-time verification code will be sent to your phone. Your information is kept strictly private.',
+                          'We will send a 6-digit code to your phone. Your number stays private.',
                           style: TextStyle(
                             fontSize: 11.5,
                             color: AppTheme.charcoalMuted,
@@ -332,7 +332,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                 ),
                 const SizedBox(height: 20),
                 AppButton(
-                  label: 'Send One-Time Passcode',
+                  label: 'Send Code',
                   icon: Icons.send_rounded,
                   onPressed: _sendRealtimeOtp,
                 ),
@@ -341,7 +341,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'Enter 6-Digit Verification Code',
+                      'Enter 6-Digit Code',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -441,7 +441,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
 
                 const SizedBox(height: 24),
                 AppButton(
-                  label: 'Verify & Enter Dashboard',
+                  label: 'Verify & Continue',
                   isLoading: _isSubmitting,
                   icon: Icons.login_rounded,
                   onPressed: _verifyOtp,
@@ -458,7 +458,7 @@ class _DonorOtpScreenState extends State<DonorOtpScreen> {
                         )
                       : TextButton.icon(
                           icon: const Icon(Icons.refresh_rounded, size: 16),
-                          label: const Text('Resend Code via SMS'),
+                          label: const Text('Resend Code'),
                           onPressed: _sendRealtimeOtp,
                         ),
                 ),

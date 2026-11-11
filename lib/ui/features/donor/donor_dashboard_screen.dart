@@ -10,8 +10,6 @@ import 'create_donation_screen.dart';
 import 'active_donation_status_screen.dart';
 import 'donor_impact_dashboard_screen.dart';
 import '../../core/widgets/notification_bell_button.dart';
-import '../analytics/esg_impact_dashboard.dart';
-import '../community/community_leaderboard_screen.dart';
 import 'sos_emergency_rescue_dialog.dart';
 import 'predictive_waste_forecast_card.dart';
 
@@ -35,12 +33,10 @@ class DonorDashboardScreen extends StatelessWidget {
           children: [
             Icon(Icons.logout_rounded, color: AppTheme.statusCritical),
             SizedBox(width: 10),
-            Text('Log Out of Donor Session?'),
+            Text('Log Out?'),
           ],
         ),
-        content: const Text(
-          'Are you sure you want to end your current session and return to the login screen?',
-        ),
+        content: const Text('Do you want to log out of this account?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -71,19 +67,20 @@ class DonorDashboardScreen extends StatelessWidget {
         final activeListings = donations
             .where(
               (d) =>
-                  d.status == DonationStatus.available ||
-                  d.status == DonationStatus.reserved,
+                  d.isSafeToConsume &&
+                  (d.status == DonationStatus.available ||
+                      d.status == DonationStatus.reserved),
             )
             .toList();
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
           appBar: AppBar(
-            title: const Text('Donor Portal'),
+            title: const Text('Food Donor'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.analytics_outlined),
-                tooltip: 'Impact Ledger',
+                tooltip: 'Impact Report',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -97,7 +94,7 @@ class DonorDashboardScreen extends StatelessWidget {
               NotificationBellButton(repository: repository),
               IconButton(
                 icon: const Icon(Icons.refresh_rounded),
-                tooltip: 'Sync Supabase Data',
+                tooltip: 'Refresh',
                 onPressed: () => repository.refreshAllData(),
               ),
               IconButton(
@@ -157,7 +154,8 @@ class DonorDashboardScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Partner Entity • ${repository.currentUser.organizationName ?? 'Catering & Events'}',
+                                  repository.currentUser.organizationName ??
+                                      'Hotel & Catering',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: AppTheme.charcoalMuted,
@@ -177,23 +175,22 @@ class DonorDashboardScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
-                              'VERIFIED DONOR',
+                              'Verified',
                               style: TextStyle(
-                                fontSize: 9.5,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
-                                letterSpacing: 0.5,
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
 
                     // Quick Post Button
                     AppButton(
-                      label: 'Post Surplus Food Batch',
+                      label: 'Post Extra Food',
                       icon: Icons.add_circle_outline_rounded,
                       onPressed: () {
                         Navigator.push(
@@ -205,7 +202,7 @@ class DonorDashboardScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      'Food batch published! Now visible to nearby NGOs.',
+                                      'Food posted! Nearby NGOs can see it now.',
                                     ),
                                     backgroundColor: AppTheme.forestGreen,
                                   ),
@@ -216,14 +213,14 @@ class DonorDashboardScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
                     // Metrics Strip
                     Row(
                       children: [
                         Expanded(
                           child: _buildMetricTile(
-                            label: 'Active Listings',
+                            label: 'Active Orders',
                             value: '${activeListings.length}',
                             icon: Icons.campaign_rounded,
                           ),
@@ -239,7 +236,7 @@ class DonorDashboardScreen extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _buildMetricTile(
-                            label: 'CO2e Saved',
+                            label: 'CO₂ Saved',
                             value:
                                 '${(repository.totalCo2OffsetKg / 1000).toStringAsFixed(1)}t',
                             icon: Icons.eco_rounded,
@@ -248,143 +245,8 @@ class DonorDashboardScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    // Quick Action Hub for ESG & Leaderboard
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ESGImpactDashboardScreen(
-                                        repository: repository,
-                                      ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppTheme.emeraldLight,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: AppTheme.forestGreen.withValues(
-                                    alpha: 0.2,
-                                  ),
-                                ),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.workspace_premium_rounded,
-                                    color: AppTheme.forestGreen,
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'ESG Certificate',
-                                          style: TextStyle(
-                                            fontSize: 11.5,
-                                            fontWeight: FontWeight.w800,
-                                            color: AppTheme.richCharcoal,
-                                          ),
-                                        ),
-                                        Text(
-                                          'CSR Audit Ready',
-                                          style: TextStyle(
-                                            fontSize: 9.5,
-                                            color: AppTheme.forestGreen,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      CommunityLeaderboardScreen(
-                                        repository: repository,
-                                      ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFEF3C7),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(
-                                    0xFFD97706,
-                                  ).withValues(alpha: 0.2),
-                                ),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.emoji_events_rounded,
-                                    color: Color(0xFFD97706),
-                                    size: 20,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Leaderboard',
-                                          style: TextStyle(
-                                            fontSize: 11.5,
-                                            fontWeight: FontWeight.w800,
-                                            color: AppTheme.richCharcoal,
-                                          ),
-                                        ),
-                                        Text(
-                                          'City Heroes #1',
-                                          style: TextStyle(
-                                            fontSize: 9.5,
-                                            color: Color(0xFFD97706),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
 
-                    // LATE-NIGHT EMERGENCY SOS RESCUE BUTTON
+                    // BULK SOS RESCUE BUTTON
                     InkWell(
                       borderRadius: BorderRadius.circular(14),
                       onTap: () {
@@ -423,18 +285,18 @@ class DonorDashboardScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '🚨 Late-Night Bulk SOS Rescue (100–500+ Meals)',
+                                    'Bulk Food Alert (100–500+ Plates)',
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.5,
                                       fontWeight: FontWeight.w800,
                                       color: Color(0xFF991B1B),
                                     ),
                                   ),
                                   SizedBox(height: 2),
                                   Text(
-                                    'Wedding banquet or corporate event surplus? Wake 14 nearby 24x7 relief shelters.',
+                                    'Wedding or event food left? Alert nearby 24/7 shelters.',
                                     style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 10.5,
                                       color: Color(0xFFB91C1C),
                                     ),
                                   ),
@@ -462,7 +324,7 @@ class DonorDashboardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Your Active Donations',
+                          'Active Orders',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -485,9 +347,8 @@ class DonorDashboardScreen extends StatelessWidget {
                     if (activeListings.isEmpty)
                       const EmptyStateWidget(
                         icon: Icons.inventory_2_outlined,
-                        title: 'No Active Surplus Batches',
-                        message:
-                            'You do not have any pending or reserved food batches listed right now. Tap "Post Surplus Food Batch" to list new meals.',
+                        title: 'No Active Orders',
+                        message: 'Tap "Post Extra Food" above to add new food.',
                       )
                     else
                       ListView.separated(
@@ -573,7 +434,7 @@ class DonorDashboardScreen extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            '${item.foodType} • ${item.quantityLabel} (${item.quantityServings} portions)',
+                                            '${item.foodType} • ${item.quantityLabel}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                               color: AppTheme.charcoalMuted,
@@ -613,7 +474,7 @@ class DonorDashboardScreen extends StatelessWidget {
                                       ),
                                       const Spacer(),
                                       const Text(
-                                        'Pickup OTP: ',
+                                        'Pickup PIN: ',
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: AppTheme.charcoalMuted,

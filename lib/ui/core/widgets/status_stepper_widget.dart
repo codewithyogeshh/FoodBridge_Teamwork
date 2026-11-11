@@ -42,7 +42,9 @@ class StatusStepperWidget extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'This donation is currently ${currentStatus.dbValue}',
+              currentStatus == DonationStatus.expired
+                  ? 'This food order has expired'
+                  : 'This food order was cancelled',
               style: const TextStyle(
                 color: AppTheme.statusCritical,
                 fontWeight: FontWeight.w700,
@@ -56,7 +58,7 @@ class StatusStepperWidget extends StatelessWidget {
 
     final steps = [
       {'title': 'Available', 'icon': Icons.inventory_2_outlined},
-      {'title': 'Reserved', 'icon': Icons.lock_clock_outlined},
+      {'title': 'Booked', 'icon': Icons.lock_clock_outlined},
       {'title': 'Picked Up', 'icon': Icons.local_shipping_outlined},
       {'title': 'Delivered', 'icon': Icons.check_circle_outline_rounded},
     ];

@@ -56,7 +56,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'WhatsApp & SMS Dispatch Bot',
+                              'WhatsApp & SMS Alerts',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800,
@@ -64,7 +64,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Real-time webhook dispatches to 3 nearest shelter drivers',
+                              'Instant pickup alerts to nearby helpers & NGOs',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: AppTheme.charcoalMuted,
@@ -100,7 +100,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Cooked food expires in < 3 hrs. Field staff receive instant WhatsApp deep-links with 1-tap atomic claim locks.',
+                            'Fresh food needs quick pickup. Nearby helpers & NGOs get a WhatsApp message with a 1-tap booking link.',
                             style: TextStyle(
                               fontSize: 11,
                               color: Color(0xFF166534),
@@ -113,7 +113,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Recent Broadcast Dispatches',
+                    'Recent Alerts',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -234,7 +234,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                                               size: 14,
                                             ),
                                             label: const Text(
-                                              'Simulate 1-Tap Claim',
+                                              'Book Now (Demo)',
                                               style: TextStyle(fontSize: 11),
                                             ),
                                             style: TextButton.styleFrom(
@@ -249,7 +249,7 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                                               ).showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                    'Pickup locked by ${item.recipientNgo}! Atomic lock active.',
+                                                    'Booked by ${item.recipientNgo}!',
                                                   ),
                                                   backgroundColor:
                                                       AppTheme.forestGreen,
@@ -267,21 +267,21 @@ class WhatsAppDispatchDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   AppButton(
-                    label: 'Trigger Test Alert (Nearest Kitchens)',
+                    label: 'Send Test Alert',
                     icon: Icons.send_rounded,
                     onPressed: () {
                       dispatch.triggerSurplusAlert(
                         donationTitle: '75 Packaged Rice & Dal Meals',
-                        donorName: 'The Leela Palace Kitchens',
-                        location: 'Old Airport Road, Ward 12',
+                        donorName: 'Grand Orchid Kitchen',
+                        location: 'MG Road, Ward 12',
                         safeUntilText: 'In 2 hrs 45 mins',
                         servings: 75,
-                        ngoName: 'Annam Kitchen & Shelter Trust',
+                        ngoName: 'Annam Kitchen Trust',
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'WhatsApp Webhook dispatched to 3 closest verified NGOs!',
+                            'Test WhatsApp alert sent to 3 nearby NGOs!',
                           ),
                           backgroundColor: Color(0xFF128C7E),
                         ),

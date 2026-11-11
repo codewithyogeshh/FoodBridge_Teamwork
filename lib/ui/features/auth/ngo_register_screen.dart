@@ -240,11 +240,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
 
   void _openDocumentPickerModal({required bool isGovtId}) {
     final title = isGovtId
-        ? 'Upload Real $_govtIdType Document'
-        : 'Upload Real Food Safety / FSSAI License';
+        ? 'Upload $_govtIdType'
+        : 'Upload Food License (FSSAI)';
     final subtitle = isGovtId
-        ? 'Upload your official Aadhaar / PAN card photo or scan'
-        : 'Upload your official FSSAI / Food Safety certificate';
+        ? 'Add a clear photo of your Aadhaar or PAN card'
+        : 'Add a clear photo of your food safety license';
 
     showModalBottomSheet(
       context: context,
@@ -348,7 +348,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Choose Document from Device Files',
+                              'Choose Photo from Gallery',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -357,7 +357,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                             ),
                             SizedBox(height: 2),
                             Text(
-                              'Select real document scan, PDF, or image file',
+                              'Pick an existing photo or scan',
                               style: TextStyle(
                                 fontSize: 11.5,
                                 color: AppTheme.charcoalMuted,
@@ -413,7 +413,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Take Photo of Document with Camera',
+                              'Take Photo with Camera',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -422,7 +422,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                             ),
                             SizedBox(height: 2),
                             Text(
-                              'Snap a clear physical photo of the card or certificate',
+                              'Click a clear photo of the card or license',
                               style: TextStyle(
                                 fontSize: 11.5,
                                 color: AppTheme.charcoalMuted,
@@ -457,7 +457,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Your identity documents are securely encrypted in the dedicated Supabase vault and only reviewed for official NGO verification.',
+                        'Documents are kept private and used only to verify your NGO.',
                         style: TextStyle(
                           fontSize: 11,
                           color: AppTheme.forestGreen,
@@ -505,13 +505,13 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             ],
           ),
           content: Text(
-            'An organization account is already registered with this phone number or registration ID (${existingNgo.organizationName}).\n\nYou do not need to register again! Would you like to sign in directly to check your verification status or access the portal?',
+            '${existingNgo.organizationName} is already registered with this phone or ID.\n\nNo need to register again. Sign in to continue.',
             style: const TextStyle(fontSize: 13.5, height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text('Review Form'),
+              child: const Text('Back'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -529,7 +529,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   widget.onRegistered(existingNgo);
                 }
               },
-              child: const Text('Sign In Directly'),
+              child: const Text('Sign In'),
             ),
           ],
         ),
@@ -540,9 +540,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
     if (!_govtDocAttached) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Compulsory requirement: Please upload your Government Identity document.',
-          ),
+          content: Text('Please upload your Government ID photo.'),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -552,9 +550,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
     if (!_fssaiDocAttached) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Compulsory requirement: Please upload your Food Safety / FSSAI license document.',
-          ),
+          content: Text('Please upload your Food License (FSSAI) photo.'),
           backgroundColor: AppTheme.statusCritical,
         ),
       );
@@ -615,11 +611,11 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
       appBar: AppBar(
-        title: const Text('NGO Portal Access & Verification'),
+        title: const Text('NGO Sign In / Register'),
         leading: widget.onBackToRoles != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_rounded),
-                tooltip: 'Back to Role Selection',
+                tooltip: 'Back to Roles',
                 onPressed: widget.onBackToRoles,
               )
             : null,
@@ -634,13 +630,10 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             fontSize: 13,
           ),
           tabs: const [
-            Tab(
-              icon: Icon(Icons.login_rounded, size: 20),
-              text: 'Sign In (Existing NGO)',
-            ),
+            Tab(icon: Icon(Icons.login_rounded, size: 20), text: 'Sign In'),
             Tab(
               icon: Icon(Icons.app_registration_rounded, size: 20),
-              text: 'Register New NGO',
+              text: 'Register NGO',
             ),
           ],
         ),
@@ -705,7 +698,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Register Your Food Rescue Organization',
+              'Register Your NGO',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
@@ -715,7 +708,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             ),
             const SizedBox(height: 6),
             const Text(
-              'Please complete all fields below and attach your verified government identity and food safety credentials for administrator review.',
+              'Fill in your NGO details and upload your ID and food safety license for Admin check.',
               style: TextStyle(
                 fontSize: 13,
                 color: AppTheme.charcoalMuted,
@@ -775,7 +768,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '1. Organization Details',
+                    '1. NGO Details',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -784,29 +777,29 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    label: 'Organization / Foundation Name',
-                    hint: 'e.g. Community Food Relief Trust',
+                    label: 'NGO / Trust Name',
+                    hint: 'e.g. Seva Food Trust',
                     controller: _orgNameController,
                     prefixIcon: Icons.business_rounded,
                     validator: (v) =>
-                        v == null || v.trim().isEmpty ? 'Required field' : null,
+                        v == null || v.trim().isEmpty ? 'Required' : null,
                   ),
                   const SizedBox(height: 14),
                   AppTextField(
-                    label: 'Government Registration Number (80G / 12A)',
+                    label: 'NGO Registration Number',
                     hint: 'e.g. NGO-2024-XXXX',
                     controller: _regNumController,
                     prefixIcon: Icons.verified_user_rounded,
                     validator: (v) =>
-                        v == null || v.trim().isEmpty ? 'Required field' : null,
+                        v == null || v.trim().isEmpty ? 'Required' : null,
                   ),
                   const SizedBox(height: 14),
                   Row(
                     children: [
                       Expanded(
                         child: AppTextField(
-                          label: 'Authorized Contact Person',
-                          hint: 'Lead coordinator full name',
+                          label: 'Contact Name',
+                          hint: 'Full name',
                           controller: _contactPersonController,
                           prefixIcon: Icons.person_rounded,
                           validator: (v) =>
@@ -816,7 +809,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       const SizedBox(width: 12),
                       Expanded(
                         child: AppTextField(
-                          label: 'Official Phone',
+                          label: 'Phone Number',
                           hint: '+91 9XXXXXXXXX',
                           controller: _phoneController,
                           prefixIcon: Icons.phone_rounded,
@@ -829,19 +822,19 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   const SizedBox(height: 14),
                   AppTextField(
-                    label: 'Kitchen Facility Address & City',
-                    hint: 'Full physical delivery / pickup location',
+                    label: 'NGO Address & City',
+                    hint: 'Full kitchen / center address',
                     controller: _addressController,
                     prefixIcon: Icons.location_on_rounded,
                     validator: (v) =>
-                        v == null || v.trim().isEmpty ? 'Required field' : null,
+                        v == null || v.trim().isEmpty ? 'Required' : null,
                   ),
                   const SizedBox(height: 14),
                   Row(
                     children: [
                       Expanded(
                         child: AppTextField(
-                          label: 'Daily Meal Capacity',
+                          label: 'Daily Meals Needed',
                           hint: 'e.g. 250',
                           controller: _capacityController,
                           prefixIcon: Icons.soup_kitchen_rounded,
@@ -851,7 +844,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       const SizedBox(width: 12),
                       Expanded(
                         child: AppTextField(
-                          label: 'FSSAI License / Safety Cert ID',
+                          label: 'Food License ID (FSSAI)',
                           hint: 'e.g. FSSAI-2024-XXXX',
                           controller: _certIdController,
                           prefixIcon: Icons.health_and_safety_rounded,
@@ -866,7 +859,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   const Divider(),
                   const SizedBox(height: 14),
 
-                  // LOGISTICS & VOLUNTEER FLEET SETUP
+                  // DELIVERY HELPERS SETUP
                   Row(
                     children: [
                       const Icon(
@@ -877,7 +870,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       const SizedBox(width: 8),
                       const Expanded(
                         child: Text(
-                          '2. Food Pickup & Volunteer Logistics (डिलिव्हरी सोय)',
+                          '2. Food Delivery Helpers',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -889,7 +882,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   const SizedBox(height: 6),
                   const Text(
-                    'Does your NGO have its own volunteers/vehicles for food pickups from donors?\n(तुमच्या संस्थेकडे स्वतःचे स्वयंसेवक / वाहन आहे का?)',
+                    'Do you have your own helpers to pick up food from donors?',
                     style: TextStyle(
                       fontSize: 12.5,
                       fontWeight: FontWeight.w600,
@@ -957,12 +950,14 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                               children: [
                                 Row(
                                   children: [
-                                    const Text(
-                                      'YES — We have our own volunteer fleet',
-                                      style: TextStyle(
-                                        fontSize: 13.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppTheme.richCharcoal,
+                                    const Flexible(
+                                      child: Text(
+                                        'YES — We use our own delivery helpers',
+                                        style: TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppTheme.richCharcoal,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(width: 6),
@@ -988,7 +983,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                                 ),
                                 const SizedBox(height: 3),
                                 const Text(
-                                  'आमचे स्वतःचे स्वयंसेवक आहेत. Our volunteers will pick up donations directly from donors. No delivery fee charged.',
+                                  'Your own helpers will pick up food directly. No delivery fee.',
                                   style: TextStyle(
                                     fontSize: 11.5,
                                     color: AppTheme.charcoalMuted,
@@ -1062,12 +1057,14 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                               children: [
                                 Row(
                                   children: [
-                                    const Text(
-                                      'NO — Provide FoodBridge Volunteers',
-                                      style: TextStyle(
-                                        fontSize: 13.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppTheme.richCharcoal,
+                                    const Flexible(
+                                      child: Text(
+                                        'NO — Need FoodBridge volunteers',
+                                        style: TextStyle(
+                                          fontSize: 13.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppTheme.richCharcoal,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(width: 6),
@@ -1093,7 +1090,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                                 ),
                                 const SizedBox(height: 3),
                                 const Text(
-                                  'आमच्याकडे स्वयंसेवक नाहीत. FoodBridge community couriers will deliver food from donor to your shelter. A nominal delivery fee of ₹20 – ₹30 (based on distance) applies to support riders.',
+                                  'Our local volunteers will bring the food to you (₹20–₹30 rider fee per trip).',
                                   style: TextStyle(
                                     fontSize: 11.5,
                                     color: AppTheme.charcoalMuted,
@@ -1111,7 +1108,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   const Divider(),
                   const SizedBox(height: 14),
 
-                  // COMPULSORY GOVERNMENT IDENTITY SECTION
+                  // GOVERNMENT ID SECTION
                   Row(
                     children: [
                       const Icon(
@@ -1121,7 +1118,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       ),
                       const SizedBox(width: 8),
                       const Text(
-                        '3. Compulsory Government Identity',
+                        '3. Government ID',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -1139,7 +1136,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
-                          'MANDATORY',
+                          'REQUIRED',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
@@ -1151,7 +1148,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Upload government-issued identity proof of authorized trustee or organization.',
+                    'Upload Aadhaar or PAN card of your NGO head or trustee.',
                     style: TextStyle(
                       fontSize: 12,
                       color: AppTheme.charcoalMuted,
@@ -1161,7 +1158,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   Row(
                     children: [
                       ChoiceChip(
-                        label: const Text('Aadhaar Card (UIDAI)'),
+                        label: const Text('Aadhaar Card'),
                         selected: _govtIdType == 'Aadhaar Card',
                         selectedColor: AppTheme.emeraldLight,
                         onSelected: (selected) {
@@ -1172,7 +1169,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       ),
                       const SizedBox(width: 10),
                       ChoiceChip(
-                        label: const Text('PAN Card (Income Tax)'),
+                        label: const Text('PAN Card'),
                         selected: _govtIdType == 'PAN Card',
                         selectedColor: AppTheme.emeraldLight,
                         onSelected: (selected) {
@@ -1185,7 +1182,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    label: '$_govtIdType Number (Mandatory)',
+                    label: '$_govtIdType Number',
                     hint: _govtIdType == 'Aadhaar Card'
                         ? 'Enter 12-digit Aadhaar number'
                         : 'Enter 10-character PAN number',
@@ -1193,7 +1190,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                     prefixIcon: Icons.credit_card_rounded,
                     validator: (v) {
                       if (v == null || v.trim().isEmpty) {
-                        return 'Compulsory government ID number required';
+                        return 'ID number is required';
                       }
                       return null;
                     },
@@ -1207,7 +1204,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                   const Divider(),
                   const SizedBox(height: 14),
 
-                  // FOOD SAFETY COMPLIANCE SECTION
+                  // FOOD SAFETY LICENSE SECTION
                   Row(
                     children: [
                       const Icon(
@@ -1217,7 +1214,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
                       ),
                       const SizedBox(width: 8),
                       const Text(
-                        '4. Food Safety / FSSAI License Document',
+                        '4. Food License (FSSAI)',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -1235,7 +1232,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             ),
             const SizedBox(height: 24),
             AppButton(
-              label: 'Submit for Compliance Verification',
+              label: 'Submit for Check',
               isLoading: _isSubmitting,
               icon: Icons.assignment_turned_in_rounded,
               onPressed: _submit,
@@ -1244,9 +1241,7 @@ class _NGORegisterScreenState extends State<NGORegisterScreen>
             Center(
               child: TextButton.icon(
                 icon: const Icon(Icons.login_rounded, size: 18),
-                label: const Text(
-                  'Already registered? Sign In to your account',
-                ),
+                label: const Text('Already registered? Sign In'),
                 onPressed: () {
                   _tabController.animateTo(0);
                 },

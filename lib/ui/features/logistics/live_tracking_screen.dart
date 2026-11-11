@@ -60,7 +60,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFBF9F5),
       appBar: AppBar(
-        title: const Text('Live Courier GPS Tracking'),
+        title: const Text('Live Delivery Map'),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -79,7 +79,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                 ),
                 SizedBox(width: 4),
                 Text(
-                  'GPS LOCK ACTIVE',
+                  'LIVE GPS',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
@@ -173,9 +173,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            _progress >= 0.95
-                                ? 'ARRIVED AT SHELTER'
-                                : 'EN ROUTE TO PICKUP',
+                            _progress >= 0.95 ? 'ARRIVED AT NGO' : 'ON THE WAY',
                             style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w800,
@@ -207,7 +205,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const Text(
-                                    'ESTIMATED ARRIVAL',
+                                    'ARRIVING IN',
                                     style: TextStyle(
                                       fontSize: 9,
                                       color: Colors.white70,
@@ -217,7 +215,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                                   Text(
                                     _etaMinutes > 0
                                         ? '$_etaMinutes Mins'
-                                        : 'Arrived Just Now',
+                                        : 'Arrived Now',
                                     style: const TextStyle(
                                       fontSize: 18,
                                       color: Colors.white,
@@ -294,7 +292,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                           Row(
                             children: [
                               Text(
-                                'Vikram R. (Verified Courier)',
+                                'Vikram R. (Delivery Helper)',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w800,
@@ -311,7 +309,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                           ),
                           SizedBox(height: 2),
                           Text(
-                            'Van: KA-01-EQ-9812 • FoodGrade Insulated',
+                            'Vehicle: MH-12-FB-9812 • Hot Box',
                             style: TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalMuted,
@@ -319,7 +317,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            '⭐ 4.96 (184 food rescues fulfilled)',
+                            '⭐ 4.96 (184 deliveries done)',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -346,7 +344,7 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              'Dialing Vikram R. (+91 98450 11200) via masked secure proxy...',
+                              'Calling Vikram R. (+91 98450 11200)...',
                             ),
                             backgroundColor: AppTheme.forestGreen,
                           ),
@@ -358,13 +356,13 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
               ),
               const SizedBox(height: 16),
 
-              // CHAIN OF CUSTODY TIMELINE
+              // DELIVERY TIMELINE
               AppCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Chain-of-Custody Handoff',
+                      'Delivery Steps',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w800,
@@ -373,28 +371,28 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                     ),
                     const SizedBox(height: 12),
                     _buildTimelineStep(
-                      title: 'Surplus Manifest Logged',
+                      title: 'Food Posted',
                       subtitle: widget.donationTitle,
                       time: '18 mins ago',
                       isDone: true,
                     ),
                     _buildTimelineStep(
-                      title: 'Driver Dispatched & Assigned',
-                      subtitle: 'Driver accepted via WhatsApp Bot lock',
+                      title: 'Helper Assigned',
+                      subtitle: 'Accepted via WhatsApp alert',
                       time: '12 mins ago',
                       isDone: true,
                     ),
                     _buildTimelineStep(
-                      title: 'Pickup Location',
+                      title: 'Pickup Place',
                       subtitle: widget.pickupAddress,
-                      time: _progress >= 0.5 ? 'Completed' : 'Approaching now',
+                      time: _progress >= 0.5 ? 'Done' : 'On the way',
                       isDone: _progress >= 0.5,
                       isCurrent: _progress < 0.5,
                     ),
                     _buildTimelineStep(
-                      title: 'Destination Shelter Kitchen',
+                      title: 'NGO Drop-off',
                       subtitle: widget.destinationNgo,
-                      time: 'ETA: $_etaMinutes mins',
+                      time: 'About $_etaMinutes mins',
                       isDone: _progress >= 1.0,
                       isCurrent: _progress >= 0.5 && _progress < 1.0,
                     ),
@@ -416,13 +414,11 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                         side: const BorderSide(color: AppTheme.borderColor),
                       ),
                       icon: const Icon(Icons.share_rounded, size: 18),
-                      label: const Text('Share Live Link'),
+                      label: const Text('Share Link'),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text(
-                              'Live GPS tracking link copied: https://foodbridge.ngo/track/fb-courier-9812',
-                            ),
+                            content: Text('Tracking link copied!'),
                             backgroundColor: AppTheme.forestGreen,
                           ),
                         );
@@ -432,14 +428,12 @@ class _LiveTrackingScreenState extends State<LiveTrackingScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: AppButton(
-                      label: 'Emergency SOS',
+                      label: 'Help / SOS',
                       icon: Icons.shield_rounded,
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text(
-                              'FoodBridge 24x7 Safety & Logistics Desk alerted!',
-                            ),
+                            content: Text('Support team alerted!'),
                             backgroundColor: AppTheme.statusCritical,
                           ),
                         );

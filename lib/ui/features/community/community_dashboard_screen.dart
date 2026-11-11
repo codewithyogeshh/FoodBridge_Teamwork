@@ -29,11 +29,11 @@ class CommunityDashboardScreen extends StatelessWidget {
           children: [
             Icon(Icons.logout_rounded, color: AppTheme.statusCritical),
             SizedBox(width: 8),
-            Text('Confirm Sign Out'),
+            Text('Log Out?'),
           ],
         ),
         content: const Text(
-          'Are you sure you want to sign out of your Community Giver session?',
+          'Do you want to log out of your account?',
           style: TextStyle(fontSize: 13.5),
         ),
         actions: [
@@ -53,7 +53,7 @@ class CommunityDashboardScreen extends StatelessWidget {
               Navigator.pop(ctx);
               onLogout();
             },
-            child: const Text('Sign Out'),
+            child: const Text('Log Out'),
           ),
         ],
       ),
@@ -70,14 +70,14 @@ class CommunityDashboardScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
           appBar: AppBar(
-            title: const Text('Community Giving Hub'),
+            title: const Text('Community Giving'),
             actions: [
               IconButton(
                 icon: const Icon(
                   Icons.logout_rounded,
                   color: AppTheme.statusCritical,
                 ),
-                tooltip: 'Sign Out',
+                tooltip: 'Log Out',
                 onPressed: () => _showLogoutConfirmation(context),
               ),
             ],
@@ -139,7 +139,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                                   ),
                                   SizedBox(width: 6),
                                   Text(
-                                    'CITIZEN RELIEF NETWORK',
+                                    'COMMUNITY HELPER',
                                     style: TextStyle(
                                       color: AppTheme.limeLight,
                                       fontSize: 10,
@@ -151,7 +151,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                               ),
                             ),
                             const Text(
-                              '80G Certified',
+                              '80G Tax Receipts',
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 11,
@@ -162,7 +162,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         const Text(
-                          'Your Generosity Shapes Lives',
+                          'Share & Help Locally',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w800,
@@ -172,7 +172,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 6),
                         const Text(
-                          'Donate spare clothes, educational books, groceries, or sponsor hot meals for underprivileged shelters with transparent impact tracking.',
+                          'Give clothes, books, dry food, or sponsor meals for nearby shelters.',
                           style: TextStyle(
                             fontSize: 13,
                             color: Colors.white70,
@@ -182,11 +182,11 @@ class CommunityDashboardScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         Row(
                           children: [
-                            _buildStatItem('142', 'Items Donated'),
+                            _buildStatItem('142', 'Items Shared'),
                             _buildStatDivider(),
-                            _buildStatItem('₹48.5k', '80G Relief'),
+                            _buildStatItem('₹48.5k', 'Funds Given'),
                             _buildStatDivider(),
-                            _buildStatItem('6', 'Partner Shelters'),
+                            _buildStatItem('6', 'Shelters Helped'),
                           ],
                         ),
                       ],
@@ -217,7 +217,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                           color: AppTheme.forestGreen,
                         ),
                         label: const Text(
-                          'All Options',
+                          'Donate',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -241,7 +241,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                       _buildCategoryActionCard(
                         icon: Icons.checkroom_rounded,
                         title: 'Clothes & Blankets',
-                        subtitle: 'Winter wear, uniforms, blankets',
+                        subtitle: 'Winter wear & uniforms',
                         color: const Color(0xFF38BDF8),
                         bgColor: const Color(
                           0xFF38BDF8,
@@ -251,7 +251,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                       _buildCategoryActionCard(
                         icon: Icons.menu_book_rounded,
                         title: 'Books & Stationery',
-                        subtitle: 'School textbooks & notebooks',
+                        subtitle: 'Textbooks & notebooks',
                         color: const Color(0xFFF59E0B),
                         bgColor: const Color(
                           0xFFF59E0B,
@@ -260,8 +260,8 @@ class CommunityDashboardScreen extends StatelessWidget {
                       ),
                       _buildCategoryActionCard(
                         icon: Icons.currency_rupee_rounded,
-                        title: 'Monetary 80G Relief',
-                        subtitle: 'Sponsor hot meals (Instant receipt)',
+                        title: 'Money Donation (80G)',
+                        subtitle: 'Sponsor meals + receipt',
                         color: const Color(0xFF4EDEA3),
                         bgColor: const Color(
                           0xFF10B981,
@@ -270,8 +270,8 @@ class CommunityDashboardScreen extends StatelessWidget {
                       ),
                       _buildCategoryActionCard(
                         icon: Icons.inventory_2_rounded,
-                        title: 'Dry Essentials',
-                        subtitle: 'Rice, dal, oil & hygiene kits',
+                        title: 'Dry Food & Basics',
+                        subtitle: 'Rice, dal, oil & kits',
                         color: const Color(0xFFA78BFA),
                         bgColor: const Color(
                           0xFF7C3AED,
@@ -283,12 +283,12 @@ class CommunityDashboardScreen extends StatelessWidget {
 
                   const SizedBox(height: 28),
 
-                  // ACTIVE & RECENT COMMUNITY DONATIONS
+                  // RECENT DONATIONS
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Recent Community Contributions',
+                        'Recent Donations',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
@@ -331,7 +331,7 @@ class CommunityDashboardScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
                   AppButton(
-                    label: 'Make a New Community Donation',
+                    label: 'Donate Now',
                     icon: Icons.favorite_rounded,
                     onPressed: onNavigateToDonate,
                   ),
@@ -535,7 +535,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                       if (item.assignedNgoName != null) ...[
                         const SizedBox(height: 3),
                         Text(
-                          'Beneficiary: ${item.assignedNgoName}',
+                          'To: ${item.assignedNgoName}',
                           style: const TextStyle(
                             fontSize: 11,
                             color: AppTheme.forestGreen,
@@ -579,7 +579,7 @@ class CommunityDashboardScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Tax Exemption Certificate: ${item.tax80GReceiptNumber}',
+                  '80G Tax Receipt: ${item.tax80GReceiptNumber}',
                   style: const TextStyle(
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,

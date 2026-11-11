@@ -57,7 +57,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Section 80G Tax-Deductible Records',
+                                '80G Tax Receipts',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w800,
@@ -66,7 +66,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 3),
                               Text(
-                                'All monetary contributions are authenticated and registered under Income Tax exemption rules.',
+                                'Your money donations qualify for Section 80G tax savings.',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: AppTheme.charcoalMuted,
@@ -82,7 +82,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
                   const Text(
-                    'Verified 80G Tax Certificates',
+                    'Your 80G Receipts',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
@@ -98,7 +98,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 20),
                           child: Text(
-                            'No monetary contributions recorded yet. Sponsor meals to generate instant 80G certificates.',
+                            'No money donations yet. Sponsor meals to get an instant 80G receipt.',
                             style: TextStyle(
                               fontSize: 13,
                               color: AppTheme.charcoalMuted,
@@ -168,7 +168,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Beneficiary: ${item.assignedNgoName}',
+                                'To: ${item.assignedNgoName}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: AppTheme.charcoalMuted,
@@ -212,7 +212,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
                                       ).showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                            'Downloading official 80G Tax Exemption Certificate: ${item.tax80GReceiptNumber}',
+                                            'Downloading 80G Receipt: ${item.tax80GReceiptNumber}',
                                           ),
                                           backgroundColor: AppTheme.forestGreen,
                                         ),
@@ -230,7 +230,7 @@ class CommunityImpactLedgerScreen extends StatelessWidget {
 
                   const SizedBox(height: 28),
                   const Text(
-                    'Physical Items Chain-of-Custody',
+                    'Donated Items',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,

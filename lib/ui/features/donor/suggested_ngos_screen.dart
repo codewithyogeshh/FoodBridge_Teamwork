@@ -24,7 +24,7 @@ class SuggestedNGOsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('AI Suggested Receivers')),
+      appBar: AppBar(title: const Text('Best Nearby NGOs')),
       body: SafeArea(
         child: Column(
           children: [
@@ -52,16 +52,16 @@ class SuggestedNGOsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${matches.length} Verified NGOs Available',
+                          '${matches.length} Verified NGOs Nearby',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: AppTheme.richCharcoal,
                           ),
                         ),
-                        Text(
-                          'Ranked by distance, capacity & ${donation.foodType} suitability',
-                          style: const TextStyle(
+                        const Text(
+                          'Sorted by distance and kitchen space',
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppTheme.charcoalMuted,
                           ),
@@ -186,8 +186,8 @@ class SuggestedNGOsScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'Why this recommendation?',
+                        Text(
+                          'Why this NGO:',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -239,13 +239,13 @@ class SuggestedNGOsScreen extends StatelessWidget {
                 ),
               ),
               child: AppButton(
-                label: 'Confirm Listing & Broadcast to NGOs',
+                label: 'Share with Nearby NGOs',
                 icon: Icons.cell_tower_rounded,
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Donation broadcasted to ${matches.length} verified regional NGOs!',
+                        'Shared with ${matches.length} nearby verified NGOs!',
                       ),
                       backgroundColor: AppTheme.forestGreen,
                     ),

@@ -30,11 +30,11 @@ class NGODocumentUploadTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = isGovtId
-        ? 'Official $govtIdType Proof'
-        : 'Official FSSAI Food Safety Certificate';
+        ? '$govtIdType Photo / Scan'
+        : 'Food License (FSSAI)';
     final subtitle = isGovtId
-        ? 'Upload official Aadhaar or PAN document proof'
-        : 'Upload state food safety authority certificate';
+        ? 'Upload your Aadhaar or PAN card'
+        : 'Upload your food safety license';
 
     if (isUploading) {
       return Container(
@@ -57,7 +57,7 @@ class NGODocumentUploadTile extends StatelessWidget {
             SizedBox(width: 14),
             Expanded(
               child: Text(
-                'Uploading document to Supabase secure compliance vault...',
+                'Uploading document...',
                 style: TextStyle(
                   fontSize: 12.5,
                   fontWeight: FontWeight.w600,
@@ -134,7 +134,7 @@ class NGODocumentUploadTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Vault Upload Verified • $fileSize',
+                        'Uploaded • $fileSize',
                         style: const TextStyle(
                           fontSize: 11.5,
                           color: AppTheme.forestGreen,

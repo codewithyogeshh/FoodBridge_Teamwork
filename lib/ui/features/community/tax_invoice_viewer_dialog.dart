@@ -363,13 +363,11 @@ class TaxInvoiceViewerDialog extends StatelessWidget {
                         side: const BorderSide(color: AppTheme.borderColor),
                       ),
                       icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
-                      label: const Text('Direct UPI Intent'),
+                      label: const Text('Pay via UPI'),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              'Launching UPI Intent: upi://pay?pa=foodbridge.relief@icici&pn=FoodBridge&am=${amount.replaceAll(RegExp(r"[^0-9]"), "")}&cu=INR',
-                            ),
+                            content: Text('Opening UPI payment for $amount...'),
                             backgroundColor: AppTheme.forestGreen,
                           ),
                         );
@@ -379,14 +377,12 @@ class TaxInvoiceViewerDialog extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: AppButton(
-                      label: 'Download / Print PDF',
+                      label: 'Download PDF',
                       icon: Icons.print_rounded,
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              'Exporting Form 10BD PDF Certificate ($receiptNum.pdf)... Downloaded!',
-                            ),
+                            content: Text('Downloaded $receiptNum.pdf!'),
                             backgroundColor: AppTheme.forestGreen,
                           ),
                         );

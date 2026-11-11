@@ -18,7 +18,7 @@ class DonationManagementScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
-          appBar: AppBar(title: const Text('Donation Batch Moderation')),
+          appBar: AppBar(title: const Text('All Food Orders')),
           body: SafeArea(
             child: ListView.separated(
               padding: const EdgeInsets.all(20),
@@ -26,6 +26,9 @@ class DonationManagementScreen extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final item = donations[index];
+                final shortId = item.id.length >= 8
+                    ? item.id.substring(0, 8)
+                    : item.id;
                 return AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +51,7 @@ class DonationManagementScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Donor: ${item.donorName} (${item.donorPhone}) • ${item.quantityLabel}',
+                        'From: ${item.donorName} • ${item.quantityServings} plates',
                         style: const TextStyle(
                           fontSize: 12.5,
                           color: AppTheme.charcoalMuted,
@@ -76,7 +79,7 @@ class DonationManagementScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              'Passcode: ${item.pickupOtp}',
+                              'PIN: ${item.pickupOtp}',
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
@@ -86,7 +89,7 @@ class DonationManagementScreen extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            'ID: #${item.id.substring(0, 8)}',
+                            '#$shortId',
                             style: const TextStyle(
                               fontSize: 11,
                               color: AppTheme.charcoalLight,

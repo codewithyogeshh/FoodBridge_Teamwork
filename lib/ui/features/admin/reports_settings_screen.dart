@@ -23,7 +23,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Reports & System Settings')),
+      appBar: AppBar(title: const Text('Reports & Settings')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -31,7 +31,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Environmental & Audit Reports',
+                'Download Reports',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
@@ -47,7 +47,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Carbon Offset & Municipal Diversion Audit',
+                      'Food Shared & Impact Report',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -56,7 +56,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                     ),
                     const SizedBox(height: 6),
                     const Text(
-                      'Export third-party verified ledger of all rescued meals, kilograms of CO2e prevented, and NGO receiving receipts for CSR audits.',
+                      'Download records of shared meals, CO2 saved, and NGO receipts.',
                       style: TextStyle(
                         fontSize: 12.5,
                         color: AppTheme.charcoalMuted,
@@ -76,7 +76,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'FoodBridge_Environmental_Audit_2026.csv generated successfully!',
+                                    'FoodBridge_Impact_Report_2026.csv downloaded!',
                                   ),
                                   backgroundColor: AppTheme.forestGreen,
                                 ),
@@ -87,7 +87,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: AppButton(
-                            label: 'Export PDF Summary',
+                            label: 'Export PDF',
                             icon: Icons.picture_as_pdf_rounded,
                             variant: AppButtonVariant.primary,
                             height: 42,
@@ -95,7 +95,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'FoodBridge_CSR_Impact_Report_2026.pdf generated!',
+                                    'FoodBridge_Impact_Report_2026.pdf downloaded!',
                                   ),
                                   backgroundColor: AppTheme.forestGreen,
                                 ),
@@ -112,7 +112,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
 
               // Platform Parameters Card
               const Text(
-                'Safety Governance Parameters',
+                'App Rules',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
@@ -129,7 +129,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                       contentPadding: EdgeInsets.zero,
                       activeThumbColor: AppTheme.forestGreen,
                       title: const Text(
-                        'Enforce Mandatory FSSAI Compliance',
+                        'Require Food License (FSSAI)',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -137,7 +137,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                         ),
                       ),
                       subtitle: const Text(
-                        'Unverified NGOs cannot reserve hot cooked meals without active certificate verification.',
+                        'Only verified NGOs can book cooked food.',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
@@ -151,7 +151,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                       contentPadding: EdgeInsets.zero,
                       activeThumbColor: AppTheme.forestGreen,
                       title: const Text(
-                        'AI Urgency Proximity Broadcast',
+                        'Auto-Alert Nearby NGOs',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -159,7 +159,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                         ),
                       ),
                       subtitle: const Text(
-                        'Auto-alert highest capacity kitchens within 5 km when critical food (< 3h) is published.',
+                        'Notify NGOs within 5 km when urgent food (< 3h) is posted.',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
@@ -175,7 +175,7 @@ class _ReportsSettingsScreenState extends State<ReportsSettingsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Atomic Lock Expiry Window:',
+                          'Booking Hold Time:',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,

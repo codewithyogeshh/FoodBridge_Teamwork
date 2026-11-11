@@ -169,6 +169,14 @@ class AppRepository extends ChangeNotifier {
       _supabaseService.notificationStream;
   List<DonationModel> get donations => List.unmodifiable(_donations);
   List<NGOModel> get ngos => List.unmodifiable(_ngos);
+  NGOModel? _lastRegisteredNgo;
+  NGOModel? get lastRegisteredNgo => _lastRegisteredNgo;
+
+  void setActiveNgo(NGOModel? ngo) {
+    _lastRegisteredNgo = ngo;
+    notifyListeners();
+  }
+
   List<NotificationModel> get notifications {
     final roleStr = _currentRole.name.toLowerCase();
     return List.unmodifiable(
@@ -197,11 +205,13 @@ class AppRepository extends ChangeNotifier {
         .length;
   }
 
-  List<DonationModel> get availableDonations =>
-      _donations.where((d) => d.status == DonationStatus.available).toList();
+  List<DonationModel> get availableDonations => _donations
+      .where((d) => d.status == DonationStatus.available && d.isSafeToConsume)
+      .toList();
 
-  List<DonationModel> get activeReservedDonations =>
-      _donations.where((d) => d.status == DonationStatus.reserved).toList();
+  List<DonationModel> get activeReservedDonations => _donations
+      .where((d) => d.status == DonationStatus.reserved && d.isSafeToConsume)
+      .toList();
 
   List<DonationModel> get completedDonations => _donations
       .where(
@@ -437,6 +447,14 @@ class AppRepository extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
+      final localIdx = _donations.indexWhere((d) => d.id == donationId);
+      if (localIdx != -1 && !_donations[localIdx].isSafeToConsume) {
+        return {
+          'success': false,
+          'message': 'This food order has expired and cannot be booked.',
+        };
+      }
+
       final res = await _supabaseService.reserveDonationAtomic(
         donationId: donationId,
         ngoId: ngoId,
@@ -472,6 +490,7 @@ class AppRepository extends ChangeNotifier {
     return _donations
         .where(
           (d) =>
+              d.isSafeToConsume &&
               (d.status == DonationStatus.available ||
                   (d.requiresVolunteerDelivery &&
                       d.status == DonationStatus.reserved)) &&
@@ -485,8 +504,8 @@ class AppRepository extends ChangeNotifier {
         .where(
           (d) =>
               d.requiresVolunteerDelivery &&
-              (d.status == DonationStatus.reserved ||
-                  d.status == DonationStatus.pickupVerified) &&
+              (d.status == DonationStatus.pickupVerified ||
+                  (d.status == DonationStatus.reserved && d.isSafeToConsume)) &&
               d.assignedVolunteerId != null &&
               d.assignedVolunteerId!.isNotEmpty,
         )
@@ -514,6 +533,9 @@ class AppRepository extends ChangeNotifier {
       final idx = _donations.indexWhere((d) => d.id == donationId);
       if (idx != -1) {
         final currentDonation = _donations[idx];
+        if (!currentDonation.isSafeToConsume) {
+          return false;
+        }
         String? targetNgoId = currentDonation.reservedNgoId;
         String? targetNgoName = currentDonation.reservedNgoName;
 
@@ -692,6 +714,7 @@ class AppRepository extends ChangeNotifier {
     try {
       final created = await _supabaseService.registerNGO(ngo);
       _ngos.insert(0, created);
+      _lastRegisteredNgo = created;
       return created;
     } finally {
       _isLoading = false;
@@ -714,6 +737,9 @@ class AppRepository extends ChangeNotifier {
         final idx = _ngos.indexWhere((n) => n.id == ngoId);
         if (idx != -1) {
           _ngos[idx] = _ngos[idx].copyWith(verificationStatus: status);
+          if (_lastRegisteredNgo?.id == ngoId) {
+            _lastRegisteredNgo = _ngos[idx];
+          }
         }
       }
       return success;

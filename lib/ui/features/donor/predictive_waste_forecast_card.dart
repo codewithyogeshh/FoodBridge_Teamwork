@@ -60,7 +60,7 @@ class _PredictiveWasteForecastCardState
                     ),
                     SizedBox(width: 4),
                     Text(
-                      'AI PREDICTIVE SURPLUS ENGINE',
+                      'TONIGHT\'S FORECAST',
                       style: TextStyle(
                         fontSize: 9.5,
                         fontWeight: FontWeight.w800,
@@ -78,7 +78,7 @@ class _PredictiveWasteForecastCardState
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
-                  '89% Confidence',
+                  '89% match',
                   style: TextStyle(
                     fontSize: 9.5,
                     fontWeight: FontWeight.w800,
@@ -90,7 +90,7 @@ class _PredictiveWasteForecastCardState
           ),
           const SizedBox(height: 12),
           const Text(
-            'Expected Surplus Forecast for Tonight',
+            'Tonight\'s Extra Food Estimate',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w800,
@@ -99,7 +99,7 @@ class _PredictiveWasteForecastCardState
           ),
           const SizedBox(height: 4),
           Text(
-            'Based on historical trends over the past 3 weekends at $org, your dinner service typically generates 35–45 surplus portions of Cooked Rice & Gravy around 10:30 PM.',
+            'Based on the last 3 weekends at $org, about 35–45 plates of rice and gravy may be left over around 10:30 PM.',
             style: const TextStyle(
               fontSize: 11.5,
               color: Color(0xFFC7D2FE),
@@ -122,12 +122,12 @@ class _PredictiveWasteForecastCardState
                 Column(
                   children: [
                     Text(
-                      'Forecasted Surplus',
+                      'Estimated Food',
                       style: TextStyle(fontSize: 10, color: Colors.white60),
                     ),
                     SizedBox(height: 2),
                     Text(
-                      '~40 Portions',
+                      '~40 Plates',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
@@ -140,7 +140,7 @@ class _PredictiveWasteForecastCardState
                 Column(
                   children: [
                     Text(
-                      'Peak Expiry Window',
+                      'Best Pickup Time',
                       style: TextStyle(fontSize: 10, color: Colors.white60),
                     ),
                     SizedBox(height: 2),
@@ -176,7 +176,7 @@ class _PredictiveWasteForecastCardState
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Pickup Pre-Scheduled! Volunteer courier assigned for 10:30 PM window.',
+                      'Pickup scheduled! A helper will arrive around 10:30 PM.',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -189,14 +189,14 @@ class _PredictiveWasteForecastCardState
             )
           else
             AppButton(
-              label: 'Pre-Schedule 10:30 PM Rescue Courier',
+              label: 'Schedule 10:30 PM Pickup',
               icon: Icons.alarm_on_rounded,
               onPressed: () {
                 setState(() => _isScheduled = true);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(
-                      'Surplus pickup pre-scheduled for 10:30 PM! Nearby courier notified in advance.',
+                      'Pickup scheduled for 10:30 PM! Nearby helper notified.',
                     ),
                     backgroundColor: Color(0xFF4338CA),
                   ),

@@ -71,8 +71,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
         urgencyScore: 92,
         freshnessScore: 94,
         safeHours: 'Safe for 3.5 hours',
-        storageRecommendation:
-            'Keep warm (>60°C) in insulated thermal container',
+        storageRecommendation: 'Keep warm (>60°C) in hot insulated container',
         allergens: ['Dairy (Paneer)', 'Gluten (Wheat)'],
       ),
     },
@@ -177,7 +176,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
           urgencyScore: 90,
           freshnessScore: 95,
           safeHours: 'Safe for 3 hours',
-          storageRecommendation: 'Keep warm (>60°C) in insulated thermal boxes',
+          storageRecommendation: 'Keep warm (>60°C) in hot insulated boxes',
           allergens: ['Gluten', 'Dairy'],
           capturedImageBytes: _customImageBytes,
         );
@@ -222,7 +221,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Gemini AI Food Quality Scanner',
+                          'Scan Food Photo',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
@@ -231,7 +230,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                           ),
                         ),
                         Text(
-                          'Detects dish name, portions & evaluates food freshness score',
+                          'Auto-fills food name, plates & freshness',
                           style: TextStyle(
                             fontSize: 11,
                             color: AppTheme.charcoalMuted,
@@ -266,7 +265,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                         color: AppTheme.forestGreen,
                       ),
                       label: const Text(
-                        'Live Camera',
+                        'Take Photo',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -292,7 +291,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                         color: AppTheme.charcoalMuted,
                       ),
                       label: const Text(
-                        'Pick Gallery',
+                        'Choose Photo',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -308,7 +307,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
 
               // PRESETS ROW
               const Text(
-                'Or Select Food Batch Preset Sample',
+                'Or pick a sample dish',
                 style: TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
@@ -403,7 +402,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                           ),
                           const SizedBox(height: 2),
                           const Text(
-                            'Thermal & Volumetric Chamber Active',
+                            'Tap Scan below to check food',
                             style: TextStyle(
                               fontSize: 9.5,
                               color: Colors.white60,
@@ -434,7 +433,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                             ),
                             SizedBox(width: 4),
                             Text(
-                              'GEMINI VISION SENSOR',
+                              'AI PHOTO CHECK',
                               style: TextStyle(
                                 fontSize: 8.5,
                                 color: Color(0xFF34D399),
@@ -487,7 +486,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Gemini 1.5 Flash Analyzing Freshness...',
+                                'Checking food photo...',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -505,7 +504,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
 
               if (_analysisResult == null && !_isAnalyzing)
                 AppButton(
-                  label: 'Scan & Evaluate Freshness Score',
+                  label: 'Scan Food Photo',
                   icon: Icons.search_rounded,
                   onPressed: () =>
                       _runAnalysis(isCustomImage: _customImageBytes != null),
@@ -537,7 +536,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Freshness: ${_analysisResult!.freshnessScore}/100 (Safe)',
+                                    'Freshness: ${_analysisResult!.freshnessScore}/100 (Good)',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w800,
@@ -556,7 +555,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
-                                  'Perishability Urgency: ${_analysisResult!.urgencyScore}/100',
+                                  'Urgency: ${_analysisResult!.urgencyScore}/100',
                                   style: const TextStyle(
                                     fontSize: 9,
                                     fontWeight: FontWeight.w800,
@@ -592,7 +591,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Estimated Portions: ~${_analysisResult!.estimatedServings} Servings (${_analysisResult!.foodType})',
+                            'About ~${_analysisResult!.estimatedServings} Plates (${_analysisResult!.foodType})',
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -611,7 +610,7 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: Text(
-                                'Allergens: ${_analysisResult!.allergens.join(", ")}',
+                                'Allergies: ${_analysisResult!.allergens.join(", ")}',
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
@@ -626,16 +625,14 @@ class _FoodVisionScannerDialogState extends State<FoodVisionScannerDialog>
                 ),
                 const SizedBox(height: 8),
                 AppButton(
-                  label: 'Apply AI Findings to Donation Form',
+                  label: 'Use These Details',
                   icon: Icons.check_circle_rounded,
                   onPressed: () {
                     widget.onResultApplied(_analysisResult!);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text(
-                          'Donation form auto-populated with AI Vision analysis!',
-                        ),
+                        content: Text('Food details filled in!'),
                         backgroundColor: AppTheme.forestGreen,
                       ),
                     );

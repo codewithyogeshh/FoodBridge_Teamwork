@@ -46,22 +46,22 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
 
   String get _zoneLabel {
     if (_temperature >= 60.0) {
-      return 'SAFE HOT ZONE (>60°C) • FSSAI COMPLIANT';
+      return 'HOT FOOD (>60°C) • SAFE';
     }
     if (_temperature <= 5.0) {
-      return 'SAFE CHILLED ZONE (<5°C) • FSSAI COMPLIANT';
+      return 'COLD FOOD (<5°C) • SAFE';
     }
-    return '⚠️ BACTERIAL DANGER ZONE (5°C - 60°C)';
+    return 'WARM FOOD (5°C - 60°C) • SERVE FAST';
   }
 
   String get _zoneExplanation {
     if (_temperature >= 60.0) {
-      return 'Microbiological proliferation is effectively halted. Suitable for direct distribution to shelter inmates.';
+      return 'Food is hot and safe to share.';
     }
     if (_temperature <= 5.0) {
-      return 'Chilled preservation maintained. Must be kept refrigerated until reheating.';
+      return 'Food is chilled and safe to keep cold.';
     }
-    return 'CRITICAL WARNING: Pathogenic bacteria proliferate rapidly between 5°C and 60°C. Food must be consumed within 90 minutes or discarded under Section 16 of Food Safety Regulations.';
+    return 'Warm food can spoil fast. Share within 90 minutes or do not serve.';
   }
 
   @override
@@ -104,7 +104,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'FSSAI Cold Chain Thermal Audit',
+                          'Food Freshness Check',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
@@ -112,7 +112,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                           ),
                         ),
                         Text(
-                          'Mandatory Food Safety & Standards Handoff Protocol',
+                          'Quick check before pickup',
                           style: TextStyle(
                             fontSize: 11,
                             color: AppTheme.charcoalMuted,
@@ -130,7 +130,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
               const SizedBox(height: 16),
 
               Text(
-                'Manifest: ${widget.donationTitle}',
+                'Order: ${widget.donationTitle}',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -153,7 +153,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Digital Thermal Probe:',
+                          'Food Temperature:',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -214,9 +214,9 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
               ),
               const SizedBox(height: 16),
 
-              // FSSAI CHECKLIST
+              // FOOD CHECKLIST
               const Text(
-                'Physical Inspection Protocol',
+                'Quick Checklist',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
@@ -229,7 +229,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                 dense: true,
                 activeColor: AppTheme.forestGreen,
                 title: const Text(
-                  'Visual & Odor Verification: No off-smell, foam, or discoloration',
+                  'Looks and smells fresh',
                   style: TextStyle(fontSize: 12, color: AppTheme.richCharcoal),
                 ),
                 value: _odorFreshness,
@@ -240,7 +240,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                 dense: true,
                 activeColor: AppTheme.forestGreen,
                 title: const Text(
-                  'Insulated Packaging: Food packed in sealed, food-grade containers',
+                  'Packed in clean covered boxes',
                   style: TextStyle(fontSize: 12, color: AppTheme.richCharcoal),
                 ),
                 value: _sealedContainer,
@@ -251,7 +251,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                 dense: true,
                 activeColor: AppTheme.forestGreen,
                 title: const Text(
-                  'Good Samaritan Protection: Donor certified surplus from licensed kitchen',
+                  'From a clean kitchen',
                   style: TextStyle(fontSize: 12, color: AppTheme.richCharcoal),
                 ),
                 value: _fssaiCompliance,
@@ -262,8 +262,8 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
               // SUBMIT BUTTON
               AppButton(
                 label: passesInspection
-                    ? 'Certify & Record Handoff'
-                    : 'Inspection Incomplete / Safety Alert',
+                    ? 'Food Looks Good'
+                    : 'Please Complete Check',
                 icon: passesInspection
                     ? Icons.verified_user_rounded
                     : Icons.warning_rounded,
@@ -281,7 +281,7 @@ class _ColdChainInspectionDialogState extends State<ColdChainInspectionDialog> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'FSSAI Thermal Audit Certified (${_temperature.toStringAsFixed(1)}°C). Handoff synchronized!',
+                              'Freshness check saved (${_temperature.toStringAsFixed(1)}°C).',
                             ),
                             backgroundColor: AppTheme.forestGreen,
                           ),

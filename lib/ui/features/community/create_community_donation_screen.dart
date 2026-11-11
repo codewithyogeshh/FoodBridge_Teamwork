@@ -109,9 +109,7 @@ class _CreateCommunityDonationScreenState
       if (_panController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              'Please enter your PAN Card number to generate your official 80G Tax Exemption Certificate.',
-            ),
+            content: Text('Please enter your PAN number for your 80G receipt.'),
             backgroundColor: AppTheme.statusCritical,
           ),
         );
@@ -162,8 +160,8 @@ class _CreateCommunityDonationScreenState
           SnackBar(
             content: Text(
               _isAnonymous
-                  ? 'Donation pledged anonymously! Pickup coordinator assigned.'
-                  : 'Thank you! Your donation was submitted to verified shelters.',
+                  ? 'Posted anonymously! A pickup volunteer is assigned.'
+                  : 'Thank you! Your donation was sent to nearby shelters.',
             ),
             backgroundColor: AppTheme.forestGreen,
           ),
@@ -183,7 +181,7 @@ class _CreateCommunityDonationScreenState
           children: [
             Icon(Icons.verified_rounded, color: AppTheme.forestGreen, size: 28),
             SizedBox(width: 10),
-            Text('80G Tax Exemption Generated'),
+            Text('80G Tax Receipt Ready'),
           ],
         ),
         content: Column(
@@ -209,7 +207,7 @@ class _CreateCommunityDonationScreenState
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'CERTIFICATE NUMBER',
+                          'RECEIPT NUMBER',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
@@ -232,14 +230,14 @@ class _CreateCommunityDonationScreenState
             ),
             const SizedBox(height: 14),
             Text(
-              'Amount: ${donation.quantityOrAmount}\nBeneficiary: ${donation.assignedNgoName}\nEligible Deduction: 50% under Section 80G of the Income Tax Act.',
+              'Amount: ${donation.quantityOrAmount}\nFor: ${donation.assignedNgoName}\nEligible for 50% tax savings under Section 80G.',
               style: const TextStyle(fontSize: 13, height: 1.4),
             ),
             const SizedBox(height: 10),
             Text(
               _isAnonymous
-                  ? '🔒 Anonymous Giving Mode: Your legal receipt is privately sent to your contact details and not publicized.'
-                  : 'A copy has been dispatched to your email address.',
+                  ? 'Anonymous Mode: Your receipt is kept private and not shown to others.'
+                  : 'A copy was sent to your email.',
               style: const TextStyle(
                 fontSize: 11,
                 color: AppTheme.charcoalMuted,
@@ -261,7 +259,7 @@ class _CreateCommunityDonationScreenState
               Navigator.pop(ctx);
               widget.onDonationSubmitted(donation);
             },
-            child: const Text('Download Receipt & Finish'),
+            child: const Text('Done'),
           ),
         ],
       ),
@@ -282,7 +280,7 @@ class _CreateCommunityDonationScreenState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Community Relief Contribution',
+                  'Share Items or Sponsor Meals',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -292,7 +290,7 @@ class _CreateCommunityDonationScreenState
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Choose a category below. Our verified logistics network connects your generous gift to local shelters, children homes, and community kitchens.',
+                  'Pick a category below to donate items or money to nearby shelters.',
                   style: TextStyle(
                     fontSize: 13,
                     color: AppTheme.charcoalMuted,
@@ -358,13 +356,12 @@ class _CreateCommunityDonationScreenState
                     children: [
                       // TITLE
                       AppTextField(
-                        label: 'Donation Title',
+                        label: 'Item Name',
                         hint: _titleHint,
                         controller: _titleController,
                         prefixIcon: Icons.title_rounded,
-                        validator: (v) => v == null || v.trim().isEmpty
-                            ? 'Required field'
-                            : null,
+                        validator: (v) =>
+                            v == null || v.trim().isEmpty ? 'Required' : null,
                       ),
                       const SizedBox(height: 14),
 
@@ -384,7 +381,7 @@ class _CreateCommunityDonationScreenState
 
                       const SizedBox(height: 14),
                       AppTextField(
-                        label: 'Detailed Description & Handling Instructions',
+                        label: 'Details (Optional)',
                         hint: _descriptionHint,
                         controller: _descriptionController,
                         prefixIcon: Icons.description_rounded,
@@ -395,8 +392,8 @@ class _CreateCommunityDonationScreenState
                       if (_selectedCategory !=
                           CommunityDonationCategory.monetary) ...[
                         AppTextField(
-                          label: 'Pickup Address & Landmarks',
-                          hint: 'Building name, road, postal code',
+                          label: 'Pickup Address',
+                          hint: 'House / building, road, area',
                           controller: _addressController,
                           prefixIcon: Icons.location_on_rounded,
                           validator: (v) => v == null || v.isEmpty
@@ -424,7 +421,7 @@ class _CreateCommunityDonationScreenState
                             ),
                             SizedBox(width: 8),
                             Text(
-                              'Donate Anonymously',
+                              'Hide My Name',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
@@ -434,7 +431,7 @@ class _CreateCommunityDonationScreenState
                           ],
                         ),
                         subtitle: const Text(
-                          'Hide your name and phone number on public community walls and recipient rosters.',
+                          'Keep your name and phone private on public lists.',
                           style: TextStyle(
                             fontSize: 11,
                             color: AppTheme.charcoalMuted,
@@ -450,8 +447,8 @@ class _CreateCommunityDonationScreenState
                 const SizedBox(height: 24),
                 AppButton(
                   label: _selectedCategory == CommunityDonationCategory.monetary
-                      ? 'Proceed to Secure 80G Contribution (₹$_selectedAmount)'
-                      : 'Schedule Pickup & Pledge Donation',
+                      ? 'Donate ₹$_selectedAmount & Get 80G Receipt'
+                      : 'Submit Donation',
                   icon: _selectedCategory == CommunityDonationCategory.monetary
                       ? Icons.lock_rounded
                       : Icons.arrow_forward_rounded,
@@ -473,7 +470,7 @@ class _CreateCommunityDonationScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Select Sponsorship Tier',
+          'Choose Amount',
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w700,
@@ -506,7 +503,7 @@ class _CreateCommunityDonationScreenState
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Permanent Account Number (PAN) • For 80G Tax Exemption',
+          label: 'PAN Number (for 80G tax receipt)',
           hint: 'e.g. ABCDE1234F',
           controller: _panController,
           prefixIcon: Icons.badge_rounded,
@@ -529,7 +526,7 @@ class _CreateCommunityDonationScreenState
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Tax certificate is generated instantly upon payment confirmation. 50% eligible deduction under Section 80G.',
+                  'Get your 80G tax receipt right after payment (50% tax savings).',
                   style: TextStyle(
                     fontSize: 11,
                     color: AppTheme.charcoalMuted,
@@ -553,7 +550,7 @@ class _CreateCommunityDonationScreenState
           children: [
             Expanded(
               child: AppTextField(
-                label: 'Item Count',
+                label: 'How Many Items',
                 hint: 'e.g. 15 pcs',
                 controller: _quantityController,
                 prefixIcon: Icons.format_list_numbered_rounded,
@@ -596,7 +593,7 @@ class _CreateCommunityDonationScreenState
                           DropdownMenuItem(
                             value: 'Gently Used (Clean & Sanitized)',
                             child: Text(
-                              'Gently Used',
+                              'Clean & Used',
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
@@ -620,7 +617,7 @@ class _CreateCommunityDonationScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppTextField(
-          label: 'Quantity (Books / Bundles)',
+          label: 'How Many Books',
           hint: 'e.g. 25 Books',
           controller: _quantityController,
           prefixIcon: Icons.book_rounded,
@@ -631,7 +628,7 @@ class _CreateCommunityDonationScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Audience / Educational Level',
+              'Class / Level',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,

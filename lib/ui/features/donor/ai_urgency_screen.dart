@@ -63,7 +63,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('AI Allocation & Urgency Engine')),
+      appBar: AppBar(title: const Text('Food Match Details')),
       body: SafeArea(
         child: _isProcessing
             ? _buildProcessingAnimation()
@@ -106,7 +106,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
             ),
             const SizedBox(height: 32),
             const Text(
-              'Analyzing Thermal & Routing Dynamics',
+              'Finding Best NGOs',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -117,7 +117,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
             ),
             const SizedBox(height: 12),
             const Text(
-              'Running multi-variable optimization: perishability decay rate, traffic travel corridors, and verified NGO kitchen capacities...',
+              'Checking food time left, distance, and nearby kitchen space...',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
@@ -143,7 +143,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                   ),
                   SizedBox(width: 8),
                   Text(
-                    'FSSAI Safe Food Chain Protocol Active',
+                    'Food Safety Check Active',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -205,7 +205,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Urgency Score',
+                            'Priority',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -227,7 +227,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                         ),
                       ),
                       Text(
-                        'Safe consumption window: ${widget.donation.formattedTimeRemaining}',
+                        'Good for: ${widget.donation.formattedTimeRemaining}',
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -242,7 +242,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
           ),
           const SizedBox(height: 20),
 
-          // Perishability & Guidelines
+          // Storage & Care
           AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +256,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'Perishability & Cold-Chain Directive',
+                      'Storage & Care',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -307,7 +307,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
           ),
           const SizedBox(height: 16),
 
-          // Transparent Reasoning Summary
+          // Match Summary
           AppCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,7 +321,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'AI Transparent Allocation Logic',
+                      'Why These NGOs',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -375,7 +375,7 @@ class _AIUrgencyScreenState extends State<AIUrgencyScreen>
 
           // Proceed to view suggested NGOs
           AppButton(
-            label: 'View ${_analysis.matches.length} Recommended NGOs',
+            label: 'See ${_analysis.matches.length} Best NGOs',
             icon: Icons.volunteer_activism_rounded,
             onPressed: () {
               Navigator.push(

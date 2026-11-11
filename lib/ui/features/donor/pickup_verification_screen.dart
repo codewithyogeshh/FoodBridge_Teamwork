@@ -13,7 +13,7 @@ class PickupVerificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Digital Pickup Passcode')),
+      appBar: AppBar(title: const Text('Pickup QR & PIN')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -47,7 +47,7 @@ class PickupVerificationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 28),
 
-              // Chain-of-Custody Instructions
+              // Pickup Steps
               AppCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,13 +55,13 @@ class PickupVerificationScreen extends StatelessWidget {
                     const Row(
                       children: [
                         Icon(
-                          Icons.security_rounded,
+                          Icons.verified_user_outlined,
                           size: 18,
                           color: AppTheme.forestGreen,
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Chain of Custody Protocol',
+                          'Pickup Steps',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -73,53 +73,18 @@ class PickupVerificationScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     _buildStep(
                       num: '1',
-                      text:
-                          'Verify the arriving driver represents the registered NGO.',
+                      text: 'Check that the helper is from the assigned NGO.',
                     ),
                     const SizedBox(height: 8),
                     _buildStep(
                       num: '2',
-                      text:
-                          'Ask the driver to scan this QR code or input the 4-digit OTP.',
+                      text: 'Show this QR code or share the 4-digit PIN.',
                     ),
                     const SizedBox(height: 8),
                     _buildStep(
                       num: '3',
                       text:
-                          'Hand off insulated food pans only after driver phone shows verified confirmation.',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Verification Safety Badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.emeraldLight,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.emerald),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.lock_rounded,
-                      size: 16,
-                      color: AppTheme.forestGreen,
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      'Cryptographic Handoff Secured by Supabase RLS',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.forestGreen,
-                      ),
+                          'Hand over the food once the helper confirms pickup.',
                     ),
                   ],
                 ),

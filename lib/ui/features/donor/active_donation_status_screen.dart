@@ -19,10 +19,12 @@ class ActiveDonationStatusScreen extends StatelessWidget {
     final isReserved = donation.status == DonationStatus.reserved;
     final isPickedUp = donation.status == DonationStatus.pickupVerified;
     final isDelivered = donation.status == DonationStatus.delivered;
+    final ngoLabel = donation.reservedNgoName ?? 'Assigned NGO';
+    final helperLabel = donation.assignedVolunteerName ?? 'Delivery Helper';
 
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Live Donation Tracking')),
+      appBar: AppBar(title: const Text('Order Tracking')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -92,7 +94,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                               ),
                               SizedBox(width: 4),
                               Text(
-                                'Uploaded Batch Photo',
+                                'Food Photo',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,
@@ -116,10 +118,12 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                 height: 200,
                 locationTitle: donation.pickupAddress,
                 subtitle: isReserved
-                    ? 'Robin Hood Food Rescue vehicle in transit (ETA: 14 mins)'
-                    : 'Awaiting local verified NGO reservation',
+                    ? '$ngoLabel is on the way'
+                    : (isPickedUp
+                          ? 'Picked up • Heading to $ngoLabel'
+                          : 'Waiting for a nearby NGO to book'),
                 showRoute: isReserved || isPickedUp,
-                destinationTitle: 'Robin Hood Rescue Kitchen',
+                destinationTitle: ngoLabel,
               ),
               const SizedBox(height: 20),
 
@@ -138,7 +142,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            'Assigned Rescuer',
+                            'Pickup Details',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
@@ -150,18 +154,20 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Robin Hood Food Rescue',
-                        style: TextStyle(
+                      Text(
+                        ngoLabel,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
                           color: AppTheme.richCharcoal,
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        'Driver: Arjun Verma (Volunteer Van • KA-03-MM-4491)',
-                        style: TextStyle(
+                      Text(
+                        donation.assignedVolunteerName != null
+                            ? 'Helper: $helperLabel'
+                            : 'Helper assigned soon',
+                        style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.charcoalMuted,
                         ),
@@ -188,8 +194,10 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   isPickedUp
-                                      ? 'In Transit to Kitchen'
-                                      : 'ETA: 14 mins',
+                                      ? 'On the way to NGO'
+                                      : (isDelivered
+                                            ? 'Delivered'
+                                            : 'On the way'),
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
@@ -211,10 +219,8 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                             ),
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Connecting call to Arjun Verma (+91 98450 67890)...',
-                                  ),
+                                SnackBar(
+                                  content: Text('Calling $helperLabel...'),
                                 ),
                               );
                             },
@@ -227,7 +233,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                 const SizedBox(height: 16),
               ],
 
-              // Pickup Passcode Card
+              // Pickup PIN Card
               AppCard(
                 backgroundColor: AppTheme.emeraldLight.withValues(alpha: 0.2),
                 border: const BorderSide(color: AppTheme.emerald, width: 1.5),
@@ -251,7 +257,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'One-Time Pickup Passcode',
+                            'Pickup PIN',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -260,7 +266,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Display code or QR when driver arrives',
+                            'Share this PIN or QR when the helper arrives',
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey.shade700,
@@ -285,7 +291,7 @@ class ActiveDonationStatusScreen extends StatelessWidget {
 
               // Action button to open full QR
               AppButton(
-                label: 'Open Fullscreen Pickup QR & Passcode',
+                label: 'Show QR & PIN',
                 icon: Icons.fullscreen_rounded,
                 variant: AppButtonVariant.primary,
                 onPressed: () {

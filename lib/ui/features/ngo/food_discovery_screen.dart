@@ -59,7 +59,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
           appBar: AppBar(
-            title: const Text('Discover Surplus Food'),
+            title: const Text('Find Food'),
             actions: [
               IconButton(
                 icon: Icon(
@@ -68,7 +68,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                       : Icons.map_rounded,
                   color: AppTheme.forestGreen,
                 ),
-                tooltip: _isMapView ? 'Switch to List' : 'Switch to Map',
+                tooltip: _isMapView ? 'List View' : 'Map View',
                 onPressed: () => setState(() => _isMapView = !_isMapView),
               ),
               const SizedBox(width: 8),
@@ -88,7 +88,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                     onChanged: (val) =>
                         setState(() => _searchQuery = val.trim()),
                     decoration: InputDecoration(
-                      hintText: 'Search food batches, bakeries, banquets...',
+                      hintText: 'Search food, hotel, or area...',
                       prefixIcon: const Icon(
                         Icons.search_rounded,
                         color: AppTheme.charcoalMuted,
@@ -134,13 +134,13 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                 ),
                 const SizedBox(height: 8),
 
-                // Urgency Priority Filter
+                // Priority Filter
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
                       const Text(
-                        'Urgency:',
+                        'Priority:',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -162,7 +162,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            'All Priorities',
+                            'All',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -193,7 +193,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            'Critical (< 3h)',
+                            'Urgent (< 3h)',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -253,9 +253,8 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
     if (list.isEmpty) {
       return const EmptyStateWidget(
         icon: Icons.search_off_rounded,
-        title: 'No Matching Surplus Food',
-        message:
-            'No surplus batches match your active filters. Try clearing urgency or category filters.',
+        title: 'No Food Found',
+        message: 'No food orders match your filter. Try choosing All.',
       );
     }
 
@@ -412,8 +411,8 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
         Expanded(
           child: MapPreviewWidget(
             height: double.infinity,
-            locationTitle: 'FoodBridge Regional Surplus Grid',
-            subtitle: '${list.length} surplus donation hubs available',
+            locationTitle: 'Nearby Food Map',
+            subtitle: '${list.length} food pickups available',
             showRoute: false,
           ),
         ),
@@ -464,7 +463,7 @@ class _FoodDiscoveryScreenState extends State<FoodDiscoveryScreen> {
                           ),
                         ),
                         Text(
-                          '${list.first.quantityLabel} • Tap to view & reserve',
+                          '${list.first.quantityServings} plates • Tap to view & book',
                           style: const TextStyle(
                             fontSize: 12,
                             color: AppTheme.charcoalMuted,

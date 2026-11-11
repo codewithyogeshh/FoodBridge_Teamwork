@@ -25,71 +25,62 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
   final List<Map<String, dynamic>> _roles = [
     {
       'role': UserRole.donor,
-      'title': 'Commercial Food Donor',
-      'subtitle': 'Restaurants, Caterers, Hotels & Food Manufacturers',
+      'title': 'Food Donor',
+      'subtitle': 'Hotels, Restaurants & Caterers',
       'description':
-          'Post surplus edible food in 60 seconds. Our AI perishability engine matches ultra-close shelters before food expires.',
+          'Post extra food in 30 seconds. Nearby NGOs get alerted right away.',
       'icon': Icons.storefront_rounded,
-      'tag': 'SURPLUS PROVIDER • TAX ACCREDITED',
+      'tag': 'SHARE EXTRA FOOD',
       'tagColor': Color(0xFF059669),
       'tagBg': Color(0xFFECFDF5),
-      'perks': [
-        '⚡ 15m Dispatch',
-        'Automated 80G Receipts',
-        'Cold Chain Tracking',
-      ],
+      'perks': ['Fast 30s Form', '80G Tax Receipt', 'Quick Pickup'],
     },
     {
       'role': UserRole.community,
       'title': 'Community Giver',
-      'subtitle': 'Citizens, Families, Students & Philanthropists',
-      'description':
-          'Donate spare clothes, blankets, school books, or sponsor hot meals with instant 80G tax exemption receipts and full anonymous privacy mode.',
+      'subtitle': 'Anyone Who Wants to Help',
+      'description': 'Donate extra clothes, books, or sponsor meals easily.',
       'icon': Icons.volunteer_activism_rounded,
-      'tag': 'HYPER-LOCAL NEIGHBORHOOD • ANYONE CAN GIVE',
+      'tag': 'HELP OTHERS',
       'tagColor': Color(0xFFD97706),
       'tagBg': Color(0xFFFEF3C7),
-      'perks': ['Direct Drop-off', 'Instant 80G Receipt', 'Anonymous Mode'],
+      'perks': ['Clothes & Books', '80G Receipt', 'Stay Private'],
     },
     {
       'role': UserRole.ngo,
-      'title': 'Verified NGO / Shelter Kitchen',
-      'subtitle': 'Shelter Homes, Food Banks & Rescue Fleets',
+      'title': 'NGO / Shelter Kitchen',
+      'subtitle': 'Shelters & Food Relief Groups',
       'description':
-          'Discover nearby surplus food and community gifts on real-time radar maps. Claim with atomic locks and secure OTP custody verification.',
+          'Find fresh food nearby, book it safely, and share with people in need.',
       'icon': Icons.soup_kitchen_rounded,
-      'tag': 'LICENSED RESCUER • PRIORITY ALLOCATION',
+      'tag': 'RECEIVE FOOD',
       'tagColor': Color(0xFF0D9488),
       'tagBg': Color(0xFFF0FDFA),
-      'perks': ['Live Radar Map', 'Atomic Claim Locks', 'FSSAI Verified'],
+      'perks': ['Food Near You', 'Safe Booking', 'Verified NGO'],
     },
     {
       'role': UserRole.volunteer,
-      'title': 'Volunteer Delivery Partner',
-      'subtitle': 'Food Courier Riders, Students & Community Heroes',
+      'title': 'Delivery Volunteer',
+      'subtitle': 'Riders & Local Helpers',
       'description':
-          'Pick up surplus food from donors and deliver directly to NGOs lacking transport. Earn ₹20–₹30 per delivery while eliminating hunger.',
+          'Pick up food from donors and drop it at nearby NGOs. Earn ₹20–₹30 per trip.',
       'icon': Icons.delivery_dining_rounded,
-      'tag': 'HERO ON WHEELS • EARN ₹20-₹30 / TRIP',
+      'tag': 'EARN ₹20-₹30 / TRIP',
       'tagColor': Color(0xFFEA580C),
       'tagBg': Color(0xFFFFF7ED),
-      'perks': [
-        'Donor-to-NGO Route',
-        '₹20–₹30 per Trip',
-        'Direct Social Impact',
-      ],
+      'perks': ['Short Routes', '₹20–₹30 per Trip', 'Direct Help'],
     },
     {
       'role': UserRole.admin,
-      'title': 'Platform Admin & Compliance',
-      'subtitle': 'Auditor, Operations & Safety Desk',
+      'title': 'Admin',
+      'subtitle': 'Verify NGOs & App Check',
       'description':
-          'Inspect uploaded Aadhaar/PAN and FSSAI food safety licenses, verify delivery logs, oversee real-time logistics, and export statutory audit trails.',
+          'Approve NGOs, check live food orders, and download reports.',
       'icon': Icons.radar_rounded,
-      'tag': 'RESTRICTED SSO • OPERATIONS & GOVERNANCE',
+      'tag': 'ADMIN DESK',
       'tagColor': Color(0xFF4F46E5),
       'tagBg': Color(0xFFEEF2FF),
-      'perks': ['Credential Vault', 'Live Dispatch Log', 'Statutory Reports'],
+      'perks': ['Verify NGOs', 'Live Orders', 'Reports'],
     },
   ];
 
@@ -300,50 +291,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
           ),
           const Spacer(),
 
-          // Bank-Grade SSL Chip
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color(0xFF10B981).withValues(alpha: 0.3),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ScaleTransition(
-                  scale: _pulseAnimation,
-                  child: Container(
-                    width: 6,
-                    height: 6,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF059669),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                const Icon(
-                  Icons.lock_rounded,
-                  size: 11,
-                  color: Color(0xFF059669),
-                ),
-                const SizedBox(width: 4),
-                const Text(
-                  '256-Bit',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF059669),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-
           // Connectivity Pill
           InkWell(
             onTap: () {
@@ -462,7 +409,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
             ),
             const SizedBox(width: 6),
             const Text(
-              'STEP 1 OF 3 • IDENTITY ARCHITECTURE',
+              'STEP 1 OF 3 • CHOOSE YOUR ROLE',
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
@@ -473,7 +420,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
           ],
         ),
 
-        // Live Rescue Counter Ticker Pill
+        // Live Meals Shared Pill
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
           decoration: BoxDecoration(
@@ -496,7 +443,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               ),
               const SizedBox(width: 4),
               const Text(
-                '14.2k kg rescued today',
+                'Fresh food shared daily',
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
@@ -720,7 +667,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
     );
   }
 
-  /// Legal Trust Seal
+  /// Food Safety Note
   Widget _buildGoodSamaritanTrustSeal() {
     return Container(
       padding: const EdgeInsets.all(12),
@@ -732,21 +679,21 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(7),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(7),
+            decoration: const BoxDecoration(
               color: Color(0xFFFEF3C7),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.gavel_rounded,
+            child: const Icon(
+              Icons.verified_user_rounded,
               size: 16,
               color: Color(0xFFD97706),
             ),
           ),
-          SizedBox(width: 10),
-          Expanded(
+          const SizedBox(width: 10),
+          const Expanded(
             child: Text(
-              'Protected by the Bill Emerson Good Samaritan Food Donation Act & DPDP Act 2023. Standardized zero-liability guarantee for all verified nodes.',
+              'Safe Food Sharing • Only verified NGOs can receive cooked food donations.',
               style: TextStyle(
                 fontSize: 11,
                 color: Color(0xFF6B7280),
@@ -766,10 +713,10 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
         : _selectedRole == UserRole.donor
         ? 'Continue as Food Donor'
         : _selectedRole == UserRole.ngo
-        ? 'Continue as Verified NGO'
+        ? 'Continue as NGO'
         : _selectedRole == UserRole.volunteer
-        ? 'Continue as Volunteer Delivery Partner'
-        : 'Continue as Platform Admin';
+        ? 'Continue as Volunteer'
+        : 'Continue as Admin';
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 18),
@@ -858,7 +805,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
 
             // Safety Micro-copy
             const Text(
-              'By selecting, you agree to FoodBridge Safety Protocols & Good Samaritan Act Protections.',
+              'By continuing, you agree to share only fresh and safe food.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 10, color: Color(0xFF9CA3AF)),
             ),

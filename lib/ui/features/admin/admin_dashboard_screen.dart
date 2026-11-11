@@ -35,11 +35,11 @@ class AdminDashboardScreen extends StatelessWidget {
           children: [
             Icon(Icons.logout_rounded, color: AppTheme.statusCritical),
             SizedBox(width: 10),
-            Text('Exit Admin Operations?'),
+            Text('Log Out?'),
           ],
         ),
         content: const Text(
-          'Are you sure you want to end your administrative session and return to the login screen?',
+          'Do you want to log out of Admin and go back to login?',
         ),
         actions: [
           TextButton(
@@ -69,17 +69,20 @@ class AdminDashboardScreen extends StatelessWidget {
       builder: (context, _) {
         final pendingCount = repository.pendingNGOs.length;
         final totalNgos = repository.ngos.length;
-        final totalDonations = repository.donations.length;
+        final activeIncoming = repository.donations
+            .where((d) => d.isSafeToConsume)
+            .toList();
+        final totalDonations = activeIncoming.length;
         final totalMeals = repository.totalMealsRescued;
 
         return Scaffold(
           backgroundColor: AppTheme.warmIvory,
           appBar: AppBar(
-            title: const Text('Admin Operations & Audit'),
+            title: const Text('Admin Home'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.settings_outlined),
-                tooltip: 'System Settings',
+                tooltip: 'Settings',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -93,7 +96,7 @@ class AdminDashboardScreen extends StatelessWidget {
               NotificationBellButton(repository: repository),
               IconButton(
                 icon: const Icon(Icons.refresh_rounded),
-                tooltip: 'Refresh Platform Metrics',
+                tooltip: 'Refresh Data',
                 onPressed: () => repository.refreshAllData(),
               ),
               IconButton(
@@ -101,7 +104,7 @@ class AdminDashboardScreen extends StatelessWidget {
                   Icons.logout_rounded,
                   color: AppTheme.statusCritical,
                 ),
-                tooltip: 'Log Out of Admin Operations',
+                tooltip: 'Log Out',
                 onPressed: () => _confirmLogout(context),
               ),
               const SizedBox(width: 8),
@@ -144,7 +147,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: const Text(
-                                'CENTRAL OPERATIONS COMMAND',
+                                'ADMIN PANEL',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
@@ -163,7 +166,7 @@ class AdminDashboardScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 14),
                         const Text(
-                          'FoodBridge Network Operations',
+                          'FoodBridge Admin',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
@@ -172,7 +175,7 @@ class AdminDashboardScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          'Supervising regional food allocations, food safety chain-of-custody, and NGO compliance.',
+                          'Check food orders, approve NGOs, and watch live deliveries.',
                           style: TextStyle(
                             fontSize: 12.5,
                             color: Colors.white70,
@@ -189,7 +192,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _buildKpiCard(
-                          label: 'Rescued Meals',
+                          label: 'Meals Shared',
                           value: '$totalMeals',
                           icon: Icons.soup_kitchen_rounded,
                         ),
@@ -204,13 +207,12 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 12),
                   const SizedBox(height: 12),
                   Row(
                     children: [
                       Expanded(
                         child: _buildKpiCard(
-                          label: 'Active Donations',
+                          label: 'Active Food Orders',
                           value: '$totalDonations',
                           icon: Icons.fastfood_rounded,
                         ),
@@ -218,7 +220,7 @@ class AdminDashboardScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildKpiCard(
-                          label: 'CO2e Diverted',
+                          label: 'CO2 Saved',
                           value:
                               '${(repository.totalCo2OffsetKg / 1000).toStringAsFixed(1)} Tons',
                           icon: Icons.eco_rounded,
@@ -227,7 +229,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 14),
-                  // Admin Quick Diagnostic & Transparency Bar
+                  // Quick Shortcuts Bar
                   Row(
                     children: [
                       Expanded(
@@ -271,7 +273,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Supabase Console',
+                                        'Server Status',
                                         style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w800,
@@ -279,7 +281,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'Realtime & Logs',
+                                        'Sync & Logs',
                                         style: TextStyle(
                                           fontSize: 9,
                                           color: Color(0xFF2563EB),
@@ -335,7 +337,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'ESG Carbon Hub',
+                                        'Impact Report',
                                         style: TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w800,
@@ -343,7 +345,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'CSR Audits',
+                                        'Certificates',
                                         style: TextStyle(
                                           fontSize: 9,
                                           color: AppTheme.forestGreen,
@@ -408,7 +410,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        'Heroes',
+                                        'Top Helpers',
                                         style: TextStyle(
                                           fontSize: 9,
                                           color: Color(0xFFD97706),
@@ -426,14 +428,14 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
-                  // Realtime Incoming Donation Feed for Central Command
+                  // Live Incoming Food Orders
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           const Text(
-                            '🚨 Live Incoming Donations',
+                            'Live Food Orders',
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
@@ -464,7 +466,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  'REALTIME ($totalDonations)',
+                                  'LIVE ($totalDonations)',
                                   style: const TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,
@@ -500,7 +502,7 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  if (repository.donations.isEmpty)
+                  if (activeIncoming.isEmpty)
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -510,7 +512,7 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          'No donations registered yet. Standing by for incoming donor batches.',
+                          'No active food orders right now.',
                           style: TextStyle(
                             fontSize: 13,
                             color: AppTheme.charcoalMuted,
@@ -522,10 +524,10 @@ class AdminDashboardScreen extends StatelessWidget {
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: repository.donations.take(3).length,
+                      itemCount: activeIncoming.take(3).length,
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (context, index) {
-                        final item = repository.donations[index];
+                        final item = activeIncoming[index];
                         return AppCard(
                           padding: const EdgeInsets.all(14),
                           border: BorderSide(
@@ -544,7 +546,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                   UrgencyBadge(level: item.urgencyLevel),
                                   const Spacer(),
                                   Text(
-                                    '${item.quantityServings} servings',
+                                    '${item.quantityServings} plates',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w800,
@@ -564,7 +566,7 @@ class AdminDashboardScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                'Donor: ${item.donorName} (${item.donorPhone}) • ${item.pickupAddress}',
+                                'From: ${item.donorName} (${item.donorPhone}) • ${item.pickupAddress}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -603,7 +605,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         );
                                       },
                                       child: const Text(
-                                        'Inspect Details',
+                                        'View Details',
                                         style: TextStyle(
                                           fontSize: 11.5,
                                           fontWeight: FontWeight.w700,
@@ -638,7 +640,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                         );
                                       },
                                       child: const Text(
-                                        'AI Allocate',
+                                        'Find Best NGO',
                                         style: TextStyle(
                                           fontSize: 11.5,
                                           fontWeight: FontWeight.w700,
@@ -658,7 +660,7 @@ class AdminDashboardScreen extends StatelessWidget {
 
                   // Navigation Modules
                   const Text(
-                    'Administrative Workflows',
+                    'Admin Tools',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
@@ -670,10 +672,10 @@ class AdminDashboardScreen extends StatelessWidget {
 
                   // NGO Verification Queue Card
                   _buildNavCard(
-                    title: 'NGO Verification Queue',
+                    title: 'Verify New NGOs',
                     subtitle: pendingCount > 0
-                        ? '$pendingCount organization application(s) awaiting audit'
-                        : 'All regional NGOs verified and licensed',
+                        ? '$pendingCount NGO(s) waiting for check'
+                        : 'All NGOs are verified',
                     icon: Icons.verified_user_rounded,
                     badgeCount: pendingCount,
                     isAlert: pendingCount > 0,
@@ -690,13 +692,12 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Signature AI Experience Launcher
+                  // Smart NGO Matcher
                   _buildNavCard(
-                    title: 'Signature AI Food Allocation Engine',
-                    subtitle:
-                        'Neural demand optimization, decay simulation & smart routing',
+                    title: 'Smart NGO Matcher',
+                    subtitle: 'Match food orders to the best nearby NGO',
                     icon: Icons.auto_awesome_rounded,
-                    badgeText: 'CORE AI FEATURE',
+                    badgeText: 'SMART MATCH',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -709,11 +710,11 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Donation Batch Moderation
+                  // All Food Orders
                   _buildNavCard(
-                    title: 'Donation Batch Moderation',
+                    title: 'All Food Orders',
                     subtitle:
-                        'Inspect and manage all $totalDonations active food batches',
+                        'View and manage all ${repository.donations.length} food orders',
                     icon: Icons.inventory_rounded,
                     onTap: () {
                       Navigator.push(
@@ -729,9 +730,8 @@ class AdminDashboardScreen extends StatelessWidget {
 
                   // Live Delivery Monitoring
                   _buildNavCard(
-                    title: 'Live Delivery & Transit Map',
-                    subtitle:
-                        'Monitor active couriers, ETAs, and handoff passcodes',
+                    title: 'Live Delivery Map',
+                    subtitle: 'Track helpers, drop-off times, and pickup PINs',
                     icon: Icons.map_rounded,
                     onTap: () {
                       Navigator.push(
@@ -747,9 +747,8 @@ class AdminDashboardScreen extends StatelessWidget {
 
                   // Reports and Settings
                   _buildNavCard(
-                    title: 'Environmental Audit & Platform Settings',
-                    subtitle:
-                        'Export CSV audit trail and tune safety threshold rules',
+                    title: 'Reports & Settings',
+                    subtitle: 'Download reports and update app rules',
                     icon: Icons.tune_rounded,
                     onTap: () {
                       Navigator.push(

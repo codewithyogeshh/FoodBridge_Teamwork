@@ -52,8 +52,8 @@ class _NGOVerificationDetailScreenState
         SnackBar(
           content: Text(
             newStatus == NGOVerificationStatus.verified
-                ? 'NGO Approved and credentialed on FoodBridge Network!'
-                : 'Application rejected / flagged for audit.',
+                ? 'NGO approved and verified!'
+                : 'NGO application rejected.',
           ),
           backgroundColor: newStatus == NGOVerificationStatus.verified
               ? AppTheme.forestGreen
@@ -67,7 +67,7 @@ class _NGOVerificationDetailScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('NGO Verification Audit')),
+      appBar: AppBar(title: const Text('NGO Check')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -107,7 +107,7 @@ class _NGOVerificationDetailScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Entity Information & Contact',
+                      'NGO Details',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -115,16 +115,16 @@ class _NGOVerificationDetailScreenState
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildRow('Primary Coordinator', _ngo.contactPerson),
-                    _buildRow('Official Phone', _ngo.phone),
-                    _buildRow('Kitchen Facility Address', _ngo.address),
+                    _buildRow('Contact Person', _ngo.contactPerson),
+                    _buildRow('Phone', _ngo.phone),
+                    _buildRow('Address', _ngo.address),
                     _buildRow(
-                      'Daily Meal Capacity',
+                      'Daily Capacity',
                       '${_ngo.capacityMealsPerDay} Meals / Day',
                     ),
                     _buildRow(
-                      'FSSAI Certificate ID',
-                      _ngo.foodSafetyCertId ?? 'PENDING AUDIT',
+                      'Food License (FSSAI)',
+                      _ngo.foodSafetyCertId ?? 'Pending',
                     ),
                   ],
                 ),
@@ -145,7 +145,7 @@ class _NGOVerificationDetailScreenState
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Compliance & Government Identity Documents',
+                          'Uploaded Documents',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
@@ -329,7 +329,7 @@ class _NGOVerificationDetailScreenState
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'Lic: ${_ngo.foodSafetyCertId ?? "FSSAI-2024-901844-KA"} • Commercial Rescue (${_ngo.docFileSize ?? "1.4 MB"})',
+                                  'Lic: ${_ngo.foodSafetyCertId ?? "FSSAI-2024-901844-KA"} • Food License (${_ngo.docFileSize ?? "1.4 MB"})',
                                   style: const TextStyle(
                                     fontSize: 11,
                                     color: AppTheme.charcoalMuted,
@@ -363,8 +363,7 @@ class _NGOVerificationDetailScreenState
                             ),
                             onPressed: () {
                               _openDocumentViewer(
-                                docTitle:
-                                    'FSSAI Food Safety Compliance Certificate',
+                                docTitle: 'FSSAI Food Safety License',
                                 docType: 'State Food Safety Authority License',
                                 docFileName:
                                     _ngo.fssaiDocFileName ??
@@ -389,7 +388,7 @@ class _NGOVerificationDetailScreenState
               // Admin Action Buttons
               if (!_ngo.isVerified) ...[
                 AppButton(
-                  label: 'Approve & Grant Food Rescue License',
+                  label: 'Approve NGO',
                   icon: Icons.check_circle_rounded,
                   isLoading: _isUpdating,
                   variant: AppButtonVariant.primary,
@@ -398,7 +397,7 @@ class _NGOVerificationDetailScreenState
                 ),
                 const SizedBox(height: 12),
                 AppButton(
-                  label: 'Reject Application / Flag for Defect',
+                  label: 'Reject',
                   icon: Icons.cancel_outlined,
                   isLoading: _isUpdating,
                   variant: AppButtonVariant.danger,
@@ -423,7 +422,7 @@ class _NGOVerificationDetailScreenState
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'This organization is actively verified and authorized to participate in atomic reservations and meal pickups.',
+                          'This NGO is verified and can book food orders.',
                           style: TextStyle(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
@@ -593,7 +592,7 @@ class _NGOVerificationDetailScreenState
                           ),
                           const SizedBox(height: 10),
                           const Text(
-                            'GOVERNMENT REGISTRATION & COMPLIANCE RECORD',
+                            'NGO DOCUMENT RECORD',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 11,
@@ -616,31 +615,24 @@ class _NGOVerificationDetailScreenState
                           const SizedBox(height: 14),
 
                           // Certificate Data Table
-                          _buildCertRow(
-                            'Entity Legal Name',
-                            _ngo.organizationName,
-                          ),
+                          _buildCertRow('NGO Name', _ngo.organizationName),
                           _buildCertRow(
                             'Registration / 80G No.',
                             _ngo.registrationNumber,
                           ),
+                          _buildCertRow('Contact Person', _ngo.contactPerson),
+                          _buildCertRow('Phone', _ngo.phone),
+                          _buildCertRow('Document Number', docIdNumber),
+                          _buildCertRow('Address', _ngo.address),
                           _buildCertRow(
-                            'Authorized Trustee',
-                            _ngo.contactPerson,
-                          ),
-                          _buildCertRow('Registered Phone', _ngo.phone),
-                          _buildCertRow('Document Identifier', docIdNumber),
-                          _buildCertRow('Kitchen Coordinates', _ngo.address),
-                          _buildCertRow(
-                            'Daily Meal Quota',
+                            'Daily Capacity',
                             '${_ngo.capacityMealsPerDay} Meals / Day',
                           ),
                           _buildCertRow(
-                            'Digital Security Hash',
-                            _ngo.docVerifiedHash ??
-                                'SHA256: 8F2A-94B1-C84E-Verified',
+                            'Document Check ID',
+                            _ngo.docVerifiedHash ?? '8F2A-94B1-C84E-Verified',
                           ),
-                          _buildCertRow('Attached File Record', docFileName),
+                          _buildCertRow('File Name', docFileName),
 
                           const SizedBox(height: 20),
 
@@ -665,7 +657,7 @@ class _NGOVerificationDetailScreenState
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'CRYPTOGRAPHIC AUDIT PASS: VERIFIED AUTHENTIC',
+                                  'VERIFIED DOCUMENT',
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w800,
@@ -697,14 +689,12 @@ class _NGOVerificationDetailScreenState
                           ),
                         ),
                         icon: const Icon(Icons.download_rounded, size: 18),
-                        label: const Text('Download PDF Copy'),
+                        label: const Text('Download PDF'),
                         onPressed: () {
                           Navigator.pop(ctx);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                'Downloading $docFileName for local audit storage...',
-                              ),
+                              content: Text('Downloading $docFileName...'),
                               backgroundColor: AppTheme.forestGreen,
                             ),
                           );
@@ -723,7 +713,7 @@ class _NGOVerificationDetailScreenState
                           ),
                         ),
                         icon: const Icon(Icons.done_all_rounded, size: 18),
-                        label: const Text('Confirm Inspected'),
+                        label: const Text('Done'),
                         onPressed: () => Navigator.pop(ctx),
                       ),
                     ),

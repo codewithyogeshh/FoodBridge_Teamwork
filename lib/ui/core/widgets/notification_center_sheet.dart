@@ -110,7 +110,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                           Row(
                             children: [
                               const Text(
-                                'Live Alerts & Dispatch',
+                                'Alerts',
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w800,
@@ -131,8 +131,8 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                           const SizedBox(height: 2),
                           Text(
                             unreadCount > 0
-                                ? '$unreadCount unread • Supabase Realtime active'
-                                : 'All caught up • Connected to WebSocket',
+                                ? '$unreadCount unread'
+                                : 'All caught up',
                             style: TextStyle(
                               fontSize: 12,
                               color: unreadCount > 0
@@ -189,7 +189,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                     const SizedBox(width: 8),
                     _buildFilterChip('Unread', 'unread', unreadCount),
                     const SizedBox(width: 8),
-                    _buildFilterChip('Surplus Food', 'donations', null),
+                    _buildFilterChip('Food Orders', 'donations', null),
                   ],
                 ),
               ),
@@ -211,7 +211,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                             ),
                             const SizedBox(height: 12),
                             const Text(
-                              'No notifications found',
+                              'No alerts yet',
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
@@ -220,7 +220,7 @@ class _NotificationCenterSheetState extends State<NotificationCenterSheet> {
                             ),
                             const SizedBox(height: 4),
                             const Text(
-                              'When donors post surplus food, live alerts appear here instantly.',
+                              'New food orders and updates will appear here.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 12,

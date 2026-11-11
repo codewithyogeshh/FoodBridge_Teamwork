@@ -126,7 +126,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '🚨 SOS BROADCAST ACTIVE: $_selectedPortions meals broadcasted to 14 shelters & all online couriers!',
+          'Alert sent! $_selectedPortions plates shared with nearby shelters.',
         ),
         backgroundColor: const Color(0xFFDC2626),
         duration: const Duration(seconds: 5),
@@ -196,7 +196,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'LATE-NIGHT EMERGENCY SOS RESCUE',
+                                'URGENT BULK FOOD ALERT',
                                 style: TextStyle(
                                   fontSize: 12.5,
                                   fontWeight: FontWeight.w900,
@@ -206,7 +206,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                               ),
                               SizedBox(height: 2),
                               Text(
-                                'Instant priority alert to all 24x7 shelters & relief kitchens in 10 km',
+                                'Alerts 24/7 shelters and helpers within 10 km right away',
                                 style: TextStyle(
                                   fontSize: 10.5,
                                   color: Colors.white70,
@@ -224,7 +224,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
 
               // QUANTITY CHIPS
               const Text(
-                'Select Mass Surplus Batch Size',
+                'How many plates?',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w800,
@@ -261,7 +261,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
 
               // DESCRIPTION FIELD
               const Text(
-                'Menu Details & Food State',
+                'Food Details',
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -274,7 +274,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                 maxLines: 2,
                 style: const TextStyle(fontSize: 12),
                 decoration: InputDecoration(
-                  hintText: 'Enter banquet feast details...',
+                  hintText: 'e.g. Paneer, Rice, Dal & Rotis',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -301,7 +301,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '10 km Radius Radar Blast: Bypasses standard queues to wake on-call couriers and emergency shelter drivers.',
+                        'Alerts all nearby shelters and on-duty helpers right away.',
                         style: TextStyle(
                           fontSize: 10.5,
                           color: Color(0xFF991B1B),
@@ -352,9 +352,7 @@ class _SOSEmergencyRescueDialogState extends State<SOSEmergencyRescueDialog>
                             )
                           : const Icon(Icons.campaign_rounded, size: 20),
                       label: Text(
-                        _isBroadcasting
-                            ? 'Broadcasting SOS...'
-                            : 'Broadcast 10km SOS',
+                        _isBroadcasting ? 'Sending Alert...' : 'Send Alert Now',
                         style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 13,

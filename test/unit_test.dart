@@ -771,6 +771,133 @@ void main() {
       expect(expiredDonation.remainingMinutes, equals(0));
     });
 
+    test(
+      'AppRepository hides expired donations from NGO and volunteer active feeds',
+      () async {
+        final supabaseService = SupabaseService(enableRealtime: false);
+        final repository = AppRepository(supabaseService: supabaseService);
+        await repository.refreshAllData();
+
+        final now = DateTime.now();
+        final expiredStatusDonation = DonationModel(
+          id: 'test-exp-status-1',
+          donorName: 'Old Bakery',
+          donorPhone: '+91 9876543211',
+          title: 'Day-Old Buns',
+          foodType: 'Bakery & Grains',
+          quantityLabel: '10 packs',
+          quantityServings: 10,
+          pickupAddress: 'FC Road, Pune',
+          pickupLatitude: 18.5204,
+          pickupLongitude: 73.8567,
+          pickupOtp: '1111',
+          allergens: const ['Gluten'],
+          urgencyLevel: UrgencyLevel.high,
+          aiUrgencyScore: 80,
+          preparedAt: now.subtract(const Duration(hours: 8)),
+          safeUntil: now.subtract(const Duration(hours: 2)),
+          status: DonationStatus.expired,
+          createdAt: now,
+          updatedAt: now,
+        );
+        final pastSafeUntilDonation = DonationModel(
+          id: 'test-exp-time-2',
+          donorName: 'Express Meals',
+          donorPhone: '+91 9876543212',
+          title: 'Expired Curry Batch',
+          foodType: 'Cooked Meals',
+          quantityLabel: '15 plates',
+          quantityServings: 15,
+          pickupAddress: 'MG Road, Bengaluru',
+          pickupLatitude: 12.9716,
+          pickupLongitude: 77.5946,
+          pickupOtp: '2222',
+          allergens: const [],
+          urgencyLevel: UrgencyLevel.critical,
+          aiUrgencyScore: 95,
+          preparedAt: now.subtract(const Duration(hours: 6)),
+          safeUntil: now.subtract(const Duration(minutes: 15)),
+          status: DonationStatus.available,
+          createdAt: now,
+          updatedAt: now,
+        );
+
+        await repository.createDonation(expiredStatusDonation);
+        await repository.createDonation(pastSafeUntilDonation);
+
+        expect(
+          repository.availableDonations.any(
+            (d) => d.id == 'test-exp-status-1' || d.id == 'test-exp-time-2',
+          ),
+          isFalse,
+        );
+        expect(
+          repository.activeReservedDonations.any(
+            (d) => d.id == 'test-exp-status-1' || d.id == 'test-exp-time-2',
+          ),
+          isFalse,
+        );
+        expect(
+          repository.availableVolunteerDeliveries.any(
+            (d) => d.id == 'test-exp-status-1' || d.id == 'test-exp-time-2',
+          ),
+          isFalse,
+        );
+
+        repository.dispose();
+      },
+    );
+
+    test(
+      'AppRepository blocks reserving or accepting expired donations',
+      () async {
+        final supabaseService = SupabaseService(enableRealtime: false);
+        final repository = AppRepository(supabaseService: supabaseService);
+        await repository.refreshAllData();
+
+        final now = DateTime.now();
+        final expiredDonation = DonationModel(
+          id: 'test-exp-block-1',
+          donorName: 'Night Caterers',
+          donorPhone: '+91 9876543213',
+          title: 'Timed-Out Pulao',
+          foodType: 'Cooked Meals',
+          quantityLabel: '25 plates',
+          quantityServings: 25,
+          pickupAddress: 'Koramangala, Bengaluru',
+          pickupLatitude: 12.9352,
+          pickupLongitude: 77.6245,
+          pickupOtp: '3333',
+          allergens: const [],
+          urgencyLevel: UrgencyLevel.critical,
+          aiUrgencyScore: 99,
+          preparedAt: now.subtract(const Duration(hours: 5)),
+          safeUntil: now.subtract(const Duration(minutes: 20)),
+          status: DonationStatus.available,
+          createdAt: now,
+          updatedAt: now,
+        );
+
+        await repository.createDonation(expiredDonation);
+
+        final reserveResult = await repository.reserveDonation(
+          donationId: 'test-exp-block-1',
+          ngoId: 'ngo-1',
+          ngoName: 'Hope Care Kitchen',
+        );
+        expect(reserveResult['success'], isFalse);
+
+        final volunteerAccepted = await repository.acceptVolunteerDelivery(
+          donationId: 'test-exp-block-1',
+          volunteerId: 'vol-1',
+          volunteerName: 'Kiran Patil',
+        );
+        expect(volunteerAccepted, isFalse);
+
+        repository.dispose();
+      },
+    );
+
     test('UserProfileModel serializes vehicleType correctly in json', () {
       final jsonMap = {
         'id': 'vol-100',

@@ -9,8 +9,8 @@ import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_card.dart';
 import '../../../data/models/donation_model.dart';
 import '../../../data/repositories/app_repository.dart';
-import 'ai_urgency_screen.dart';
 import '../ai/food_vision_scanner_dialog.dart';
+import 'suggested_ngos_screen.dart';
 
 class CreateDonationScreen extends StatefulWidget {
   final AppRepository repository;
@@ -29,23 +29,107 @@ class CreateDonationScreen extends StatefulWidget {
 class _CreateDonationScreenState extends State<CreateDonationScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _titleController = TextEditingController();
-  final _quantityController = TextEditingController();
-  final _servingsController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _instructionsController = TextEditingController();
+  late final TextEditingController _titleController;
+  late final TextEditingController _servingsController;
+  late final TextEditingController _addressController;
+  late final TextEditingController _instructionsController;
 
   String _selectedFoodType = 'Cooked Meals';
   String _selectedStorage = 'Hot Insulated (> 60°C)';
   final List<String> _selectedAllergens = [];
-  int _safeHours = 3;
-  bool _isAnalyzing = false;
+  int _safeHours = 4;
+  bool _isPosting = false;
 
-  // ImagePicker state for surplus food donation
   final ImagePicker _imagePicker = ImagePicker();
   Uint8List? _selectedImageBytes;
   String? _selectedImageName;
   String? _presetImageUrl;
+
+  static const List<Map<String, String>> _quickDishes = [
+    {
+      'label': 'Rice & Dal',
+      'type': 'Cooked Meals',
+      'storage': 'Hot Insulated (> 60°C)',
+    },
+    {
+      'label': 'Roti & Sabzi',
+      'type': 'Cooked Meals',
+      'storage': 'Hot Insulated (> 60°C)',
+    },
+    {
+      'label': 'Veg Biryani',
+      'type': 'Cooked Meals',
+      'storage': 'Hot Insulated (> 60°C)',
+    },
+    {
+      'label': 'Bread & Bakery',
+      'type': 'Bakery & Grains',
+      'storage': 'Cool & Dry (15-20°C)',
+    },
+    {
+      'label': 'Fruits & Veggies',
+      'type': 'Produce & Veggies',
+      'storage': 'Cool & Dry (15-20°C)',
+    },
+  ];
+
+  static const List<int> _platePresets = [15, 30, 50, 100];
+  static const List<int> _hourPresets = [2, 4, 8, 24];
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _servingsController = TextEditingController(text: '30');
+    final orgName = widget.repository.currentUser.organizationName;
+    _addressController = TextEditingController(
+      text: (orgName != null && orgName.isNotEmpty)
+          ? '$orgName, MG Road'
+          : 'Grand Orchid Banquet, MG Road',
+    );
+    _instructionsController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _servingsController.dispose();
+    _addressController.dispose();
+    _instructionsController.dispose();
+    super.dispose();
+  }
+
+  String _normalizeFoodType(String raw) {
+    if (AppConstants.foodCategories.contains(raw)) return raw;
+    if (raw.toLowerCase().contains('produce')) return 'Produce & Veggies';
+    if (raw.toLowerCase().contains('bakery')) return 'Bakery & Grains';
+    if (raw.toLowerCase().contains('dairy')) return 'Dairy & Beverages';
+    if (raw.toLowerCase().contains('fruit')) return 'Fruits & Juices';
+    if (raw.toLowerCase().contains('pack')) return 'Packaged Goods';
+    return 'Cooked Meals';
+  }
+
+  String _mapStorageOption(String raw) {
+    if (AppConstants.storageOptions.contains(raw)) return raw;
+    final lower = raw.toLowerCase();
+    if (lower.contains('warm') ||
+        lower.contains('60') ||
+        lower.contains('hot')) {
+      return 'Hot Insulated (> 60°C)';
+    }
+    if (lower.contains('cool') ||
+        lower.contains('crate') ||
+        lower.contains('18-22')) {
+      return 'Cool & Dry (15-20°C)';
+    }
+    if (lower.contains('ambient') || lower.contains('room')) {
+      return 'Ambient Room Temp';
+    }
+    if (lower.contains('froz') || lower.contains('-18')) {
+      return 'Frozen (< -18°C)';
+    }
+    return 'Refrigerated (< 4°C)';
+  }
 
   Future<void> _pickFoodImage(ImageSource source) async {
     try {
@@ -67,8 +151,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       debugPrint('Error picking food image: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Could not access camera/gallery: $e'),
+          const SnackBar(
+            content: Text('Could not open camera or gallery right now.'),
             backgroundColor: AppTheme.statusCritical,
           ),
         );
@@ -92,16 +176,16 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
   String _generateUuid() {
     final rand = Random.secure();
     final values = List<int>.generate(16, (i) => rand.nextInt(256));
-    values[6] = (values[6] & 0x0f) | 0x40; // Version 4
-    values[8] = (values[8] & 0x3f) | 0x80; // Variant 10xx
+    values[6] = (values[6] & 0x0f) | 0x40;
+    values[8] = (values[8] & 0x3f) | 0x80;
     final hex = values.map((b) => b.toRadixString(16).padLeft(2, '0')).toList();
     return '${hex.sublist(0, 4).join()}-${hex.sublist(4, 6).join()}-${hex.sublist(6, 8).join()}-${hex.sublist(8, 10).join()}-${hex.sublist(10, 16).join()}';
   }
 
-  void _proceedToAI() async {
+  Future<void> _postFoodNow() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isAnalyzing = true);
+    setState(() => _isPosting = true);
 
     String? uploadedImageUrl = _presetImageUrl;
     if (_selectedImageBytes != null) {
@@ -124,6 +208,17 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
     final now = DateTime.now();
     final safeUntil = now.add(Duration(hours: _safeHours));
     final otp = _generateOtp();
+    final servings = int.tryParse(_servingsController.text.trim()) ?? 30;
+    final urgency = _safeHours <= 3
+        ? UrgencyLevel.critical
+        : _safeHours <= 12
+        ? UrgencyLevel.high
+        : UrgencyLevel.medium;
+    final urgencyScore = _safeHours <= 3
+        ? 94
+        : _safeHours <= 12
+        ? 80
+        : 55;
 
     final donation = DonationModel(
       id: _generateUuid(),
@@ -131,12 +226,12 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       donorPhone: widget.repository.currentUser.phone,
       title: _titleController.text.trim(),
       foodType: _selectedFoodType,
-      quantityLabel: _quantityController.text.trim(),
-      quantityServings: int.tryParse(_servingsController.text.trim()) ?? 50,
+      quantityLabel: '$servings Plates',
+      quantityServings: servings,
       preparedAt: now.subtract(const Duration(minutes: 30)),
       safeUntil: safeUntil,
       storageRequirements: _selectedStorage,
-      allergens: _selectedAllergens,
+      allergens: List<String>.from(_selectedAllergens),
       pickupAddress: _addressController.text.trim(),
       pickupLatitude: 12.9716,
       pickupLongitude: 77.5946,
@@ -145,73 +240,141 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       imageUrl:
           uploadedImageUrl ??
           'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
-      urgencyLevel: _selectedFoodType == 'Cooked Meals'
-          ? UrgencyLevel.critical
-          : UrgencyLevel.high,
-      aiUrgencyScore: 92,
-      aiRecommendationSummary: 'Evaluating candidate NGOs...',
+      urgencyLevel: urgency,
+      aiUrgencyScore: urgencyScore,
+      aiRecommendationSummary: 'Shared with nearby NGOs.',
       status: DonationStatus.available,
       createdAt: now,
       updatedAt: now,
     );
 
-    // Save to repository & Supabase
     final created = await widget.repository.createDonation(donation);
+    if (!mounted) return;
 
-    if (mounted) {
-      setState(() => _isAnalyzing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
+    setState(() => _isPosting = false);
+    await _showSuccessDialog(created);
+  }
+
+  Future<void> _showSuccessDialog(DonationModel created) async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogCtx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Row(
             children: [
-              const Icon(Icons.campaign_rounded, color: Colors.white, size: 22),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  '📢 "${created.title}" broadcasted live! Instant alerts dispatched to NGOs and Central Command.',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
-                  ),
+              Icon(
+                Icons.check_circle_rounded,
+                color: AppTheme.forestGreen,
+                size: 28,
+              ),
+              SizedBox(width: 10),
+              Text('Food Posted!'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${created.title} (${created.quantityLabel})',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.richCharcoal,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'Nearby NGOs and helpers can see it now.',
+                style: TextStyle(fontSize: 13, color: AppTheme.charcoalMuted),
+              ),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.emeraldLight,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Pickup PIN',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.richCharcoal,
+                      ),
+                    ),
+                    Text(
+                      created.pickupOtp,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                        color: AppTheme.forestGreen,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          backgroundColor: AppTheme.forestGreen,
-          duration: const Duration(seconds: 4),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AIUrgencyScreen(
-            donation: created,
-            repository: widget.repository,
-            onConfirmed: () {
-              widget.onDonationCreated(created);
-            },
-          ),
-        ),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _quantityController.dispose();
-    _servingsController.dispose();
-    _addressController.dispose();
-    _instructionsController.dispose();
-    super.dispose();
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogCtx).pop();
+                final analysis = widget.repository.runAIAllocation(created);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => SuggestedNGOsScreen(
+                      donation: created,
+                      analysis: analysis,
+                      onConfirmed: () => widget.onDonationCreated(created),
+                    ),
+                  ),
+                );
+              },
+              child: const Text('See Best NGOs'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.forestGreen,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.of(dialogCtx).pop();
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                }
+                widget.onDonationCreated(created);
+              },
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final safeStorageValue =
+        AppConstants.storageOptions.contains(_selectedStorage)
+        ? _selectedStorage
+        : AppConstants.storageOptions.first;
+
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Post Surplus Food')),
+      appBar: AppBar(title: const Text('Post Extra Food')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -220,29 +383,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Food Batch & Handling Details',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                    color: AppTheme.richCharcoal,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'Provide precise preparation and thermal info. FoodBridge AI calculates safe transit thresholds and matches verified receivers.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: AppTheme.charcoalMuted,
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // GEMINI AI SCANNER HERO BANNER
+                // Quick Photo Scan Banner (Optional)
                 InkWell(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(14),
                   onTap: () {
                     FoodVisionScannerDialog.show(
                       context,
@@ -251,86 +394,75 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                           _titleController.text = result.title;
                           _servingsController.text = result.estimatedServings
                               .toString();
-                          _quantityController.text =
-                              '${result.estimatedServings} portions';
-                          _selectedFoodType = result.foodType;
-                          _selectedStorage =
-                              result.storageRecommendation.contains('warm') ||
-                                  result.storageRecommendation.contains('60')
-                              ? 'Hot Insulated (> 60°C)'
-                              : result.storageRecommendation.contains('Cool')
-                              ? 'Ambient Safe (< 25°C)'
-                              : 'Refrigerated (< 4°C)';
-                          _selectedAllergens.clear();
-                          _selectedAllergens.addAll(result.allergens);
+                          _selectedFoodType = _normalizeFoodType(
+                            result.foodType,
+                          );
+                          _selectedStorage = _mapStorageOption(
+                            result.storageRecommendation,
+                          );
+                          if (result.safeHours.contains('18')) {
+                            _safeHours = 8;
+                          } else if (result.safeHours.contains('4 days')) {
+                            _safeHours = 24;
+                          } else {
+                            _safeHours = 4;
+                          }
+                          _selectedAllergens
+                            ..clear()
+                            ..addAll(result.allergens);
                           if (result.capturedImageBytes != null) {
                             _selectedImageBytes = result.capturedImageBytes;
+                            _presetImageUrl = null;
                           }
                         });
                       },
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [Color(0xFF0F392B), Color(0xFF1E5B45)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(
-                            0xFF0F392B,
-                          ).withValues(alpha: 0.25),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: const Color(
-                              0xFF34D399,
-                            ).withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.auto_awesome_rounded,
-                            color: Color(0xFF34D399),
-                            size: 26,
-                          ),
+                        Icon(
+                          Icons.camera_alt_rounded,
+                          color: Color(0xFF34D399),
+                          size: 24,
                         ),
-                        const SizedBox(width: 14),
-                        const Expanded(
+                        SizedBox(width: 12),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '✨ AI Gemini Vision Food Scanner',
+                                'Scan Food Photo (Auto-fill)',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              SizedBox(height: 3),
+                              SizedBox(height: 2),
                               Text(
-                                'Take a quick photo — AI detects dish name, portions & freshness automatically!',
+                                'Optional • Auto-fills dish name & plates',
                                 style: TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 11,
-                                  height: 1.3,
+                                  fontSize: 11.5,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.white70,
                           size: 14,
@@ -340,500 +472,335 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
+
                 AppCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Food Photo Upload Section (ImagePicker)
+                      // 1. Quick Dish Presets + Food Name
                       const Text(
-                        'Food Photo (Recommended)',
+                        'Quick Pick',
                         style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.richCharcoal,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      if (_selectedImageBytes != null ||
-                          _presetImageUrl != null)
-                        Container(
-                          height: 190,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: AppTheme.borderColor),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(13),
-                                child: _selectedImageBytes != null
-                                    ? Image.memory(
-                                        _selectedImageBytes!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.network(
-                                        _presetImageUrl!,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Container(
-                                                  color: AppTheme.emeraldLight,
-                                                  child: const Center(
-                                                    child: Icon(
-                                                      Icons.fastfood_rounded,
-                                                      color:
-                                                          AppTheme.forestGreen,
-                                                      size: 40,
-                                                    ),
-                                                  ),
-                                                ),
-                                      ),
-                              ),
-                              Positioned(
-                                top: 8,
-                                left: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 5,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.75),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.check_circle_rounded,
-                                        color: AppTheme.emerald,
-                                        size: 14,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        _selectedImageName ??
-                                            'Photo Ready for Upload',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: InkWell(
-                                  onTap: () => setState(() {
-                                    _selectedImageBytes = null;
-                                    _selectedImageName = null;
-                                    _presetImageUrl = null;
-                                  }),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(6),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black26,
-                                          blurRadius: 4,
-                                        ),
-                                      ],
-                                    ),
-                                    child: const Icon(
-                                      Icons.close_rounded,
-                                      size: 16,
-                                      color: AppTheme.statusCritical,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 8,
-                                right: 8,
-                                child: OutlinedButton.icon(
-                                  onPressed: () =>
-                                      _pickFoodImage(ImageSource.gallery),
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.white.withValues(
-                                      alpha: 0.9,
-                                    ),
-                                    foregroundColor: AppTheme.richCharcoal,
-                                    side: const BorderSide(
-                                      color: AppTheme.borderColor,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 6,
-                                    ),
-                                  ),
-                                  icon: const Icon(
-                                    Icons.refresh_rounded,
-                                    size: 14,
-                                  ),
-                                  label: const Text(
-                                    'Change Photo',
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      else
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF9FAFB),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: AppTheme.borderColor),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: const BoxDecoration(
-                                  color: AppTheme.emeraldLight,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.add_a_photo_rounded,
-                                  color: AppTheme.forestGreen,
-                                  size: 26,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Upload photo of food batch',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppTheme.richCharcoal,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              const Text(
-                                'Shows packaging quality, seals, and portion volume for verified NGOs',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: AppTheme.charcoalMuted,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  OutlinedButton.icon(
-                                    onPressed: () =>
-                                        _pickFoodImage(ImageSource.camera),
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: AppTheme.forestGreen,
-                                      side: const BorderSide(
-                                        color: AppTheme.forestGreen,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 14,
-                                        vertical: 8,
-                                      ),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.camera_alt_outlined,
-                                      size: 16,
-                                    ),
-                                    label: const Text(
-                                      'Camera',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  OutlinedButton.icon(
-                                    onPressed: () =>
-                                        _pickFoodImage(ImageSource.gallery),
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: const Color(0xFF2563EB),
-                                      side: const BorderSide(
-                                        color: Color(0xFF2563EB),
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 14,
-                                        vertical: 8,
-                                      ),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.photo_library_outlined,
-                                      size: 16,
-                                    ),
-                                    label: const Text(
-                                      'Gallery / Files',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              const Text(
-                                '— OR SELECT SAMPLE PHOTO —',
-                                style: TextStyle(
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.5,
-                                  color: AppTheme.charcoalLight,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 6,
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  ActionChip(
-                                    avatar: const Text('🍛'),
-                                    label: const Text(
-                                      'Fresh Biryani',
-                                      style: TextStyle(fontSize: 11),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    side: const BorderSide(
-                                      color: AppTheme.borderColor,
-                                    ),
-                                    onPressed: () => _selectPresetPhoto(
-                                      'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
-                                      'Fresh Biryani & Curry',
-                                    ),
-                                  ),
-                                  ActionChip(
-                                    avatar: const Text('🥐'),
-                                    label: const Text(
-                                      'Fresh Bakery',
-                                      style: TextStyle(fontSize: 11),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    side: const BorderSide(
-                                      color: AppTheme.borderColor,
-                                    ),
-                                    onPressed: () => _selectPresetPhoto(
-                                      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop',
-                                      'Fresh Bakery & Bread',
-                                    ),
-                                  ),
-                                  ActionChip(
-                                    avatar: const Text('🍱'),
-                                    label: const Text(
-                                      'Meal Trays',
-                                      style: TextStyle(fontSize: 11),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    side: const BorderSide(
-                                      color: AppTheme.borderColor,
-                                    ),
-                                    onPressed: () => _selectPresetPhoto(
-                                      'https://images.unsplash.com/photo-1574484284002-952d92456975?w=800&auto=format&fit=crop',
-                                      'Sealed Meal Trays',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      const SizedBox(height: 18),
-                      AppTextField(
-                        label: 'Food Batch Title / Description',
-                        hint: 'e.g. Wedding Feast Surplus (Biryani, Dal)',
-                        controller: _titleController,
-                        prefixIcon: Icons.fastfood_rounded,
-                        validator: (v) =>
-                            v == null || v.isEmpty ? 'Required field' : null,
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Food Category',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           color: AppTheme.richCharcoal,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 8,
-                        runSpacing: 8,
+                        runSpacing: 6,
+                        children: _quickDishes.map((dish) {
+                          final label = dish['label']!;
+                          final isSelected =
+                              _titleController.text.trim() == label;
+                          return ChoiceChip(
+                            label: Text(label),
+                            selected: isSelected,
+                            selectedColor: AppTheme.emeraldLight,
+                            labelStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? AppTheme.forestGreen
+                                  : AppTheme.richCharcoal,
+                            ),
+                            onSelected: (_) {
+                              setState(() {
+                                _titleController.text = label;
+                                _selectedFoodType = dish['type']!;
+                                _selectedStorage = dish['storage']!;
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 14),
+
+                      AppTextField(
+                        label: 'What food is available?',
+                        hint: 'e.g. Rice & Dal, Roti & Sabzi',
+                        controller: _titleController,
+                        prefixIcon: Icons.fastfood_rounded,
+                        validator: (v) => v == null || v.trim().isEmpty
+                            ? 'Please enter the food name'
+                            : null,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 2. How many plates?
+                      const Text(
+                        'How many plates?',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.richCharcoal,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: _platePresets.map((count) {
+                          final isSelected =
+                              _servingsController.text.trim() == '$count';
+                          return ChoiceChip(
+                            label: Text('$count Plates'),
+                            selected: isSelected,
+                            selectedColor: AppTheme.emeraldLight,
+                            labelStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? AppTheme.forestGreen
+                                  : AppTheme.richCharcoal,
+                            ),
+                            onSelected: (_) {
+                              setState(() {
+                                _servingsController.text = '$count';
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                      AppTextField(
+                        label: 'Or enter plate count',
+                        hint: '30',
+                        controller: _servingsController,
+                        prefixIcon: Icons.people_outline_rounded,
+                        keyboardType: TextInputType.number,
+                        validator: (v) {
+                          final n = int.tryParse((v ?? '').trim());
+                          if (n == null || n <= 0) {
+                            return 'Enter a valid number of plates';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 3. Good for how long?
+                      const Text(
+                        'Good for how long?',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.richCharcoal,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
+                        children: _hourPresets.map((hrs) {
+                          final isSelected = _safeHours == hrs;
+                          return ChoiceChip(
+                            label: Text('$hrs hrs'),
+                            selected: isSelected,
+                            selectedColor: AppTheme.emeraldLight,
+                            labelStyle: TextStyle(
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
+                              color: isSelected
+                                  ? AppTheme.forestGreen
+                                  : AppTheme.richCharcoal,
+                            ),
+                            onSelected: (_) => setState(() => _safeHours = hrs),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 4. Prefilled Pickup Address
+                      AppTextField(
+                        label: 'Pickup Address',
+                        hint: 'Hotel, banquet, or kitchen address',
+                        controller: _addressController,
+                        prefixIcon: Icons.location_on_rounded,
+                        validator: (v) => v == null || v.trim().isEmpty
+                            ? 'Please enter the pickup address'
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Collapsed Optional Details
+                Card(
+                  elevation: 0,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: const BorderSide(color: AppTheme.borderColor),
+                  ),
+                  child: ExpansionTile(
+                    title: const Text(
+                      'More Details (Optional)',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.richCharcoal,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Photo, food type, storage, or gate note',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        color: AppTheme.charcoalMuted,
+                      ),
+                    ),
+                    childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    children: [
+                      const SizedBox(height: 8),
+                      if (_selectedImageBytes != null ||
+                          _presetImageUrl != null) ...[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: SizedBox(
+                            height: 140,
+                            width: double.infinity,
+                            child: _selectedImageBytes != null
+                                ? Image.memory(
+                                    _selectedImageBytes!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    _presetImageUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, _, _) => Container(
+                                      color: AppTheme.emeraldLight,
+                                      child: const Icon(
+                                        Icons.fastfood_rounded,
+                                        color: AppTheme.forestGreen,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () =>
+                                  _pickFoodImage(ImageSource.camera),
+                              icon: const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 16,
+                              ),
+                              label: const Text('Camera'),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: OutlinedButton.icon(
+                              onPressed: () =>
+                                  _pickFoodImage(ImageSource.gallery),
+                              icon: const Icon(
+                                Icons.photo_library_outlined,
+                                size: 16,
+                              ),
+                              label: const Text('Gallery'),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        children: [
+                          ActionChip(
+                            label: const Text(
+                              'Sample: Biryani',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                            onPressed: () => _selectPresetPhoto(
+                              'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop',
+                              'Biryani Sample',
+                            ),
+                          ),
+                          ActionChip(
+                            label: const Text(
+                              'Sample: Bakery',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                            onPressed: () => _selectPresetPhoto(
+                              'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop',
+                              'Bakery Sample',
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Food Type',
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.richCharcoal,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 6,
                         children: AppConstants.foodCategories.map((cat) {
                           final isSelected = _selectedFoodType == cat;
                           return ChoiceChip(
                             label: Text(cat),
                             selected: isSelected,
                             selectedColor: AppTheme.emeraldLight,
-                            labelStyle: TextStyle(
-                              color: isSelected
-                                  ? AppTheme.forestGreen
-                                  : AppTheme.richCharcoal,
-                              fontWeight: isSelected
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
-                              fontSize: 12,
-                            ),
+                            labelStyle: const TextStyle(fontSize: 11.5),
                             onSelected: (val) {
-                              if (val) setState(() => _selectedFoodType = cat);
+                              if (val) {
+                                setState(() => _selectedFoodType = cat);
+                              }
                             },
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: AppTextField(
-                              label: 'Portions Count',
-                              hint: 'e.g. 65',
-                              controller: _servingsController,
-                              prefixIcon: Icons.people_outline_rounded,
-                              keyboardType: TextInputType.number,
-                              validator: (v) =>
-                                  v == null || v.isEmpty ? 'Required' : null,
-                            ),
+                      const SizedBox(height: 14),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'How to Keep Food',
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.richCharcoal,
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: AppTextField(
-                              label: 'Weight / Volume Label',
-                              hint: 'e.g. 65 meals (~26 kg)',
-                              controller: _quantityController,
-                              prefixIcon: Icons.scale_rounded,
-                              validator: (v) =>
-                                  v == null || v.isEmpty ? 'Required' : null,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      // Safe Consumption Slider
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Safe Consumption Window',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.richCharcoal,
-                                ),
-                              ),
-                              Text(
-                                '$_safeHours hours from now',
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppTheme.forestGreen,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Slider(
-                            value: _safeHours.toDouble(),
-                            min: 1,
-                            max: 36,
-                            divisions: 35,
-                            activeColor: _safeHours <= 3
-                                ? AppTheme.statusCritical
-                                : AppTheme.forestGreen,
-                            onChanged: (val) {
-                              setState(() => _safeHours = val.toInt());
-                            },
-                          ),
-                          if (_safeHours <= 3)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppTheme.statusCriticalBg,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.warning_amber_rounded,
-                                    size: 16,
-                                    color: AppTheme.statusCritical,
-                                  ),
-                                  SizedBox(width: 6),
-                                  Expanded(
-                                    child: Text(
-                                      'High perishability batch! AI will trigger critical alerts to ultra-close NGOs.',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppTheme.statusCritical,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      // Storage Requirements Dropdown
-                      const Text(
-                        'Storage & Transport Requirement',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.richCharcoal,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: AppTheme.borderColor),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: _selectedStorage,
+                            value: safeStorageValue,
                             isExpanded: true,
                             items: AppConstants.storageOptions.map((opt) {
                               return DropdownMenuItem(
                                 value: opt,
                                 child: Text(
                                   opt,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: AppTheme.richCharcoal,
-                                  ),
+                                  style: const TextStyle(fontSize: 13),
                                 ),
                               );
                             }).toList(),
@@ -845,17 +812,19 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      // Allergen checklist
-                      const Text(
-                        'Known Allergens Present',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.richCharcoal,
+                      const SizedBox(height: 14),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Allergies (if any)',
+                          style: TextStyle(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.richCharcoal,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Wrap(
                         spacing: 6,
                         runSpacing: 6,
@@ -867,15 +836,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                             label: Text(allergen),
                             selected: isIncluded,
                             selectedColor: AppTheme.limeLight,
-                            labelStyle: TextStyle(
-                              color: isIncluded
-                                  ? AppTheme.forestGreen
-                                  : AppTheme.charcoalMuted,
-                              fontSize: 12,
-                              fontWeight: isIncluded
-                                  ? FontWeight.w700
-                                  : FontWeight.w500,
-                            ),
+                            labelStyle: const TextStyle(fontSize: 11.5),
                             onSelected: (val) {
                               setState(() {
                                 if (val) {
@@ -888,19 +849,10 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 16),
-                      AppTextField(
-                        label: 'Pickup Address',
-                        hint: 'e.g. 120 Residency Road, Bengaluru',
-                        controller: _addressController,
-                        prefixIcon: Icons.location_on_rounded,
-                        validator: (v) =>
-                            v == null || v.isEmpty ? 'Required field' : null,
-                      ),
                       const SizedBox(height: 14),
                       AppTextField(
-                        label: 'Specific Pickup Bay / Gate Instructions',
-                        hint: 'e.g. Ring service bell at rear kitchen entrance',
+                        label: 'Pickup Gate / Note',
+                        hint: 'e.g. Ring bell at back kitchen gate',
                         controller: _instructionsController,
                         prefixIcon: Icons.info_outline_rounded,
                         maxLines: 2,
@@ -908,14 +860,15 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
+
                 AppButton(
-                  label: 'Analyze with AI & Find Verified NGOs',
-                  icon: Icons.auto_awesome_rounded,
-                  isLoading: _isAnalyzing,
-                  onPressed: _proceedToAI,
+                  label: 'Post Food Now',
+                  icon: Icons.check_circle_rounded,
+                  isLoading: _isPosting,
+                  onPressed: _postFoodNow,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
               ],
             ),
           ),

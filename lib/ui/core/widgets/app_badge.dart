@@ -19,7 +19,7 @@ class UrgencyBadge extends StatelessWidget {
       case UrgencyLevel.critical:
         bg = AppTheme.statusCriticalBg;
         fg = AppTheme.statusCritical;
-        label = 'Critical (< 3h)';
+        label = 'Urgent (< 3h)';
         icon = Icons.local_fire_department_rounded;
         break;
       case UrgencyLevel.high:
@@ -31,13 +31,13 @@ class UrgencyBadge extends StatelessWidget {
       case UrgencyLevel.medium:
         bg = AppTheme.statusMediumBg;
         fg = AppTheme.statusMedium;
-        label = 'Standard (12-24h)';
+        label = 'Today (12-24h)';
         icon = Icons.schedule_rounded;
         break;
       case UrgencyLevel.low:
         bg = const Color(0xFFF3F4F6);
         fg = AppTheme.charcoalMuted;
-        label = 'Shelf Stable';
+        label = 'Lasts Longer';
         icon = Icons.inventory_2_rounded;
         break;
     }
@@ -114,12 +114,12 @@ class StatusBadge extends StatelessWidget {
       case DonationStatus.reserved:
         bg = const Color(0xFFEEF2FF);
         fg = const Color(0xFF4F46E5);
-        label = 'Reserved';
+        label = 'Booked';
         break;
       case DonationStatus.pickupVerified:
         bg = AppTheme.statusHighBg;
         fg = AppTheme.statusHigh;
-        label = 'Pickup Verified';
+        label = 'Picked Up';
         break;
       case DonationStatus.delivered:
         bg = AppTheme.emeraldLight;
@@ -205,7 +205,7 @@ class NGOVerifiedBadge extends StatelessWidget {
           ),
           SizedBox(width: 4),
           Text(
-            'Verification Pending',
+            'Pending Check',
             style: TextStyle(
               color: AppTheme.statusHigh,
               fontSize: 11,

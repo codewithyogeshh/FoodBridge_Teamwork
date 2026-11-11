@@ -84,11 +84,11 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
       appBar: AppBar(
-        title: const Text('Compliance Verification Status'),
+        title: const Text('Account Approval Status'),
         leading: widget.onBackToSignIn != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back_rounded),
-                tooltip: 'Back to Sign In / Register',
+                tooltip: 'Back to Sign In',
                 onPressed: widget.onBackToSignIn,
               )
             : null,
@@ -160,7 +160,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
               ),
               const SizedBox(height: 24),
               const Text(
-                'Verification Pipeline',
+                'Approval Steps',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -169,29 +169,26 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
               ),
               const SizedBox(height: 12),
               _buildTimelineStep(
-                title: 'Application & Registration Details',
-                desc: 'Government 80G/12A registration documents received.',
+                title: 'Details & Documents Sent',
+                desc: 'Your NGO details and ID were received.',
                 isDone: true,
                 isCurrent: false,
               ),
               _buildTimelineStep(
-                title: 'FSSAI Food Safety Compliance Audit',
-                desc:
-                    'Food handler hygiene certification verified by FoodBridge compliance team.',
+                title: 'Food License Check (FSSAI)',
+                desc: 'Admin is checking your food safety certificate.',
                 isDone: isVerified,
                 isCurrent: !isVerified,
               ),
               _buildTimelineStep(
-                title: 'Kitchen Daily Meal Capacity Check',
-                desc:
-                    'Verified facility capacity: ${_ngo.capacityMealsPerDay} meals/day.',
+                title: 'Daily Capacity Check',
+                desc: 'Daily capacity: ${_ngo.capacityMealsPerDay} plates/day.',
                 isDone: isVerified,
                 isCurrent: false,
               ),
               _buildTimelineStep(
-                title: 'Live Rescue Network Authorization',
-                desc:
-                    'Authorized to lock atomic reservations and execute secure OTP handoffs.',
+                title: 'Ready to Book Food',
+                desc: 'Approved NGOs can find and book nearby food.',
                 isDone: isVerified,
                 isCurrent: false,
                 isLast: true,
@@ -233,7 +230,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'LOGIN LOCKED: PENDING ADMIN APPROVAL',
+                                  'WAITING FOR ADMIN APPROVAL',
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w800,
@@ -243,7 +240,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                                 ),
                                 SizedBox(height: 2),
                                 Text(
-                                  'Aadhaar / PAN & FSSAI credentials under audit.',
+                                  'ID & food license are being checked.',
                                   style: TextStyle(
                                     fontSize: 11.5,
                                     color: AppTheme.richCharcoal,
@@ -256,7 +253,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                        'To prevent counterfeit claims and protect public food safety, FoodBridge strictly blocks unverified entities from accessing surplus food listings. Once an administrator approves your uploaded identity documents in the Admin Panel, your login will automatically unlock.',
+                        'Only approved NGOs can book food orders. Your account will open as soon as Admin approves your documents.',
                         style: TextStyle(
                           fontSize: 11.5,
                           color: AppTheme.charcoalMuted,
@@ -268,7 +265,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 ),
                 const SizedBox(height: 18),
                 AppButton(
-                  label: 'Check for Admin Approval',
+                  label: 'Check Approval Status',
                   icon: Icons.sync_rounded,
                   variant: AppButtonVariant.primary,
                   onPressed: () {
@@ -281,7 +278,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Congratulations! Your organization is verified by Admin. Access unlocked.',
+                            'Your NGO is approved! Welcome to FoodBridge.',
                           ),
                           backgroundColor: AppTheme.forestGreen,
                         ),
@@ -290,7 +287,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            'Still pending administrator audit. Please wait or approve in Admin Desk.',
+                            'Still waiting for Admin check. Please try again soon.',
                           ),
                           backgroundColor: Color(0xFFD97706),
                         ),
@@ -300,7 +297,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 ),
                 const SizedBox(height: 10),
                 AppButton(
-                  label: 'Simulate Admin Approval (Hackathon Demo)',
+                  label: 'Demo: Approve Now',
                   icon: Icons.verified_user_outlined,
                   isLoading: _isApproving,
                   variant: AppButtonVariant.secondary,
@@ -309,7 +306,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 const SizedBox(height: 12),
                 Center(
                   child: Text(
-                    'Standard verification turnaround is within 4 business hours.',
+                    'Usually checked within a few hours.',
                     style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   ),
                 ),
@@ -334,7 +331,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'CREDENTIALS VERIFIED & APPROVED',
+                              'APPROVED & READY',
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w800,
@@ -344,7 +341,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                             ),
                             SizedBox(height: 2),
                             Text(
-                              'You are authorized to discover and claim surplus food.',
+                              'Your NGO can now view and book nearby food.',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: AppTheme.richCharcoal,
@@ -358,7 +355,7 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
                 ),
                 const SizedBox(height: 18),
                 AppButton(
-                  label: 'Enter NGO Food Discovery Dashboard',
+                  label: 'Go to NGO Home',
                   icon: Icons.arrow_forward_rounded,
                   onPressed: widget.onEnterDashboard,
                 ),

@@ -80,17 +80,17 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                   size: 28,
                 ),
                 SizedBox(width: 10),
-                Text('Delivery Completed!'),
+                Text('Meals Delivered!'),
               ],
             ),
             content: Text(
-              '$count surplus meals safely distributed!\n\n'
-              '${(count * 2.5).toStringAsFixed(1)} kg of CO2e prevented from municipal landfill degradation. Great job, rescue heroes!',
+              '$count plates shared with people in need!\n\n'
+              'You saved ${(count * 2.5).toStringAsFixed(1)} kg CO2 and kept good food out of the bin.',
               style: const TextStyle(fontSize: 13, height: 1.4),
             ),
             actions: [
               AppButton(
-                label: 'View NGO Impact Ledger',
+                label: 'See Total Meals Shared',
                 icon: Icons.analytics_outlined,
                 onPressed: () {
                   Navigator.pop(ctx);
@@ -114,7 +114,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.warmIvory,
-      appBar: AppBar(title: const Text('Confirm Food Delivery')),
+      appBar: AppBar(title: const Text('Confirm Delivery')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -124,7 +124,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Finalize Distribution & Beneficiary Count',
+                  'How many plates did you share?',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
@@ -134,7 +134,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Record final redistribution count to update the verified environmental ledger and complete chain of custody.',
+                  'Save the meal count so the donor knows the food reached people.',
                   style: TextStyle(
                     fontSize: 13,
                     color: AppTheme.charcoalMuted,
@@ -156,7 +156,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Original batch: ${widget.donation.quantityLabel}',
+                        'Order: ${widget.donation.quantityLabel}',
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppTheme.emeraldDark,
@@ -165,7 +165,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                       ),
                       const SizedBox(height: 16),
                       AppTextField(
-                        label: 'Meals / Portions Distributed',
+                        label: 'Plates Shared',
                         controller: _portionsController,
                         prefixIcon: Icons.restaurant_menu_rounded,
                         keyboardType: TextInputType.number,
@@ -174,8 +174,8 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                       ),
                       const SizedBox(height: 14),
                       AppTextField(
-                        label: 'Beneficiary Community / Site',
-                        hint: 'e.g. Children Shelter & Community Hall',
+                        label: 'Where was it shared?',
+                        hint: 'e.g. Night Shelter, Old Age Home',
                         controller: _beneficiaryTypeController,
                         prefixIcon: Icons.groups_rounded,
                         validator: (v) =>
@@ -183,8 +183,8 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                       ),
                       const SizedBox(height: 14),
                       AppTextField(
-                        label: 'Safe Handling & Distribution Notes',
-                        hint: 'Condition of food upon consumption',
+                        label: 'Notes (Optional)',
+                        hint: 'e.g. Everyone ate warm meals',
                         controller: _notesController,
                         prefixIcon: Icons.notes_rounded,
                         maxLines: 3,
@@ -207,7 +207,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                             SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                'Distribution Proof Photo Attached (meal_service_10.jpg)',
+                                'Delivery Photo Attached',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -228,7 +228,7 @@ class _DeliveryConfirmScreenState extends State<DeliveryConfirmScreen> {
                 ),
                 const SizedBox(height: 24),
                 AppButton(
-                  label: 'Confirm Safe Delivery & Log Impact',
+                  label: 'Complete Delivery',
                   icon: Icons.task_alt_rounded,
                   isLoading: _isSubmitting,
                   onPressed: _submitDelivery,

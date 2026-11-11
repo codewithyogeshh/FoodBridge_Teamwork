@@ -150,10 +150,12 @@ class _AppRootFlowState extends State<AppRootFlow> {
           },
           onRegistered: (ngo) {
             _lastRegisteredNgo = ngo;
+            widget.repository.setActiveNgo(ngo);
             setState(() => _currentStep = AppFlowStep.ngoVerificationPending);
           },
           onExistingSignedIn: (ngo) {
             _lastRegisteredNgo = ngo;
+            widget.repository.setActiveNgo(ngo);
             if (ngo.isVerified) {
               _proceedWithTerms(context, () {
                 setState(() => _currentStep = AppFlowStep.authenticatedMain);
@@ -165,8 +167,27 @@ class _AppRootFlowState extends State<AppRootFlow> {
         );
 
       case AppFlowStep.ngoVerificationPending:
+        final pendingNgo =
+            _lastRegisteredNgo ??
+            (widget.repository.ngos.isNotEmpty
+                ? widget.repository.ngos.first
+                : NGOModel(
+                    id: 'ngo-pending-1',
+                    organizationName:
+                        widget.repository.currentUser.organizationName ??
+                        'Partner NGO',
+                    registrationNumber: 'REG-PENDING',
+                    contactPerson: widget.repository.currentUser.fullName,
+                    phone: widget.repository.currentUser.phone,
+                    address: 'Pune',
+                    latitude: 18.5204,
+                    longitude: 73.8567,
+                    verificationStatus: NGOVerificationStatus.pending,
+                    capacityMealsPerDay: 200,
+                    createdAt: DateTime.now(),
+                  ));
         return VerificationStatusScreen(
-          ngo: _lastRegisteredNgo ?? widget.repository.ngos.first,
+          ngo: pendingNgo,
           repository: widget.repository,
           onBackToSignIn: () {
             setState(() => _currentStep = AppFlowStep.ngoRegister);
